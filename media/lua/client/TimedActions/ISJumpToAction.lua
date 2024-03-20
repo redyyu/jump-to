@@ -15,13 +15,13 @@ end
 
 function ISJumpToAction:animEvent(event, parameter)
     if event == 'JumpDone' then
-        -- NO NEED restoreMovements() here. 
+        -- DONT restoreMovements() here.
+        -- setIgnoreMovement(false) too early will cancel the inertial taxiing which is trigger by vanilla.
         -- the timedAction with maxTime, it will perform/stop anyway.
-        -- right here is to prevent animtion is end before the action reach maxTime.
         -- otherwsie some other animtion will play.
-        self.character:setRunning(self.hasRunning)
-        self.character:setSprinting(self.hasSprinting)
-        self.character:setSneaking(false)
+        self.character:setRunning(self.hasRunning) -- give back running
+        self.character:setSprinting(self.hasSprinting) -- give back running
+        self.character:setSneaking(false) -- prevent sneaking animtion play in the end.
     elseif event == 'TouchGround' then
         self.forceZ = nil
     elseif event == 'Thump' then
@@ -32,13 +32,7 @@ end
 
 function ISJumpToAction:update()
     if self.forceZ then
-        -- The Empty Midair can be block movement,
-        -- a floor beside empty space, will have 1 square neighbours is allow player move in to.
-        -- it is empty space (player will falling in this square). 
-        -- since this mod is limit player can only jump over 2 empty square.
-        -- start square and dest square will both have 1 square empty space for play go in.
-        -- So No need those than. (unless need to jump over more than 2 square)
-
+        -- seems don't need those. and I don't how to restore those added floor.
         -- if currentSquare and currentSquare ~= self.lastKnownSquare then
         --     if not currentSquare:Is(IsoFlagType.solidfloor) then
         --         currentSquare:addFloor('')
@@ -52,17 +46,17 @@ function ISJumpToAction:update()
         self.character:setbFalling(false)
         self.character:setZ(self.forceZ)
 
+        self.character:getEmitter():stopSoundByName('HumanFootstepsCombined')
+
         -- that's all, NO NEED move player by self made coding.
-        -- froced the player not falling, that mean can still moving 1 square on empty space.
-        -- when player jumping, the square cross over must have 1 square empty space too.
-        -- since limited can only jump over 2 square at top.
-        -- player is actually move to cross over, just a jump animtion is playing, make it looks like jumping.
-        -- even want jump to (actually is move to) more than 2 square, just addFloor will be fine.
-        -- I don't how to restore those added floor, and 2 square if good enough. that's why not do that.
+        -- froced the player not falling, that mean can still moving on empty space.
+        -- as long as the timedAction is not end.
+        -- player is actually move to cross over, just a jump animtion is playing, 
+        -- that make its looks like jumping.
         -- so there is no reason to coding custom movements.
         -- also keep using vanilla Collision, no need custom blocked check.
 
-        if not self.character:getSquare():isFree(false) then
+        if self.forceToFree then
             -- NO NEED care about the Collision. player already in a unfree square.
             -- this is for free the player.
             -- etc. player drop into a river or lake, and not enough materials to build floor. 
@@ -72,8 +66,18 @@ function ISJumpToAction:update()
 
             self.character:setX(self.startX + deltaX)
             self.character:setY(self.startY + deltaY)
-            self.character:setZ(0)
+            self.character:setZ(self.character:getZ())
         end
+    end
+end
+
+
+function ISJumpToAction:waitToStart()
+    if self.hasRunning or self.hasSprinting then
+        return false  -- return true mean is keep waiting.
+    else
+	    self.character:faceLocation(self.destX, self.destY)
+	    return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
     end
 end
 
@@ -101,7 +105,7 @@ function ISJumpToAction:create()
         self.anim = 'JumpRunStart'
     else
         -- for select from menu while standing
-        self.anim = 'JumpSprintStart'
+        self.anim = 'JumpStart'
     end
     ISBaseTimedAction.create(self)
 end
@@ -128,20 +132,38 @@ function ISJumpToAction:new(character, destSquare, distance)
     o.stopOnRun = false
     o.stopOnAim = false
 
-    o.destX = destSquare:getX()
-    o.destY = destSquare:getY()
-
     o.hasSprinting = character:isSprinting()
     o.hasRunning = character:isRunning()
 
     o.useProgressBar = false
-
-    print('---------------distance--------------------')
-    print(distance)
-
+    
+    -- use maxTime to decide how far to jump.
+    -- the time should be closed with animation time,
+    -- so DO NOT change too far.
+    -- there is no need destX or destY anymore.
+    -- player is actually moving when play those animtion.
+    -- pertty sure it is because event or state change by Vanilla.
+    -- only need keep character not falling and play a jump animation.
+    -- why not? it's moving away. 
+    -- also can use original collision,
+    -- it's not good to check blocked or not by lua.
+    -- may fail in extreme cases. 
+    -- etc,. jump around a car, with A coincidental distance and angle can pass through.
     o.maxTime = 10 * distance
     o.anim = nil
-   
+
+    if isDebugEnabled() then
+        print("================= JumpTo Menu =================")
+        print("distance: " .. distance)
+        print("maxTime: " .. o.maxTime)
+        print("==============================================")
+    end
+
+    -- use only when player need to be free
+    o.forceToFree = not character:getCurrentSquare():isFree(false)
+    o.destX = destSquare:getX()
+    o.destY = destSquare:getY()
+    
     return o
 end
 

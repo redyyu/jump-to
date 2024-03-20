@@ -1,4 +1,4 @@
 
 Tooltip_EN = {
-    Tooltip_Select_Square = "Select a square for jump."
+    Tooltip_How_To_Jump = "The square of selection is only for the direction of jump. \n The distance of jump is base on Fitness and Sprinting Preks. \n Jump farther during run and sprint, closer when heavy load.\n Obesity, Overweight, Fatigue, Endurance or Pain can all affect the distance."
 }

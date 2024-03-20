@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
-	<m_Name>JumpRunAction</m_Name>
+	<m_Name>JumpAction</m_Name>
 	<m_AnimName>Bob_ValultOver_Sprint</m_AnimName>
-	<m_SpeedScale>0.96</m_SpeedScale>
+	<m_SpeedScale>0.69</m_SpeedScale>
 	<m_Looped>false</m_Looped>
 	<m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
 	<m_EarlyBlendOut>true</m_EarlyBlendOut>
@@ -12,7 +12,7 @@
 	<m_Conditions>
 		<m_Name>PerformingAction</m_Name>
 		<m_Type>STRING</m_Type>
-		<m_StringValue>JumpRunStart</m_StringValue>
+		<m_StringValue>JumpStart</m_StringValue>
 	</m_Conditions>
 	<m_Transitions>
 		<m_Target>defaultSprint</m_Target>
