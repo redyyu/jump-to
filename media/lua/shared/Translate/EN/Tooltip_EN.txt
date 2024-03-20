@@ -1,0 +1,4 @@
+
+Tooltip_EN = {
+    Tooltip_Select_Square = "Select a square for jump."
+}
