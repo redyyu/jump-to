@@ -137,16 +137,12 @@ function ISJumpToAction:new(character, destSquare, duration)
 
     o.useProgressBar = false
     
-    -- use maxTime to decide how far to jump.
-    -- the time should be closed with animation time,
-    -- so DO NOT change too far.
+    -- use maxTime to control how far to jump.
     -- there is no need destX or destY anymore.
     -- Vanilla's physics engine will take care it by inertia.
-    -- only need keep character not falling and play a jump animation.
-    -- why not? it's moving away. 
-    -- also can use original collision,
-    -- it's not good to check blocked or not by lua.
-    -- may fail in extreme cases. 
+    -- only need keep character not falling while jump animation is playing.
+    -- keep the original collision,
+    -- check square isblocked by lua may fail in extreme cases. 
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
 
     o.anim = 'JumpStart'
