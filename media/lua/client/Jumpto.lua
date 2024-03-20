@@ -82,7 +82,7 @@ Jmp.onJumpStart = function(playerObj)
     end
 
     ISTimedActionQueue.clear(playerObj)
-    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration(playerObj)))
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration))
 end
 
 

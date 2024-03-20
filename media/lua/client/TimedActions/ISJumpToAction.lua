@@ -146,19 +146,19 @@ function ISJumpToAction:new(character, destSquare, duration)
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
 
     o.anim = 'JumpStart'
-    o.maxTime = math.min(15 * duration, 35)
+    o.maxTime = math.min(duration, 25)
 
     if character:isSprinting() then
         o.anim = 'JumpSprintStart'
-        o.maxTime = math.min(25 * duration, 45)
+        o.maxTime = math.min(duration, 45)
     elseif character:isRunning() then
         o.anim = 'JumpRunStart'
-        o.maxTime = math.min(20 * duration, 40)
+        o.maxTime = math.min(duration, 30)
     end
 
     if isDebugEnabled() then
         print("================= JumpTo Menu =================")
-        print("distance: " .. distance)
+        print("duration: " .. duration)
         print("maxTime: " .. o.maxTime)
         print("==============================================")
     end
