@@ -98,17 +98,17 @@ function ISJumpToAction:start()
 end
 
 
-function ISJumpToAction:create()
-    if self.hasSprinting then
-        self.anim = 'JumpSprintStart'
-    elseif self.hasRunning then
-        self.anim = 'JumpRunStart'
-    else
-        -- for select from menu while standing
-        self.anim = 'JumpStart'
-    end
-    ISBaseTimedAction.create(self)
-end
+-- function ISJumpToAction:create()
+--     if self.hasSprinting then
+--         self.anim = 'JumpSprintStart'
+--     elseif self.hasRunning then
+--         self.anim = 'JumpRunStart'
+--     else
+--         -- for select from menu while standing
+--         self.anim = 'JumpStart'
+--     end
+--     ISBaseTimedAction.create(self)
+-- end
 
 
 function ISJumpToAction:stop()
@@ -123,7 +123,7 @@ function ISJumpToAction:perform()
 end
 
 
-function ISJumpToAction:new(character, destSquare, distance)
+function ISJumpToAction:new(character, destSquare, duration)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -141,16 +141,24 @@ function ISJumpToAction:new(character, destSquare, distance)
     -- the time should be closed with animation time,
     -- so DO NOT change too far.
     -- there is no need destX or destY anymore.
-    -- player is actually moving when play those animtion.
-    -- pertty sure it is because event or state change by Vanilla.
+    -- Vanilla's physics engine will take care it by inertia.
     -- only need keep character not falling and play a jump animation.
     -- why not? it's moving away. 
     -- also can use original collision,
     -- it's not good to check blocked or not by lua.
     -- may fail in extreme cases. 
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
-    o.maxTime = 10 * distance
-    o.anim = nil
+
+    o.anim = 'JumpStart'
+    o.maxTime = math.min(15 * duration, 35)
+
+    if character:isSprinting() then
+        o.anim = 'JumpSprintStart'
+        o.maxTime = math.min(25 * duration, 45)
+    elseif character:isRunning() then
+        o.anim = 'JumpRunStart'
+        o.maxTime = math.min(20 * duration, 40)
+    end
 
     if isDebugEnabled() then
         print("================= JumpTo Menu =================")

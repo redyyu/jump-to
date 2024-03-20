@@ -16,27 +16,27 @@ The distance of jump is base on Fitness and Sprinting Preks.
 Jump farther during run and sprint, closer when heavy load.
 Obesity, Overweight, Fatigue, Endurance or Pain can all affect the distance.
 
-because jump is trigger by menu option,
-you can't jump that often like Mario.
-also won't jump over zombies.
-only use when you need
+you won't jump that often like Mario.
+you won't jump over zombies.
+you won't jump into river. (but you can jump out, if you already stuck in middle of river)
 
-like jump over between safehouse brige.
+Use when you need
+jump over between safehouse brige.
 accidentally falling in to lake or river. 
 (I did once, player stack in one square, blocked by any direction, 
 and no meterial to build floor. it's Dead already!!)
 
-*Remember, you can still running or sprinting after the selection square showing up, 
-that will increase the jump distance.*
+*Remember, you can running or sprinting a while, then select the square, 
+can go farther. just like real world.*
 
 
 The original idea is from another Mod call `Jump`. Very good job!
 this Mod give so much more action movement to this game.
 
-But I feel little bit too powerful with such actions.
+But I feel a little bit too powerful.
 game is too easy when use those too often,
 seems this game is not design to have those amazing movements.
-*unlike Tomb Rider anyway*
+*it's not Tomb Rider anyway*
 
 Also I don't like to bind more KEY for anything, 
 there is so many keys already.
@@ -46,21 +46,20 @@ That's why I deiced to make another one.
 Credit must go to Tchernobill *the author of `Jump`*.
 
 I did learn much more from Tchernobill's MOD.
-even not use that at last.
+very good coding style and pertty logic.
+Must be thanks.
 
-I use maxTime of timedAction to decide how far to jump.
-the time should be closed with animation time, otherwise will looks strange.
+even I'm not use those code at last.
 
+I skip the distance param, use maxTime in timedAction to control how far to jump.
 there is no need destX or destY anymore.
-player is actually moving one or more square when jump animtion is playing.
-pertty sure it is because event or state change by Vanilla.
-and it's can be far when running or sprinting as native.
 
-only need keep character not falling and play a jump animation.
+Vanilla's physics engine will taking care it by inertia.
+jump when running or sprinting can go farther as native physics.
 
-why not? it's moving away.
+only need keep character not falling while the jump animation is playing.
 
-also can use original collision,
-it's not good to check blocked or not by lua.
-may fail in extreme cases. 
+also keep the original collisions,
+it's better than check square isblocked by lua every frames.
+that may fail in extreme cases. 
 etc,. jump around a car, with a coincidental distance and angle can pass through.

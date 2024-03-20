@@ -1,25 +1,19 @@
 
 local Jmp = {}
 Jmp.minZ = 0
-Jmp.distanceBase = 1.0
+Jmp.baseDuration = 1.0
 Jmp.enduranceLevelThreshold = 2
 Jmp.heavyloadLevelThreshold = 2
 Jmp.key = 'Crouch'  -- for keep KEY binds Vanilla, `Crouch` is best option, it's looks like prepare to jump.
 
 
-Jmp.getJumpDistance = function(playerObj)
+Jmp.getJumpDuration = function(playerObj)
     if playerObj:getMoodles():getMoodleLevel(MoodleType.Endurance) > Jmp.enduranceLevelThreshold or
        playerObj:getMoodles():getMoodleLevel(MoodleType.HeavyLoad) > Jmp.heavyloadLevelThreshold then
         return 0
     end
     
     local modifier = playerObj:getPerkLevel(Perks.Fitness) + playerObj:getPerkLevel(Perks.Sprinting)
-
-    if playerObj:isSprinting() then
-        modifier = modifier * 2
-    elseif playerObj:isRunning() then
-        modifier = modifier * 1.5
-    end
 
     local heavy_load = playerObj:getMoodles():getMoodleLevel(MoodleType.HeavyLoad)
     modifier = modifier - heavy_load * 0.25
@@ -36,11 +30,9 @@ Jmp.getJumpDistance = function(playerObj)
     local pain = stats:getPain()
     local sickness = stats:getSickness()
     
-    modifier = modifier * (endurance - pain - fatigue - sickness)
+    modifier = modifier + endurance - pain - fatigue - sickness
 
-    local distance =  (Jmp.distanceBase + modifier / 5) 
-
-    return distance
+    return Jmp.baseDuration + modifier
 end
 
 
@@ -68,24 +60,6 @@ Jmp.isRelatedBodyPartDamaged = function(playerObj)
 end
 
 
-Jmp.getDestSquare = function(playerObj, distance)
-    -- Credit: Tchernobill
-    local orient_angle = playerObj:getAnimAngleRadians() 
-    --0 = East, PI/2 = South, -PI/2=North, PI=West
-    local destX = playerObj:getX() + math.cos(orient_angle) * distance
-    local destY = playerObj:getY() + math.sin(orient_angle) * distance
-
-    local z = playerObj:getZ()
-    local dest_square = nil
-    while z >= Jmp.minZ and not dest_square do
-        dest_square = getCell():getGridSquare(destX, destY, z)
-        z = z - 1
-    end
-
-    return dest_square
-end
-
-
 Jmp.onJumpStart = function(playerObj)
     if not playerObj or playerObj:hasTimedActions() or playerObj:getVehicle() then
         -- refused is not vaild scenes.
@@ -106,15 +80,9 @@ Jmp.onJumpStart = function(playerObj)
         -- or player is doing something else.
         return
     end
-    local distance = Jmp.getJumpDistance(playerObj)
-    if distance ~= nil then
-        local dest_square = Jmp.getDestSquare(playerObj, distance)
-        if dest_square then
-            ISTimedActionQueue.clear(playerObj)
-            ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, distance))
-        end
-    end
 
+    ISTimedActionQueue.clear(playerObj)
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration(playerObj)))
 end
 
 
@@ -146,7 +114,7 @@ end
 
 Jmp.onJumpCursor = function(playerNum)
     local playerObj = getSpecificPlayer(playerNum)
-	local bo = ISJumpToCursor:new("", "", playerObj, Jmp.getJumpDistance)
+	local bo = ISJumpToCursor:new("", "", playerObj, Jmp.getJumpDuration(playerObj))
 	getCell():setDrag(bo, playerNum)
 end
 
