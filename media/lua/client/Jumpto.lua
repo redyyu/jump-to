@@ -143,7 +143,7 @@ end
 Jmp.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     
-    if not playerObj or playerObj:hasTimedActions() or playerObj:getVehicle() then
+    if not playerObj or playerObj:getVehicle() then
         -- refused is not vaild scenes.
         return
     end
@@ -163,7 +163,7 @@ Jmp.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         return
     end
 
-    local option = context:addOptionOnTop(getText("ContextMenu_Jumpto"), playerNum, Jmp.onJumpCursor)
+    local option = context:insertOptionBefore(getText("ContextMenu_Walk_to"), getText("ContextMenu_Jumpto"), playerNum, Jmp.onJumpCursor)
     option.toolTip = ISWorldObjectContextMenu.addToolTip()
     option.toolTip:setName(getText("Tooltip_Select_To_Jump"))
     option.toolTip.description = getText("Tooltip_How_To_Jump")
