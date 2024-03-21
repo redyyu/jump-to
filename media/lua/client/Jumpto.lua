@@ -2,21 +2,23 @@
 local Jmp = {}
 Jmp.minZ = 0
 Jmp.baseDuration = 1.0
-Jmp.enduranceLevelThreshold = 2
-Jmp.heavyloadLevelThreshold = 2
 Jmp.key = 'Crouch'  -- for keep KEY binds Vanilla, `Crouch` is best option, it's looks like prepare to jump.
 
 
 Jmp.getJumpDuration = function(playerObj)
-    if playerObj:getMoodles():getMoodleLevel(MoodleType.Endurance) > Jmp.enduranceLevelThreshold or
-       playerObj:getMoodles():getMoodleLevel(MoodleType.HeavyLoad) > Jmp.heavyloadLevelThreshold then
+    local moodles = playerObj:getMoodles()
+    local endurance = moodles:getMoodleLevel(MoodleType.Endurance)
+    local heavy_load = moodles:getMoodleLevel(MoodleType.HeavyLoad)
+    local sick = moodles:getMoodleLevel(MoodleType.Sick)
+    local injured = moodles:getMoodleLevel(MoodleType.Injured)
+    local tired = moodles:getMoodleLevel(MoodleType.Tired)
+    local pain = moodles:getMoodleLevel(MoodleType.Pain)
+    
+    if endurance > 3 or heavy_load > 3 or sick > 3 or tired > 3 or injured > 2 or pain > 3 then
         return 0
     end
-    
-    local modifier = playerObj:getPerkLevel(Perks.Fitness) + playerObj:getPerkLevel(Perks.Sprinting)
 
-    local heavy_load = playerObj:getMoodles():getMoodleLevel(MoodleType.HeavyLoad)
-    modifier = modifier - heavy_load * 0.25
+    local modifier = playerObj:getPerkLevel(Perks.Fitness) + playerObj:getPerkLevel(Perks.Sprinting)
 
     if playerObj:getTraits():contains("Obese") then
         modifier = modifier * 0.55
@@ -24,14 +26,21 @@ Jmp.getJumpDuration = function(playerObj)
         modifier = modifier * 0.75
     end
 
-    local stats = playerObj:getStats()
-    local endurance = stats:getEndurance()
-    local fatigue = stats:getFatigue()
-    local pain = stats:getPain()
-    local sickness = stats:getSickness()
-    
-    modifier = modifier + endurance - pain - fatigue - sickness
+    if isDebugEnabled() then
+        print(tired)
+        print("================= JumpTo Menu =================")
+        print("Modifier: " .. modifier)
+        print("Endurance: " .. endurance)
+        print("HeavyLoad: " .. heavy_load)
+        print("Tired: " .. tired)
+        print("Sick: " .. sick)
+        print("Injured: " .. injured)
+        print("Pain: " .. pain)
+        print("==============================================")
+    end
 
+    modifier = math.max(modifier - endurance - heavy_load * 2 - sick - tired - injured - pain, 0)
+    
     return Jmp.baseDuration + modifier
 end
 
@@ -82,7 +91,7 @@ Jmp.onJumpStart = function(playerObj)
     end
 
     ISTimedActionQueue.clear(playerObj)
-    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration))
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration()))
 end
 
 
@@ -114,7 +123,7 @@ end
 
 Jmp.onJumpCursor = function(playerNum)
     local playerObj = getSpecificPlayer(playerNum)
-	local bo = ISJumpToCursor:new("", "", playerObj, Jmp.getJumpDuration(playerObj))
+	local bo = ISJumpToCursor:new("", "", playerObj, Jmp.getJumpDuration)
 	getCell():setDrag(bo, playerNum)
 end
 

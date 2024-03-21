@@ -24,8 +24,6 @@ function ISJumpToAction:animEvent(event, parameter)
         self.character:setSneaking(false) -- prevent sneaking animtion play in the end.
     elseif event == 'TouchGround' then
         self.forceZ = nil
-    elseif event == 'Thump' then
-        -- pass
     end
 end
 
@@ -146,14 +144,22 @@ function ISJumpToAction:new(character, destSquare, duration)
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
 
     o.anim = 'JumpStart'
-    o.maxTime = math.min(duration, 25)
+    o.maxTime = math.min(duration, 30)
 
     if character:isSprinting() then
         o.anim = 'JumpSprintStart'
-        o.maxTime = math.min(duration, 45)
+        o.maxTime = math.min(duration * 3, 45)
     elseif character:isRunning() then
         o.anim = 'JumpRunStart'
-        o.maxTime = math.min(duration, 30)
+        o.maxTime = math.min(duration * 2, 35)
+    end
+    
+    if character:isPlayerMoving() then
+        o.maxTime = math.max(o.maxTime, 10)
+    else
+        -- player is jump from standing.
+        -- make sure the time is enough to corss one square.
+        o.maxTime = 25
     end
 
     if isDebugEnabled() then
