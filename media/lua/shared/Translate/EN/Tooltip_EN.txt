@@ -1,4 +1,7 @@
 
 Tooltip_EN = {
-    Tooltip_How_To_Jump = "The square of selection is only for the direction, How far you can jump is depends on physics and body condition. Jump farther during run and sprint, closer when heavy load. Fitness, Sprinting, Obesity, Overweight, Fatigue, Endurance, Sickness, Heavy Load, Injured or Pain can all affect to jump."
+    Tooltip_Select_To_Jump = "Select a direction to jump"
+    Tooltip_Unable_To_Jump = "Can not Jump ..."
+
+    Tooltip_How_To_Jump = "<RGB:1,1,1> Jump from standing always cross one square. <BR> Jump while moving, how far you can jump is depends on physics and body condition. <BR> Jump farther during <SPACE><RGB:0,0.8,0> Run <RGB:1,1,1><SPACE> or <SPACE><RGB:0,0.8,0> Sprint <RGB:1,1,1> . <SPACE><RGB:0,0.8,0> Fitness <RGB:1,1,1><SPACE> and <SPACE><RGB:0,0.8,0> Sprinting <RGB:1,1,1><SPACE> can increase jump range. <SPACE><RGB:1,0.5,0.5> Obese <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Overweight <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Overrun <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Tired <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Sick <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Heavy Load <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Injured <RGB:1,1,1><SPACE> or <SPACE><RGB:1,0.5,0.5> Pain <RGB:1,1,1><SPACE> can all affect to jump in bad way."
 }

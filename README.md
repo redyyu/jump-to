@@ -20,9 +20,12 @@ try press `RBumper` button
 
 =============================================================
 
-The square of selection is only for the direction，How far you can jump is depends on physics and body condition.
-Jump farther during run and sprint, closer when heavy load.
-Fitness, Sprinting, Obesity, Overweight, Fatigue, Endurance, Sickness, Heavy Load, Injured or Pain can all affect to jump.
+Usage:
+
+Activated it from context menu. Select a direction to jump. 
+Jump always cross one square, when starts standing. Jump while moving, how far you can jump is depends on physics and body condition. Jump farther during run or sprint, higher rank of Fitness and Sprinting can increase jump range. Jump closer when Obese, Overweight, Overrun, Tired, Sick, Heavy Load, Injured or Pain can all affect to jump. Jump always cross one square from standing. Jump while moving, will go farther during run or sprint, higher rank of Fitness and Sprinting can increase jump range. Jump closer when Obese, Overweight, Overrun, Tired, Sick, Heavy Load, Injured or Pain can all affect to jump.
+
+=============================================================
 
 Jump will effect by inertia (native physics engine).
 

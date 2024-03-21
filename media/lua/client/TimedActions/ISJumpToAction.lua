@@ -102,17 +102,17 @@ function ISJumpToAction:start()
 end
 
 
--- function ISJumpToAction:create()
---     if self.hasSprinting then
---         self.anim = 'JumpSprintStart'
---     elseif self.hasRunning then
---         self.anim = 'JumpRunStart'
---     else
---         -- for select from menu while standing
---         self.anim = 'JumpStart'
---     end
---     ISBaseTimedAction.create(self)
--- end
+function ISJumpToAction:create()
+    if self.hasSprinting then
+        self.anim = 'JumpSprintStart'
+    elseif self.hasRunning then
+        self.anim = 'JumpRunStart'
+    else
+        -- for select from menu while standing or walking.
+        self.anim = 'JumpStart'
+    end
+    ISBaseTimedAction.create(self)
+end
 
 
 function ISJumpToAction:stop()
@@ -141,6 +141,14 @@ function ISJumpToAction:new(character, duration, destX, destY)
 
     o.useProgressBar = false
     
+    o.anim = nil
+
+    if not character:isPlayerMoving() then
+        -- player is jump from standing.
+        -- make sure the time is enough to corss one square.
+        duration = 25
+    end
+
     -- use maxTime to control how far to jump.
     -- there is no need destX or destY anymore.
     -- Vanilla's physics engine will take care it by inertia.
@@ -148,34 +156,15 @@ function ISJumpToAction:new(character, duration, destX, destY)
     -- keep the original collision,
     -- check square isblocked by lua may fail in extreme cases. 
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
-
-    o.anim = 'JumpStart'
-    -- No NEED minifiy anymore, 
+    o.maxTime = duration
+    -- NO NEED minifiy anymore, 
     -- duration is calculated to not too big or small.
     -- for now the is between 15 ~ 35, 15 is base, Fitness and Sprinting add 20 maximum.
     -- o.maxTime = math.min(duration, 25)
-    o.maxTime = math.min(duration, 25)
-
-    if character:isSprinting() then
-        o.anim = 'JumpSprintStart'
-        o.maxTime = duration
-        -- o.maxTime = math.min(duration, 50)
-    elseif character:isRunning() then
-        o.anim = 'JumpRunStart'
-        o.maxTime = duration
-        -- o.maxTime = math.min(duration, 35)
-    end
-    
-    if not character:isPlayerMoving() then
-        -- player is jump from standing.
-        -- make sure the time is enough to corss one square.
-        o.maxTime = 25
-    end
 
     if isDebugEnabled() then
         print("================= JumpTo Menu =================")
         print("duration: " .. duration)
-        print("maxTime: " .. o.maxTime)
         print("==============================================")
     end
 

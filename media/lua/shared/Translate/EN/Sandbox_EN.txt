@@ -1,6 +1,6 @@
 Sandbox_EN = {
 	Sandbox_JumpTo = "Jump To"
 
-	Sandbox_JumpTo.KeyPressToJumpEnabled = "Jump by Press `Sneak` Key"
-	Sandbox_JumpTo.KeyPressToJumpEnabled_tooltip ="Press Key for `Sneak` while Running or Sprinting. Chose this Key binding because it's looks like prepare to jump, no additional key bindings. When you enabled this option, Keep in mind, too many keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games). There is no plan to add new keybindings to game yet, try to change the Key binding of `Sneak`. Use keyboard to jump is not the purpose made this MOD,live with that or get better keyboard."
+	Sandbox_JumpTo_KeyPressToJumpEnabled = "Jump by Press `Sneak` Key"
+	Sandbox_JumpTo_KeyPressToJumpEnabled_tooltip ="Press Key for `Sneak` while Running or Sprinting. Chose this Key binding because it's looks like prepare to jump, no additional key bindings. When you enabled this option, Keep in mind, too many keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games). There is no plan to add new keybindings to game yet, try to change the Key binding of `Sneak`. Use keyboard to jump is not the purpose made this MOD,live with that or get better keyboard."
 }

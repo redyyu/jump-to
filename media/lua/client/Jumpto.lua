@@ -28,15 +28,10 @@ Jmp.getJumpDuration = function(playerObj)
     end
 
     -- if isDebugEnabled() then
-    --     print(tired)
-    --     print("================= JumpTo Menu =================")
-    --     print("Modifier: " .. modifier)
-    --     print("Endurance: " .. endurance)
-    --     print("HeavyLoad: " .. heavy_load)
-    --     print("Tired: " .. tired)
-    --     print("Sick: " .. sick)
-    --     print("Injured: " .. injured)
-    --     print("Pain: " .. pain)
+    --     print("================= JumpTo =================")
+    --     local print_text = "Modifier: " .. modifier .. "  Endurance: " .. endurance .. "  HeavyLoad: " .. heavy_load
+    --     print_text = print_text .."  Tired: " .. tired .. "  Sick: " .. sick .. "  Injured: " .. injured.."  Pain: " .. pain
+    --     print(print_text)
     --     print("==============================================")
     -- end
 
@@ -94,10 +89,10 @@ Jmp.onJumpStartByKey = function(playerObj)
     -- Credit: Tchernobill
     local orient_angle = playerObj:getAnimAngleRadians() 
     --0 = East, PI/2 = South, -PI/2=North, PI=West
-    local destX = playerObj:getX() + math.cos(orient_angle) * 100
-    local destY = playerObj:getY() + math.sin(orient_angle) * 100
+    local destX = playerObj:getX() + math.cos(orient_angle) * 5
+    local destY = playerObj:getY() + math.sin(orient_angle) * 5
     
-    -- *100 is for make sure not too closed with character current position
+    -- *5 is for make sure not too closed with character current position
     -- prevent turn round when move faster, because the dest point has been behind.
     
     -- NO NEED square anymore
@@ -127,7 +122,7 @@ end
 
 
 Jmp.onKeyStartPressed = function(key)
-    if SandboxVars.JumpToMenu.KeyPressToJumpEnabled or isDebugEnabled() then
+    if SandboxVars.JumpTo.KeyPressToJumpEnabled or isDebugEnabled() then
         if key == getCore():getKey(Jmp.key) then
             local playerObj = getPlayer()
             if playerObj:isRunning() or playerObj:isSprinting() then
@@ -170,8 +165,12 @@ Jmp.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
 
     local option = context:addOptionOnTop(getText("ContextMenu_Jumpto"), playerNum, Jmp.onJumpCursor)
     option.toolTip = ISWorldObjectContextMenu.addToolTip()
-    option.toolTip:setName(getText("ContextMenu_Jumpto"))
+    option.toolTip:setName(getText("Tooltip_Select_To_Jump"))
     option.toolTip.description = getText("Tooltip_How_To_Jump")
+    option.notAvailable = Jmp.getJumpDuration(playerObj) <= 0
+    if option.notAvailable then
+        option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_To_Jump") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
+    end
 end
 
 
