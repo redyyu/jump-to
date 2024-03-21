@@ -4,20 +4,20 @@ ISJumpToCursor = ISBuildingObject:derive("ISJumpToCursor")
 
 
 function ISJumpToCursor:create(x, y, z, north, sprite)
-	local square = getWorld():getCell():getGridSquare(x, y, z)
+	-- local square = getWorld():getCell():getGridSquare(x, y, z)
 	local duration = self.durationCall(self.character)
 	if duration > 0 then
 		ISTimedActionQueue.clear(self.character)
-		ISTimedActionQueue.add(ISJumpToAction:new(self.character, square, duration))
+		ISTimedActionQueue.add(ISJumpToAction:new(self.character, duration, x, y))
 	end
 end
 
 function ISJumpToCursor:isValid(square)
-	local in_range_x = math.abs(square:getX() - self.character:getX()) <= 5
-	local in_range_y = math.abs(square:getY() - self.character:getY()) <= 5
+	local in_range_x = math.abs(square:getX() - self.character:getX()) <= 2
+	local in_range_y = math.abs(square:getY() - self.character:getY()) <= 2
 	-- no matter distance, the square only use to give direction to jump.
 	-- give 5 square range for better uex.
-	return in_range_x and in_range_y
+	return self.durationCall(self.character) > 0
 end
 
 function ISJumpToCursor:render(x, y, z, square)

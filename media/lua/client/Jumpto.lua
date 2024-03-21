@@ -27,18 +27,18 @@ Jmp.getJumpDuration = function(playerObj)
         modifier = modifier * 0.75
     end
 
-    if isDebugEnabled() then
-        print(tired)
-        print("================= JumpTo Menu =================")
-        print("Modifier: " .. modifier)
-        print("Endurance: " .. endurance)
-        print("HeavyLoad: " .. heavy_load)
-        print("Tired: " .. tired)
-        print("Sick: " .. sick)
-        print("Injured: " .. injured)
-        print("Pain: " .. pain)
-        print("==============================================")
-    end
+    -- if isDebugEnabled() then
+    --     print(tired)
+    --     print("================= JumpTo Menu =================")
+    --     print("Modifier: " .. modifier)
+    --     print("Endurance: " .. endurance)
+    --     print("HeavyLoad: " .. heavy_load)
+    --     print("Tired: " .. tired)
+    --     print("Sick: " .. sick)
+    --     print("Injured: " .. injured)
+    --     print("Pain: " .. pain)
+    --     print("==============================================")
+    -- end
 
     modifier = math.max(modifier - endurance - heavy_load * 2 - sick - tired - injured - pain, 0)
     
@@ -70,7 +70,7 @@ Jmp.isRelatedBodyPartDamaged = function(playerObj)
 end
 
 
-Jmp.onJumpStart = function(playerObj)
+Jmp.onJumpStartByKey = function(playerObj)
     if not playerObj or playerObj:hasTimedActions() or playerObj:getVehicle() then
         -- refused is not vaild scenes.
         return
@@ -92,7 +92,7 @@ Jmp.onJumpStart = function(playerObj)
     end
 
     ISTimedActionQueue.clear(playerObj)
-    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, dest_square, Jmp.getJumpDuration()))
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, Jmp.getJumpDuration(playerObj)))
 end
 
 
@@ -102,18 +102,18 @@ Jmp.onPlayerUpdate = function(playerObj)
     local joypad_id = playerObj:getJoypadBind()
     if isJoypadPressed(joypad_id, Joypad.RBumper) then
         if playerObj:isRunning() or playerObj:isSprinting() then
-            Jmp.onJumpStart(playerObj)
+            Jmp.onJumpStartByKey(playerObj)
         end
     end
 end
 
 
 Jmp.onKeyStartPressed = function(key)
-    if SandboxVars.JumpToMenu.KeyPressToJumpEnabled then
+    if SandboxVars.JumpToMenu.KeyPressToJumpEnabled or isDebugEnabled() then
         if key == getCore():getKey(Jmp.key) then
             local playerObj = getPlayer()
             if playerObj:isRunning() or playerObj:isSprinting() then
-                Jmp.onJumpStart(playerObj)
+                Jmp.onJumpStartByKey(playerObj)
             end
         end
     end

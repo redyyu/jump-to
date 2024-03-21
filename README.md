@@ -15,8 +15,7 @@ For Joypad, they might diffcult to using context menu.
 try press `RBumper` button
 *untested might not work.*
 
-The square of selection is only for the direction of jump while is standing.
-click anywhere while moving will jump forward.
+The square of selection is only for the direction，How far you can jump is depends on physics and body condition.
 Jump farther during run and sprint, closer when heavy load.
 Fitness, Sprinting, Obesity, Overweight, Fatigue, Endurance, Sickness, Heavy Load, Injured or Pain can all affect to jump.
 

@@ -109,7 +109,7 @@
 --     --check destination is reachable
 --     local currentSquare = character:getCurrentSquare()
 --     if not currentSquare then
---         printDebug("canMoveTo: invalid player square. WARNING", "JumptoMenu")
+--         printDebug("canMoveTo: invalid player square. WARNING", "JumpToMenu")
 --         return false
 --     end
 

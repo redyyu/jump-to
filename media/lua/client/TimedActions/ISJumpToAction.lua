@@ -71,12 +71,8 @@ end
 
 
 function ISJumpToAction:waitToStart()
-    if self.character:isPlayerMoving() then
-        return false  -- return true mean is keep waiting.
-    else
-	    self.character:faceLocation(self.destX, self.destY)
-	    return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
-    end
+    self.character:faceLocation(self.destX, self.destY)
+	return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
 end
 
 
@@ -121,7 +117,7 @@ function ISJumpToAction:perform()
 end
 
 
-function ISJumpToAction:new(character, destSquare, duration)
+function ISJumpToAction:new(character, duration, destX, destY)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -144,14 +140,20 @@ function ISJumpToAction:new(character, destSquare, duration)
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
 
     o.anim = 'JumpStart'
+    -- No NEED minifiy anymore, 
+    -- duration is calculated to not too big or small.
+    -- for now the is between 15 ~ 35, 15 is base, Fitness and Sprinting add 20 maximum.
+    -- o.maxTime = math.min(duration, 25)
     o.maxTime = math.min(duration, 25)
 
     if character:isSprinting() then
         o.anim = 'JumpSprintStart'
-        o.maxTime = math.min(duration, 50)
+        o.maxTime = duration
+        -- o.maxTime = math.min(duration, 50)
     elseif character:isRunning() then
         o.anim = 'JumpRunStart'
-        o.maxTime = math.min(duration, 35)
+        o.maxTime = duration
+        -- o.maxTime = math.min(duration, 35)
     end
     
     if not character:isPlayerMoving() then
@@ -167,10 +169,12 @@ function ISJumpToAction:new(character, destSquare, duration)
         print("==============================================")
     end
 
-    -- use only when player need to be free
+    -- for turn character face to
+    o.destX = destX or character:getX()
+    o.destY = destY or character:getY()
+
+    -- use when player need to be free, etc. in a river.
     o.forceToFree = not character:getCurrentSquare():isFree(false)
-    o.destX = destSquare:getX()
-    o.destY = destSquare:getY()
     
     return o
 end
