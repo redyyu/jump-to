@@ -98,6 +98,9 @@ function ISJumpToAction:start()
         self.character:setRunning(false)
         self.character:setSprinting(false)
         self.character:setSneaking(false)
+
+        -- use when player need to be free, etc. in a river.
+        self.forceToFree = self:isStuck()
     end
 end
 
@@ -172,9 +175,6 @@ function ISJumpToAction:new(character, duration, destX, destY)
     o.destX = destX or character:getX()
     o.destY = destY or character:getY()
 
-    -- use when player need to be free, etc. in a river.
-    o.forceToFree = not character:getCurrentSquare():isFree(false)
-    
     return o
 end
 
@@ -187,6 +187,7 @@ function ISJumpToAction:restoreMovements()
     self.forceZ = nil
 end
 
+
 function ISJumpToAction:consumeEndurance() --same as vault over fence
     local stats = self.character:getStats()
     if self.hasSprinting then
@@ -194,4 +195,29 @@ function ISJumpToAction:consumeEndurance() --same as vault over fence
     elseif self.hasRunning then
         stats:setEndurance(stats:getEndurance() - ZomboidGlobals.RunningEnduranceReduce * 300.0)
     end
+end
+
+
+function ISJumpToAction:isStuck()
+    local curr_square = self.character:getCurrentSquare()
+    local is_free = (curr_square and curr_square:isFree(false))
+
+    if is_free then
+        local adjacent_squares = {
+            curr_square:getAdjacentSquare(IsoDirections.E),
+            curr_square:getAdjacentSquare(IsoDirections.W),
+            curr_square:getAdjacentSquare(IsoDirections.S),
+            curr_square:getAdjacentSquare(IsoDirections.N),
+        }
+        for _, sq in ipairs(adjacent_squares) do
+            print(sq:isFree(false))
+            if sq and sq:isFree(false) then
+                return false
+            end
+            -- less one of adjacent square is free.
+            -- other will will standing on a free square.
+            -- but block by any other directions.
+        end
+    end
+    return true
 end
