@@ -1,6 +1,6 @@
 Sandbox_EN = {
 	Sandbox_JumptoMenu = "Jump to Menu"
 
-	Sandbox_JumptoMenu.KeyPressToJumpDisabled = "Jump by Press Key"
-	Sandbox_JumptoMenu.KeyPressToJumpDisabled_tooltip ="Jump by Press 'Crouch' Key when Running or Sprinting"
+	Sandbox_JumpToMenu.KeyPressToJumpEnabled = "Jump by Press 'Crouch' Key"
+	Sandbox_JumpToMenu.KeyPressToJumpEnabled_tooltip ="Jump by Press 'Crouch' Key when Running or Sprinting"
 }

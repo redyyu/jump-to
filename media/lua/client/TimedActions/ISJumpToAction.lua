@@ -71,7 +71,7 @@ end
 
 
 function ISJumpToAction:waitToStart()
-    if self.hasRunning or self.hasSprinting then
+    if self.character:isPlayerMoving() then
         return false  -- return true mean is keep waiting.
     else
 	    self.character:faceLocation(self.destX, self.destY)
@@ -144,11 +144,11 @@ function ISJumpToAction:new(character, destSquare, duration)
     -- etc,. jump around a car, with A coincidental distance and angle can pass through.
 
     o.anim = 'JumpStart'
-    o.maxTime = math.min(duration, 30)
+    o.maxTime = math.min(duration, 25)
 
     if character:isSprinting() then
         o.anim = 'JumpSprintStart'
-        o.maxTime = math.min(duration, 45)
+        o.maxTime = math.min(duration, 50)
     elseif character:isRunning() then
         o.anim = 'JumpRunStart'
         o.maxTime = math.min(duration, 35)

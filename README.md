@@ -7,11 +7,16 @@ with this Mod, player can trigger jump action by context menu.
 right click on the ground, there is `Jump To` option on menu now.
 *just like `Walk To` option.*
 
+Can also trigger by Key `Crouch` (for switch to sneaking),
+when Mod Sandbox `KeyPressToJumpEnabled` set to true.
+I don't want add KEY binds to Vanilla, `Crouch` is best option, it's looks like prepare to jump.
+
 For Joypad, they might diffcult to using context menu.
 try press `RBumper` button
 *untested might not work.*
 
-The square of selection is only for the direction of jump. 
+The square of selection is only for the direction of jump while is standing.
+click anywhere while moving will jump forward.
 Jump farther during run and sprint, closer when heavy load.
 Fitness, Sprinting, Obesity, Overweight, Fatigue, Endurance, Sickness, Heavy Load, Injured or Pain can all affect to jump.
 

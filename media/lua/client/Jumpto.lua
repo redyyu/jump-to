@@ -2,7 +2,7 @@
 local Jmp = {}
 Jmp.minZ = 0
 Jmp.baseDuration = 15 -- It's calculated number DO NOT change it, unless know what doing.
-Jmp.key = 'Crouch'  -- use for KeyPressToJumpDisabled is false, 
+Jmp.key = 'Crouch'  -- use for KeyPressToJumpEnabled is true, 
 -- don't want add KEY binds to Vanilla, `Crouch` is best option, it's looks like prepare to jump.
 
 
@@ -109,14 +109,12 @@ end
 
 
 Jmp.onKeyStartPressed = function(key)
-    if SandboxVars.JumptoMenu.KeyPressToJumpDisabled then
-        return
-    end
-
-    if key == getCore():getKey(Jmp.key) then
-        local playerObj = getPlayer()
-        if playerObj:isRunning() or playerObj:isSprinting() then
-            Jmp.onJumpStart(playerObj)
+    if SandboxVars.JumpToMenu.KeyPressToJumpEnabled then
+        if key == getCore():getKey(Jmp.key) then
+            local playerObj = getPlayer()
+            if playerObj:isRunning() or playerObj:isSprinting() then
+                Jmp.onJumpStart(playerObj)
+            end
         end
     end
 end
