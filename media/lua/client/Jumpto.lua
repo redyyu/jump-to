@@ -1,8 +1,9 @@
 
 local Jmp = {}
 Jmp.minZ = 0
-Jmp.baseDuration = 1.0
-Jmp.key = 'Crouch'  -- for keep KEY binds Vanilla, `Crouch` is best option, it's looks like prepare to jump.
+Jmp.baseDuration = 15 -- It's calculated number DO NOT change it, unless know what doing.
+Jmp.key = 'Crouch'  -- use for KeyPressToJumpDisabled is false, 
+-- don't want add KEY binds to Vanilla, `Crouch` is best option, it's looks like prepare to jump.
 
 
 Jmp.getJumpDuration = function(playerObj)

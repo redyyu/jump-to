@@ -148,15 +148,13 @@ function ISJumpToAction:new(character, destSquare, duration)
 
     if character:isSprinting() then
         o.anim = 'JumpSprintStart'
-        o.maxTime = math.min(duration * 3, 45)
+        o.maxTime = math.min(duration, 45)
     elseif character:isRunning() then
         o.anim = 'JumpRunStart'
-        o.maxTime = math.min(duration * 2, 35)
+        o.maxTime = math.min(duration, 35)
     end
     
-    if character:isPlayerMoving() then
-        o.maxTime = math.max(o.maxTime, 10)
-    else
+    if not character:isPlayerMoving() then
         -- player is jump from standing.
         -- make sure the time is enough to corss one square.
         o.maxTime = 25

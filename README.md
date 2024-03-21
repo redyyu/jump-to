@@ -12,9 +12,10 @@ try press `RBumper` button
 *untested might not work.*
 
 The square of selection is only for the direction of jump. 
-The distance of jump is base on Fitness and Sprinting Preks. 
 Jump farther during run and sprint, closer when heavy load.
-Obesity, Overweight, Fatigue, Endurance or Pain can all affect the distance.
+Fitness, Sprinting, Obesity, Overweight, Fatigue, Endurance, Sickness, Heavy Load, Injured or Pain can all affect to jump.
+
+Jump will effect by inertia (native physics engine).
 
 you won't jump that often like Mario.
 you won't jump over zombies.
