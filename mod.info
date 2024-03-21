@@ -1,4 +1,4 @@
-id=JumpToMenu
-name=Jump To Menu
-description=Jump over ground by Menu, core jumping method code credit to TchernoLib.
+id=JumpTo
+name=Jump To
+description=Character Jump by Context menu. pertty much like `Walk to` in vanilla.
 poster=preview.png

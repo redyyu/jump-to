@@ -1,7 +1,7 @@
 VERSION = 1,
 
-option JumpToMenu.KeyPressToJumpEnabled {
+option JumpTo.KeyPressToJumpEnabled {
 	type = boolean, default = false,
-	page = JumpToMenu, translation = JumpToMenu_KeyPressToJumpEnabled,
+	page = JumpTo, translation = JumpTo_KeyPressToJumpEnabled,
 }
 
