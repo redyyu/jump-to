@@ -15,7 +15,7 @@ Jmp.getJumpDuration = function(playerObj)
     local tired = moodles:getMoodleLevel(MoodleType.Tired)
     local pain = moodles:getMoodleLevel(MoodleType.Pain)
     
-    if endurance > 3 or heavy_load > 3 or sick > 3 or tired > 3 or injured > 2 or pain > 3 then
+    if endurance > 3 or heavy_load > 3 or injured > 3 then
         return 0
     end
 
