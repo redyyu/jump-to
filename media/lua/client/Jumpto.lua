@@ -91,8 +91,26 @@ Jmp.onJumpStartByKey = function(playerObj)
         return
     end
 
+    -- Credit: Tchernobill
+    local orient_angle = playerObj:getAnimAngleRadians() 
+    --0 = East, PI/2 = South, -PI/2=North, PI=West
+    local destX = playerObj:getX() + math.cos(orient_angle) * 100
+    local destY = playerObj:getY() + math.sin(orient_angle) * 100
+    
+    -- *100 is for make sure not too closed with character current position
+    -- prevent turn round when move faster, because the dest point has been behind.
+    
+    -- NO NEED square anymore
+    -- local z = playerObj:getZ()
+    -- local dest_square = nil
+    -- while z >= Jmp.minZ and not dest_square do
+    --     dest_square = getCell():getGridSquare(destX, destY, z)
+    --     z = z - 1
+    -- end
+
+
     ISTimedActionQueue.clear(playerObj)
-    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, Jmp.getJumpDuration(playerObj)))
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, Jmp.getJumpDuration(playerObj), destX, destY))
 end
 
 

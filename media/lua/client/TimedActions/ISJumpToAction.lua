@@ -71,6 +71,16 @@ end
 
 
 function ISJumpToAction:waitToStart()
+    -- NO NEED this face to dest position all time.
+    -- if self.character:isPlayerMoving() and not self.forceToFree then
+    --     -- self.forceToFree is for prevent jump backward while try jump to free.
+    --     -- otherwise click behind character might cause wrong direction.
+    --     -- let character turn round first.
+    --     return false  -- return true mean is keep waiting.
+    -- else
+	--     self.character:faceLocation(self.destX, self.destY)
+	--     return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
+    -- end
     self.character:faceLocation(self.destX, self.destY)
 	return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
 end

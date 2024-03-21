@@ -28,7 +28,7 @@ you won't jump into river. (but you can jump out, if you already stuck in middle
 Use when you need
 jump over between safehouse brige.
 accidentally falling in to lake or river. 
-(I did once, player stack in one square, blocked by any direction, 
+(I did once, character stack in one square, blocked by any direction, 
 and no meterial to build floor. it's Dead already!!)
 
 *Remember, you can running or sprinting a while, then select the square, 
