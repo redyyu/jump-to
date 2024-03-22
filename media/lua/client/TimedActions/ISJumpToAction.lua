@@ -54,18 +54,21 @@ function ISJumpToAction:update()
         -- so there is no reason to coding custom movements.
         -- also keep using vanilla Collision, no need custom blocked check.
 
-        if self.forceToFree then
-            -- NO NEED care about the Collision. player already in a unfree square.
-            -- this is for free the player.
-            -- etc. player drop into a river or lake, and not enough materials to build floor. 
-            -- that will unable to move any way.
-            local deltaX = (self.destX - self.startX) * self:getJobDelta()
-            local deltaY = (self.destY - self.startY) * self:getJobDelta()
+        
+        -- NO NEED those anymore, just use setNoClip is fine.
 
-            self.character:setX(self.startX + deltaX)
-            self.character:setY(self.startY + deltaY)
-            self.character:setZ(self.character:getZ())
-        end
+        -- if self.forceToFree then
+        --     -- NO NEED care about the Collision. player already in a unfree square.
+        --     -- this is for free the player.
+        --     -- etc. player drop into a river or lake, and not enough materials to build floor. 
+        --     -- that will unable to move any way.
+        --     local deltaX = (self.destX - self.startX) * self:getJobDelta()
+        --     local deltaY = (self.destY - self.startY) * self:getJobDelta()
+
+        --     self.character:setX(self.startX + deltaX)
+        --     self.character:setY(self.startY + deltaY)
+        --     self.character:setZ(self.character:getZ())
+        -- end
     end
 end
 
@@ -101,6 +104,9 @@ function ISJumpToAction:start()
 
         -- use when player need to be free, etc. in a river.
         self.forceToFree = self:isStuck()
+        if self.forceToFree then
+            self.character:setNoClip(true)
+        end
     end
 end
 
@@ -185,6 +191,9 @@ function ISJumpToAction:restoreMovements()
     self.character:setSprinting(self.hasSprinting)
     self.character:setSneaking(false)
     self.forceZ = nil
+    if self.forceToFree then
+        self.character:setNoClip(false)
+    end
 end
 
 
