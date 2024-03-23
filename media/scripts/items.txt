@@ -1,0 +1,29 @@
+module ECA
+{
+
+    imports {
+	    Base,
+	}
+    
+    item SwimmingBodyMASK {
+        /* Use to mask the body part while swimming only. */
+
+
+        /* DisplayName = FakeForSwim, -- not show in invertory panel with no name item. */
+
+        Type = Clothing,
+        BodyLocation = SwimmingBodyMASK,
+		ClothingItem = SwimmingBodyMASK,
+        Weight = 0,
+        WorldRender = FALSE,
+        
+        /* sample:
+        DisplayCategory = MaleBody,
+		Type = Clothing,
+		ClothingItem = SwimmingBodyMASK,
+		BodyLocation = ZedDmg,  -- that will cause texture problem.
+		WorldRender = FALSE,
+        */
+    }
+
+}

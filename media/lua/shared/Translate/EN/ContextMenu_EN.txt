@@ -1,4 +1,4 @@
 ContextMenu_EN = {
-  ContextMenu_Jumpto = "Jump to"
-  
+  ContextMenu_JumpTo = "Jump to"
+  ContextMenu_Swim = "Swim in the Water"
 }

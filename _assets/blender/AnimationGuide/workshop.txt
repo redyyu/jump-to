@@ -1,0 +1,5 @@
+version=1
+title=AnimationGuide
+description=This is an example mod with two worlds.  You can use this as a template for your own map mods.
+tags=
+visibility=public

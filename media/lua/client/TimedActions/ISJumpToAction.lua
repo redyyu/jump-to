@@ -44,7 +44,9 @@ function ISJumpToAction:update()
         self.character:setbFalling(false)
         self.character:setZ(self.forceZ)
 
-        self.character:getEmitter():stopSoundByName('HumanFootstepsCombined')
+        if self.character:getEmitter():isPlaying('HumanFootstepsCombined') then
+            self.character:getEmitter():stopSoundByName('HumanFootstepsCombined')
+        end
 
         -- that's all, NO NEED move player by self made coding.
         -- froced the player not falling, that mean can still moving on empty space.
