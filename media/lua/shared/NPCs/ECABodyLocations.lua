@@ -1,3 +1,3 @@
--- local group = BodyLocations.getGroup("Human")
+local group = BodyLocations.getGroup("Human")
 
--- group:getOrCreateLocation("SwimmingBodyMASK")
+group:getOrCreateLocation("SwimmingBodyMASK")
