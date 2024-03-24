@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SwimBandage.xml">
+	<m_Name>SwimBandageRightArm</m_Name>
+	<m_AnimName>SwimIdle</m_AnimName>
+	<m_Conditions />
+	<m_Conditions>
+		<m_Name>BandageType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>RightArm</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+        <m_Name>isSwimming</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_BoolValue>true</m_BoolValue>
+    </m_Conditions>
+</animNode>

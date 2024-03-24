@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode x_extends="SwimAttachItem_HolsterRight.xml">
+	<m_Name>SwimDetachItem_HolsterRight</m_Name>
+	<m_AnimName>SwimIdle</m_AnimName>
+	<m_Conditions>
+		<m_StringValue>DetachItem</m_StringValue>
+	</m_Conditions>
+	<m_Conditions>
+        <m_Name>isSwimming</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_BoolValue>true</m_BoolValue>
+    </m_Conditions>
+	<m_Events>
+		<m_EventName>detachConnect</m_EventName>
+	</m_Events>
+</animNode>

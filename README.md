@@ -20,12 +20,30 @@ try press `RBumper` button
 
 =============================================================
 
-Usage:
+## Usage:
+
+
+### Jump
 
 Activated it from context menu. Select a direction to jump. 
 Jump always cross one square, when starts standing. Jump while moving, how far you can jump is depends on physics and body condition. Jump farther during run or sprint, higher rank of Fitness and Sprinting can increase jump range. Jump closer when Obese, Overweight, Overrun, Tired, Sick, Heavy Load, Injured or Pain can all affect to jump. Jump always cross one square from standing. Jump while moving, will go farther during run or sprint, higher rank of Fitness and Sprinting can increase jump range. Jump closer when Obese, Overweight, Overrun, Tired, Sick, Heavy Load, Injured or Pain can all affect to jump.
 
+### Swimming
+
+Click on water when nearby, there is Option for into the water.
+after into the water, the character can swimming around, until reach a land.
+
+Player can't do anything else during swimming, otherwise too much animate work to do.
+
+*have done in or out water animation yet, and no gamepad support yet. leave that for future update.*
+
+
 =============================================================
+
+## Details
+
+
+### Jump
 
 Jump will effect by inertia (native physics engine).
 
@@ -78,27 +96,17 @@ that may fail in extreme cases.
 etc,. jump around a car, with a coincidental distance and angle can pass through.
 
 
+### Swimming
 
+Since make full animSet for Swimming is too much work todo. 
+*(Almost every player animate in vanilla must have a swimming version)*
 
-# Develop Tips
+Swimming action actually use maskingright animset. 
+The swimming animation is move the character `anim_X` to lower the ground.
+And half body in water is masked by a hidden Clothing `SwimmingBodyMASK`.
+*This clothingItem have masks to cover every thing must in water.*
 
+On the other hand use a `SwimmingHiddenItem` with `ReplaceInPrimaryHand = none swimming,`
+to trigger `maskingright` state ON.
 
-## AnimSet
-
-I did try to make anim set for swimming. the major problem is the gap animation by turnning.
-even stop sneak or running or aiming... still lot work to do.
-finall the turning animate is fine now.
-
-but another problem is kill all the works.
-movement animset is play, but character won't moving.
-did lot more try. never make fbx animtion to moving.
-I guess is something missing in fbx, the character moving is by the animation X file.
-not by java or lua code. which is don't know yet.
-
-plan B is use maskingright animset. just like I did the Bike and Trolley mod.
-and I did tested its work.
-
-Just like the body in water effect is use item clothing to hack the mask too,
-I have to hack another shadow item keep equipment on right hand.
-
-not good idea, but the only way for now.
+also clear all other timedActoins durning Swimming, to prevent unwanted animation play.

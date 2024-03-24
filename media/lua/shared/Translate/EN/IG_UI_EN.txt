@@ -1,5 +1,5 @@
 IGUI_EN = {
 
-    IGUI_PlayerText_Cant_Do_While_Swimming = "I can't do anything else while swimming."
+    IGUI_PlayerText_Cant_Do_While_Swimming = "I can't do anything else during swimming."
 
 }
