@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="turn_swim_idle_sneak_180.xml">
 	<m_Name>turn_swim_idle_sneak_180L</m_Name>
-	<m_AnimName>SwimMoving</m_AnimName>
+	<m_AnimName>SwimIdle</m_AnimName>
 	<m_Conditions />
 	<m_Conditions />
 	<m_Conditions />
