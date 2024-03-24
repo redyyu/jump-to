@@ -75,10 +75,13 @@ Swm.onPlayerUpdate = function(playerObj)
             playerObj:setVariable("Swimming", true)
             Swm.setSwimming(playerObj)
         end
-
+        
         if not playerObj:isNoClip() then
             playerObj:setNoClip(true)
         end
+        playerObj:setRunning(false)
+        playerObj:setSprinting(false)
+        playerObj:setSneaking(false)
         
         if playerObj:getEmitter():isPlaying('HumanFootstepsCombined') then
             playerObj:getEmitter():stopSoundByName('HumanFootstepsCombined')
@@ -99,9 +102,6 @@ end
 Swm.onSwimStart = function(playerObj, toSquare)
     playerObj:setX(toSquare:getX())
     playerObj:setY(toSquare:getY())
-    playerObj:setRunning(false)
-    playerObj:setSprinting(false)
-    playerObj:setSneaking(false)
 end
 
 
