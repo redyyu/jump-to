@@ -1,6 +1,5 @@
 
 local Swm = {}
-Swm.baseDuration = 15 -- It's calculated number DO NOT change it, unless know what doing.
 
 
 Swm.getDistanceToSquare = function(playerObj, square)
@@ -26,20 +25,20 @@ Swm.isRiverSquare = function(square)
 end
 
 Swm.setSwimming = function (playerObj)
-    if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
-        if playerObj:getPrimaryHandItem() then
-            playerObj:setPrimaryHandItem(nil)
-        end
-        if playerObj:getSecondaryHandItem() then
-            playerObj:setSecondaryHandItem(nil)
-        end
+    -- if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
+    --     if playerObj:getPrimaryHandItem() then
+    --         playerObj:setPrimaryHandItem(nil)
+    --     end
+    --     if playerObj:getSecondaryHandItem() then
+    --         playerObj:setSecondaryHandItem(nil)
+    --     end
         
-        local pdata = getPlayerData(playerObj:getPlayerNum());
-        if pdata ~= nil then
-            pdata.playerInventory:refreshBackpacks()
-            pdata.lootInventory:refreshBackpacks()
-        end
-    end
+    --     local pdata = getPlayerData(playerObj:getPlayerNum());
+    --     if pdata ~= nil then
+    --         pdata.playerInventory:refreshBackpacks()
+    --         pdata.lootInventory:refreshBackpacks()
+    --     end
+    -- end
 
     -- Seems its not working.
     -- playerObj:getHumanVisual():addBodyVisualFromItemType("ECA.SwimmingBodyMASK")
@@ -51,7 +50,7 @@ Swm.setSwimming = function (playerObj)
     -- the bodylocation must be after another locations. otherwhise might not masking.
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
-    print("wearing !!!!!!!!!!!!!!!!!!!!!!! +++++++++++++++++++")
+    playerObj:setNoClip(true)
 end
 
 
@@ -63,7 +62,7 @@ Swm.unsetSwimming = function (playerObj)
     local item = playerObj:getWornItem(script_item:getBodyLocation())
     playerObj:removeWornItem(item)
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK")
-    print("uN    UN wearing !!!!!!!!!!!!!!!!!!!!!!! +++++++++++++++++++")
+    playerObj:setNoClip(false)
 end
 
 
@@ -72,39 +71,37 @@ Swm.onPlayerUpdate = function(playerObj)
 
     if square and Swm.isRiverSquare(square) then
         -- make sure the is in river.
-        if not playerObj:getVariableBoolean("Swiming") then
-            playerObj:setVariable("Swiming", true)
+        if not playerObj:getVariableBoolean("Swimming") then
+            playerObj:setVariable("Swimming", true)
             Swm.setSwimming(playerObj)
         end
-    elseif playerObj:getVariableBoolean("Swiming") then
-            playerObj:setVariable("Swiming", false)
-            Swm.unsetSwimming(playerObj)
-        return
-    end
 
-    local is_swiming = playerObj:getVariableBoolean("Swiming")
-    
-    if playerObj:isNoClip() ~= is_swiming then
-        playerObj:setNoClip(is_swiming)
-    end
-
-    if is_swiming then
-        playerObj:setRunning(false)
-        playerObj:setSprinting(false)
-        playerObj:setSneaking(false)
+        if not playerObj:isNoClip() then
+            playerObj:setNoClip(true)
+        end
+        
         if playerObj:getEmitter():isPlaying('HumanFootstepsCombined') then
             playerObj:getEmitter():stopSoundByName('HumanFootstepsCombined')
         end
         if not playerObj:getEmitter():isPlaying('WashClothing') and playerObj:isMoving() then
             playerObj:getEmitter():stopSoundByName('WashClothing')
         end
+    else
+        if playerObj:getVariableBoolean("Swimming") then
+            playerObj:setVariable("Swimming", false)
+            Swm.unsetSwimming(playerObj)
+        end
+        return
     end
 end
 
 
-Swm.onSwim = function(playerObj, toSquare)
+Swm.onSwimStart = function(playerObj, toSquare)
     playerObj:setX(toSquare:getX())
     playerObj:setY(toSquare:getY())
+    playerObj:setRunning(false)
+    playerObj:setSprinting(false)
+    playerObj:setSneaking(false)
 end
 
 
@@ -128,14 +125,12 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         return
     end
 
-    local option = context:addOptionOnTop(getText("ContextMenu_Swim"), playerObj, Swm.onSwim, square)
+    local option = context:addOptionOnTop(getText("ContextMenu_Swim"), playerObj, Swm.onSwimStart, square)
     option.toolTip = ISWorldObjectContextMenu.addToolTip()
     option.toolTip:setName(getText("Tooltip_Go_Swim"))
     option.toolTip.description = getText("Tooltip_How_To_Swim")
 
-    local distance = Swm.getDistanceToSquare(playerObj, square)
-    
-    option.notAvailable = distance > 1
+    option.notAvailable = Swm.getDistanceToSquare(playerObj, square) > 2
     if option.notAvailable then
         option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_To_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
     end
