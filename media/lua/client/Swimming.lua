@@ -75,9 +75,10 @@ end
 
 Swm.onPlayerMove = function(playerObj)
     if playerObj:getVariableBoolean("isSwimming") then
+        -- keep player alway running while swimming
+        -- because the `walkSwim` anim set won't moving. 
         playerObj:setSneaking(false)
         playerObj:setRunning(true)
-        print(playerObj:isRunning())
     end
 end
 
@@ -99,17 +100,29 @@ Swm.onPlayerUpdate = function(playerObj)
             playerObj:getEmitter():playSound('WashClothing')
         end
 
-        local primaryItem = playerObj:getPrimaryHandItem()
-        local secondayItem = playerObj:getSecondaryHandItem()
-        if (not primaryItem or primaryItem ~= secondayItem) or 
-           (primaryItem:getFullType() ~= "ECA.SwimmingHackItem") then
-            local hackItem = playerObj:getInventory():getFirstType("ECA.SwimmingHackItem")
-            if not hackItem then
-                hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
-            end
-            playerObj:setPrimaryHandItem(hackItem)
-            playerObj:setSecondaryHandItem(hackItem)
+        if playerObj:hasTimedActions() then
+            playerObj:Say(getText("IGUI_PlayerText_Cant_Do_While_Swimming"))
+            ISTimedActionQueue.clear(playerObj)
         end
+
+        -- NO NEED those, clear timedAction take care everything.
+
+        -- local primaryItem = playerObj:getPrimaryHandItem()
+        -- local secondayItem = playerObj:getSecondaryHandItem()
+        -- if (not primaryItem or primaryItem ~= secondayItem) or 
+        --    (primaryItem:getFullType() ~= "ECA.SwimmingHackItem") then
+        --     local hackItem = playerObj:getInventory():getFirstType("ECA.SwimmingHackItem")
+        --     if not hackItem then
+        --         hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
+        --     end
+        --     playerObj:setPrimaryHandItem(hackItem)
+        --     playerObj:setSecondaryHandItem(hackItem)
+        --     local pdata = getPlayerData(playerObj:getPlayerNum());
+        --     if pdata ~= nil then
+        --         pdata.playerInventory:refreshBackpacks()
+        --         pdata.lootInventory:refreshBackpacks()
+        --     end
+        -- end
     elseif playerObj:getVariableBoolean("isSwimming") then
            playerObj:setVariable("isSwimming", false)
         Swm.unsetSwimming(playerObj)

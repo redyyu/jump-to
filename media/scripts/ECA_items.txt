@@ -34,11 +34,10 @@ module ECA
 
     item SwimmingHackItem {
         Weight = 0,
-        RunSpeedModifier = 0.55,
 
         EquippedNoSprint = TRUE,
 		RequiresEquippedBothHands = TRUE,
-		RunSpeedModifier = 0.45,
+		RunSpeedModifier = 0.25,
 
         StaticModel = HiddenItem,
         WorldRender = FALSE,

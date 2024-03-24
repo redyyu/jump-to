@@ -1,6 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
-	<!-- custom fbx animation might block the movement, character might not moving anymore -->
+	<!-- 
+		custom fbx animation might block the movement, character might not moving anymore.
+		this movement animset will play, but character won't moving.
+		did lot more try. never make fbx animtion to moving.
+		I guess is something missing in fbx, the character moving is by the animation X file.
+		not by java or lua code. which is don't know yet.
+	-->
 	<m_Name>WalkSwim</m_Name>
 	<m_AnimName>SwimMoving</m_AnimName>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>

@@ -17,6 +17,7 @@
         <m_Type>BOOL</m_Type>
         <m_BoolValue>true</m_BoolValue>
     </m_Conditions>
+    <!-- those will jam the animation while turning swimming, probably because the walkSwim not moving prolbem. -->
     <!-- <m_SubStateBoneWeights>
         <boneName>Bip01_Pelvis</boneName>
         <includeDescendants>false</includeDescendants>
