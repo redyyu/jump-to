@@ -1,4 +1,4 @@
-# Jump To Menu
+# Refined Character Actions
 
 A Mod for Project Zomboid.
 
@@ -34,6 +34,13 @@ Click on water when nearby, there is Option for into the water.
 after into the water, the character can swimming around, until reach a land.
 
 Player can't do anything else during swimming, otherwise too much animate work to do.
+Clothes will getting wet very quick.
+
+Happiness will growing, Boredom will goes away. But Endurance will consume quickly. 
+
+Character could die middle of river.
+Since player can do anything else durning swimming, you won't get anything back.
+So don't swim to far....
 
 *have done in or out water animation yet, and no gamepad support yet. leave that for future update.*
 

@@ -103,7 +103,6 @@ Jmp.onJumpStartByKey = function(playerObj)
     --     z = z - 1
     -- end
 
-
     ISTimedActionQueue.clear(playerObj)
     ISTimedActionQueue.add(ISJumpToAction:new(playerObj, Jmp.getJumpDuration(playerObj), destX, destY))
 end

@@ -1,4 +1,4 @@
-id=JumpTo
-name=Jump To
-description=Character Jump by Context menu. pertty much like `Walk to` in vanilla.
+id=RefinedCharacterActions
+name=Refined Character Actions
+description=Character Can Jump and Swimming by Context menu. Jump pertty much like `Walk to` in vanilla. Swimming like walking water.
 poster=poster.png

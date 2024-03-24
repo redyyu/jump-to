@@ -1,0 +1,15 @@
+
+module RCA
+{
+    imports {
+        Base,
+    }
+
+    sound Swimming {
+        category = Player,
+        clip {
+            event = Character/Survival/Hygiene/WashClothing,
+        }
+    }
+
+}

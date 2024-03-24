@@ -24,7 +24,7 @@ Swm.isRiverSquare = function(square)
     end
 end
 
-Swm.setSwimming = function (playerObj)
+Swm.startSwimming = function (playerObj)
     if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
         if playerObj:getPrimaryHandItem() then
             playerObj:setPrimaryHandItem(nil)
@@ -49,6 +49,7 @@ Swm.setSwimming = function (playerObj)
     -- add a shadow clothingItem to hack the mask.
     -- the bodylocation must be after another locations. otherwhise might not masking.
     local item = playerObj:getInventory():AddItem("RCA.SwimmingBodyMASK")
+    -- activate body mask by wearing the item
     playerObj:setWornItem(item:getBodyLocation(), item)
     local hackItem = playerObj:getInventory():AddItem("RCA.SwimmingRightHandHackingItem")
     playerObj:setPrimaryHandItem(hackItem)
@@ -58,26 +59,84 @@ Swm.setSwimming = function (playerObj)
 end
 
 
-Swm.unsetSwimming = function (playerObj)
+Swm.stopSwimming = function (playerObj)
     -- playerObj:getHumanVisual():removeBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()
 
     local script_item = ScriptManager.instance:getItem("RCA.SwimmingBodyMASK")
     local item = playerObj:getWornItem(script_item:getBodyLocation())
-    playerObj:removeWornItem(item)
+    if item then
+        -- deactivate body mask by unwearing the item
+        playerObj:removeWornItem(item)
+    end
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK") -- DO NOT add pacakge name
     playerObj:setPrimaryHandItem(nil)
     playerObj:setSecondaryHandItem(nil)
     playerObj:getInventory():RemoveAll("SwimmingRightHandHackingItem") -- DO NOT add pacakge name
     playerObj:setIgnoreAimingInput(false)
     playerObj:setNoClip(false)
+
+    -- stop water sound
+    if playerObj:getEmitter():isPlaying('Swimming') then
+        playerObj:getEmitter():stopSoundByName('Swimming')
+    end
+end
+
+
+Swm.onClimateTick = function(climateManager) -- update character stats, OnPlayerUpdate not fire when game speed up.
+    
+    local playerObj = getPlayer()
+    if playerObj:getVariableBoolean("isSwimming") then
+
+        local stats = playerObj:getStats()
+        if stats:getBoredom() > 0 then
+            stats:setBoredom(stats:getBoredom() - 1)
+        end
+
+        if stats:getEndurance() > 0 then
+            stats:setEndurance(stats:getEndurance() - 0.00025)
+        end
+
+        -- make happy when swimming.
+        local body_damage = playerObj:getBodyDamage()
+        if body_damage:getUnhappynessLevel() > 0 then
+            body_damage:setUnhappynessLevel(body_damage:getUnhappynessLevel() - 5)
+        end
+
+        -- onClimateTick is too slow, the native temperature will restore every time.
+        -- leave it using onClimateTick, incase want do something with weather.
+        -- body_damage:setTemperature(climateManager:getTemperature() - 5)
+
+        local playerInv = playerObj:getInventory()
+        local clothingInventory = playerInv:getItemsFromCategory("Clothing")
+        for i=0, clothingInventory:size() -1 do
+            local clothing = clothingInventory:get(i)
+            if clothing:getWetness() < 100 then
+                clothing:setWetness(clothing:getWetness() + 10)
+            end
+
+            -- NO NEED those, Wet everything on body
+            -- local parts = clothing:getCoveredParts()
+            -- if clothing:isEquipped() and parts and parts:size() > 0 then -- make sure is covered body.
+            --     -- can not get dirty and wet at same time. dirty it after getting up.
+            --     -- if clothing:getDirtyness() < 1 then
+            --     --     clothing:setDirtyness(clothing:getDirtyness() + 0.01)
+            --     -- end
+            --     if clothing:getWetness() < 100 then
+            --         clothing:setWetness(clothing:getWetness() + 10)
+            --     end
+            -- end
+        end
+
+	    sendClothing(playerObj)
+        triggerEvent("OnClothingUpdated", playerObj)
+    end
 end
 
 
 Swm.onPlayerMove = function(playerObj)
     if playerObj:getVariableBoolean("isSwimming") then
-        -- keep player alway running while swimming
-        -- because the `walkSwim` anim set won't moving. 
+        -- keep player alway walking while swimming.
         playerObj:setSneaking(false)
         playerObj:setSprinting(false)
         playerObj:setRunning(false)
@@ -92,19 +151,28 @@ Swm.onPlayerUpdate = function(playerObj)
         -- make sure the is in river.
         if not playerObj:getVariableBoolean("isSwimming") then
             playerObj:setVariable("isSwimming", true)
-            Swm.setSwimming(playerObj)
+            Swm.startSwimming(playerObj)
         end
-        
+
+        if playerObj:hasTimedActions() then -- Disable all other actions, prevent swith to unwanted animation.
+            playerObj:Say(getText("IGUI_PlayerText_Cant_Do_Anything_Else_Swimming"))
+            ISTimedActionQueue.clear(playerObj)
+        end
+
+
+        -- skil foot step sound play water sound
         if playerObj:getEmitter():isPlaying('HumanFootstepsCombined') then
             playerObj:getEmitter():stopSoundByName('HumanFootstepsCombined')
         end
-        if not playerObj:getEmitter():isPlaying('WashClothing') and playerObj:isMoving() then
-            playerObj:getEmitter():playSound('WashClothing')
-        end
 
-        if playerObj:hasTimedActions() then
-            playerObj:Say(getText("IGUI_PlayerText_Cant_Do_While_Swimming"))
-            ISTimedActionQueue.clear(playerObj)
+        if playerObj:isPlayerMoving() then 
+            if not playerObj:getEmitter():isPlaying('Swimming') then
+                playerObj:getEmitter():playSound('Swimming')
+            end
+        else
+            if playerObj:getEmitter():isPlaying('Swimming') then
+                playerObj:getEmitter():stopSoundByName('Swimming')
+            end
         end
 
         -- NO NEED those, clear timedAction take care everything.
@@ -127,7 +195,7 @@ Swm.onPlayerUpdate = function(playerObj)
         -- end
     elseif playerObj:getVariableBoolean("isSwimming") then
            playerObj:setVariable("isSwimming", false)
-        Swm.unsetSwimming(playerObj)
+        Swm.stopSwimming(playerObj)
         return
     else
         return
@@ -155,23 +223,44 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
             square = v:getSquare()
         end
     end
-
-    if not square or not Swm.isRiverSquare(square) or Swm.isRiverSquare(playerObj:getCurrentSquare()) then
+    
+    if not Swm.isRiverSquare(square) then
         -- make sure the square is river.
         return
     end
 
-    local option = context:addOptionOnTop(getText("ContextMenu_Swim"), playerObj, Swm.onSwimStart, square)
-    option.toolTip = ISWorldObjectContextMenu.addToolTip()
-    option.toolTip:setName(getText("Tooltip_Go_Swim"))
-    option.toolTip.description = getText("Tooltip_How_To_Swim")
+    local is_inwater = Swm.isRiverSquare(playerObj:getCurrentSquare())
+    if is_inwater then
+        context:clear()  -- move all context menu since nothing useful.
+        if not playerObj:isPlayerMoving() then
+            square = playerObj:getCurrentSquare()
+        else
+            square = nil
+        end
+    end
 
-    option.notAvailable = Swm.getDistanceToSquare(playerObj, square) > 2
-    if option.notAvailable then
-        option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_To_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
+    local option
+    if square then
+        option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, square)
+        option.toolTip = ISWorldObjectContextMenu.addToolTip()
+        option.toolTip:setName(getText("Tooltip_Go_Swim"))
+        option.toolTip.description = getText("Tooltip_How_To_Swim")
+
+        option.notAvailable = Swm.getDistanceToSquare(playerObj, square) > 3
+        if option.notAvailable then
+            option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
+        end
+    else
+        -- only show description during swimming.
+        option = context:addOption(getText("ContextMenu_Is_Swimming"))
+        option.toolTip = ISWorldObjectContextMenu.addToolTip()
+        option.toolTip:setName(getText("Tooltip_Go_Swim"))
+        option.toolTip.description = getText("Tooltip_How_To_Swim")
     end
 end
 
+
+Events.OnClimateTick.Add(Swm.onClimateTick)
 Events.OnPlayerMove.Add(Swm.onPlayerMove)
 Events.OnPlayerUpdate.Add(Swm.onPlayerUpdate)
 Events.OnFillWorldObjectContextMenu.Add(Swm.onFillWorldObjectContextMenu)

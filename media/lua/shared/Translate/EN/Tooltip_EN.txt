@@ -7,7 +7,7 @@ Tooltip_EN = {
 
 
     Tooltip_Go_Swim = "Go swimming in river"
-    Tooltip_Unable_To_Swim = "Require move close to river."
+    Tooltip_Unable_Swim = "Require move close to river."
 
-    Tooltip_How_To_Swim = "You can swim in the river, but don't swim too far. Because swimming will consume a lot of endurance, it will move more and more slowly in the water, or even be trapped in the water to death."
+    Tooltip_How_To_Swim = "<RGB:1,1,1> You can't do anything else during swimming. <BR> Clothes will getting <SPACE><RGB:1,0.5,0.5> Wet <RGB:1,1,1>. <SPACE><RGB:0,0.8,0> Happiness <RGB:1,1,1><SPACE> will growing, <SPACE><RGB:0,0.8,0> Boredom <RGB:1,1,1><SPACE> will goes away. But <SPACE><RGB:1,0.5,0.5> Endurance <RGB:1,1,1><SPACE> will consume quickly. You could <SPACE><RGB:1,0,0> Die <RGB:1,1,1><SPACE> middle of river. Since you can do anything else durning swimming, you won't get anything back. So don't swim to far..."
 }
