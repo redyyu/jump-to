@@ -76,3 +76,28 @@ also keep the original collisions,
 it's better than check square isblocked by lua every frames.
 that may fail in extreme cases. 
 etc,. jump around a car, with a coincidental distance and angle can pass through.
+
+
+
+
+# Develop Tips
+
+
+## AnimSet
+
+I did try to make anim set for swimming. the major problem is the gap animation by turnning.
+even stop sneak or running or aiming... still lot work to do.
+finall the turning animate is fine now.
+
+but another problem is kill all the works.
+movement animset is play, but character won't moving.
+did lot more try. never make fbx animtion to moving.
+I guess is something missing by fbx, which is don't know yet.
+
+plan B is use maskingright animset. just like I did the Bike and Trolley mod.
+and I did tested its work.
+
+Just like the body in water effect is use item clothing to hack the mask too,
+I have to hack another shadow item keep equipment on right hand.
+
+not good idea, but the only way for now.

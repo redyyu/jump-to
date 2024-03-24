@@ -50,8 +50,8 @@ Swm.setSwimming = function (playerObj)
     -- the bodylocation must be after another locations. otherwhise might not masking.
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
-    local hitem = playerObj:getInventory():AddItem("ECA.Swimming")
-    playerObj:setPrimaryHandItem(hitem)
+    -- local hitem = playerObj:getInventory():AddItem("ECA.Swimming")
+    -- playerObj:setPrimaryHandItem(hitem)
     playerObj:setNoClip(true)
     playerObj:setIgnoreAimingInput(true)
 end
@@ -63,8 +63,13 @@ Swm.unsetSwimming = function (playerObj)
 
     local script_item = ScriptManager.instance:getItem("ECA.SwimmingBodyMASK")
     local item = playerObj:getWornItem(script_item:getBodyLocation())
+    local hitem = playerObj:getPrimaryHandItem()
     playerObj:removeWornItem(item)
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK")
+    if hitem and hitem:getFullType() == "ECA.Swimming" then
+        playerObj:setPrimaryHandItem(nil)
+        playerObj:getInventory():RemoveAll("ECA.Swimming")
+    end
     playerObj:setIgnoreAimingInput(false)
     playerObj:setNoClip(false)
 end
