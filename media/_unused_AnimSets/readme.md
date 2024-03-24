@@ -26,7 +26,7 @@ all those action will break the swimming animation.
 (or full fill all those animation for swimming as well.... lot more work to do.) 
 
 So, I clear all timedActoins durning Swimming, player won't do anything else.
-Also `Sneaking` and `Sprinting` will disabled. *(Sprinting is disable by the HackItem script)*
+Also `Sneaking` and `Sprinting` will disabled.
 perfect safe for swimming now!
 
 best idea for now.

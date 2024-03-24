@@ -73,12 +73,14 @@ Swm.unsetSwimming = function (playerObj)
     playerObj:setNoClip(false)
 end
 
+
 Swm.onPlayerMove = function(playerObj)
     if playerObj:getVariableBoolean("isSwimming") then
         -- keep player alway running while swimming
         -- because the `walkSwim` anim set won't moving. 
         playerObj:setSneaking(false)
-        playerObj:setRunning(true)
+        playerObj:setSprinting(false)
+        playerObj:setRunning(false)
     end
 end
 

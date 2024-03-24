@@ -36,9 +36,9 @@ module RCA
 
         /* DisplayName = HackItemForSwim, -- hidden from invertory with no name item. */
 
-        EquippedNoSprint = TRUE,
+        /* EquippedNoSprint = TRUE, -- No NEED this, take care in lua Event OnPlayerMove. */
 		RequiresEquippedBothHands = TRUE,
-		RunSpeedModifier = 0.25,
+		/* RunSpeedModifier = 0.25, -- No NEED this, it's not work like that in Vanilla anyway. */
 
         Weight = 0,
 
