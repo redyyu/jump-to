@@ -51,6 +51,10 @@ Swm.setSwimming = function (playerObj)
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
     playerObj:setNoClip(true)
+    playerObj:setRunning(false)
+    playerObj:setSprinting(false)
+    playerObj:setSneaking(false)
+    playerObj:setIgnoreAimingInput(true)
 end
 
 
@@ -62,6 +66,7 @@ Swm.unsetSwimming = function (playerObj)
     local item = playerObj:getWornItem(script_item:getBodyLocation())
     playerObj:removeWornItem(item)
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK")
+    playerObj:setIgnoreAimingInput(false)
     playerObj:setNoClip(false)
 end
 
@@ -75,13 +80,6 @@ Swm.onPlayerUpdate = function(playerObj)
             playerObj:setVariable("Swimming", true)
             Swm.setSwimming(playerObj)
         end
-        
-        if not playerObj:isNoClip() then
-            playerObj:setNoClip(true)
-        end
-        playerObj:setRunning(false)
-        playerObj:setSprinting(false)
-        playerObj:setSneaking(false)
         
         if playerObj:getEmitter():isPlaying('HumanFootstepsCombined') then
             playerObj:getEmitter():stopSoundByName('HumanFootstepsCombined')
