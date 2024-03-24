@@ -51,9 +51,6 @@ Swm.setSwimming = function (playerObj)
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
     playerObj:setNoClip(true)
-    playerObj:setRunning(false)
-    playerObj:setSprinting(false)
-    playerObj:setSneaking(false)
     playerObj:setIgnoreAimingInput(true)
 end
 
@@ -87,6 +84,10 @@ Swm.onPlayerUpdate = function(playerObj)
         if not playerObj:getEmitter():isPlaying('WashClothing') and playerObj:isMoving() then
             playerObj:getEmitter():stopSoundByName('WashClothing')
         end
+
+        -- playerObj:setRunning(false)
+        -- playerObj:setSprinting(false)
+        playerObj:setSneaking(false)
     else
         if playerObj:getVariableBoolean("Swimming") then
             playerObj:setVariable("Swimming", false)
