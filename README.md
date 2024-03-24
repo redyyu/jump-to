@@ -92,7 +92,8 @@ finall the turning animate is fine now.
 but another problem is kill all the works.
 movement animset is play, but character won't moving.
 did lot more try. never make fbx animtion to moving.
-I guess is something missing by fbx, which is don't know yet.
+I guess is something missing in fbx, the character moving is by the animation X file.
+not by java or lua code. which is don't know yet.
 
 plan B is use maskingright animset. just like I did the Bike and Trolley mod.
 and I did tested its work.
