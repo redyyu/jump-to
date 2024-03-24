@@ -25,20 +25,20 @@ Swm.isRiverSquare = function(square)
 end
 
 Swm.setSwimming = function (playerObj)
-    -- if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
-    --     if playerObj:getPrimaryHandItem() then
-    --         playerObj:setPrimaryHandItem(nil)
-    --     end
-    --     if playerObj:getSecondaryHandItem() then
-    --         playerObj:setSecondaryHandItem(nil)
-    --     end
+    if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
+        if playerObj:getPrimaryHandItem() then
+            playerObj:setPrimaryHandItem(nil)
+        end
+        if playerObj:getSecondaryHandItem() then
+            playerObj:setSecondaryHandItem(nil)
+        end
         
-    --     local pdata = getPlayerData(playerObj:getPlayerNum());
-    --     if pdata ~= nil then
-    --         pdata.playerInventory:refreshBackpacks()
-    --         pdata.lootInventory:refreshBackpacks()
-    --     end
-    -- end
+        local pdata = getPlayerData(playerObj:getPlayerNum());
+        if pdata ~= nil then
+            pdata.playerInventory:refreshBackpacks()
+            pdata.lootInventory:refreshBackpacks()
+        end
+    end
 
     -- Seems its not working.
     -- playerObj:getHumanVisual():addBodyVisualFromItemType("ECA.SwimmingBodyMASK")
@@ -50,6 +50,8 @@ Swm.setSwimming = function (playerObj)
     -- the bodylocation must be after another locations. otherwhise might not masking.
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
+    local hitem = playerObj:getInventory():AddItem("ECA.Swimming")
+    playerObj:setPrimaryHandItem(hitem)
     playerObj:setNoClip(true)
     playerObj:setIgnoreAimingInput(true)
 end

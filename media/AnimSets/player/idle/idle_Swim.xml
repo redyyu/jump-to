@@ -20,4 +20,11 @@
         <m_blendInTime>0.3</m_blendInTime>
         <m_blendOutTime>0.3</m_blendOutTime>
     </m_Transitions>
+
+    <m_SubStateBoneWeights>
+        <boneName>Dummy01</boneName>
+    </m_SubStateBoneWeights>
+    <m_SubStateBoneWeights>
+        <boneName>Translation_Data</boneName>
+    </m_SubStateBoneWeights>
 </animNode>

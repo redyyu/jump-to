@@ -26,4 +26,20 @@ module ECA
         */
     }
 
+
+    item Swimming {
+        Weight = 8,
+        Type = Container,
+        DisplayCategory = Container,
+        Capacity = 20,
+        WeightReduction = 98,
+        DisplayName = Bicycle,
+        Icon = Bike,
+
+        PutInSound = PutItemInBag,
+        RunSpeedModifier = 1.05, /* Its wont be speed up, only for cover other clothes slow down.*/
+
+        ReplaceInPrimaryHand = none holdingswimright,
+    }
+
 }
