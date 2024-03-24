@@ -1,4 +1,4 @@
-module ECA
+module RCA
 {
 
     imports {
@@ -8,8 +8,7 @@ module ECA
     item SwimmingBodyMASK {
         /* Use to mask the body part while swimming only. */
 
-
-        /* DisplayName = HackForSwim, -- not show in invertory panel with no name item. */
+        /* DisplayName = MaskForSwim, -- hidden from invertory with no name item. */
 
         Type = Clothing,
         BodyLocation = SwimmingBodyMASK,
@@ -32,14 +31,18 @@ module ECA
         scale = 1,
     }
 
-    item SwimmingHackItem {
-        Weight = 0,
+    item SwimmingRightHandHackingItem {
+        /* Use to trigger `maskingright` state. */
+
+        /* DisplayName = HackItemForSwim, -- hidden from invertory with no name item. */
 
         EquippedNoSprint = TRUE,
 		RequiresEquippedBothHands = TRUE,
 		RunSpeedModifier = 0.25,
 
-        StaticModel = HiddenItem,
+        Weight = 0,
+
+        StaticModel = HiddenItem, /* Must have, otherwise will not trigger `maskingright`. */
         WorldRender = FALSE,
         ReplaceInPrimaryHand = none swimming,
     }

@@ -106,7 +106,10 @@ The swimming animation is move the character `anim_X` to lower the ground.
 And half body in water is masked by a hidden Clothing `SwimmingBodyMASK`.
 *This clothingItem have masks to cover every thing must in water.*
 
-On the other hand use a `SwimmingHiddenItem` with `ReplaceInPrimaryHand = none swimming,`
-to trigger `maskingright` state ON.
+On the other hand use a `SwimmingRightHandHackingItem` with `ReplaceInPrimaryHand = none swimming,`
+to trigger `maskingright` state ON. 
+*This Item must have StaticModel, otherwise will not trigger the state. So there is transparent cube in models_X*
 
-also clear all other timedActoins durning Swimming, to prevent unwanted animation play.
+both those two items for hacking is not `DisplayName`, that's how to make it hidden form inventory.
+
+Also clear all other timedActoins durning Swimming, to prevent unwanted animation play.

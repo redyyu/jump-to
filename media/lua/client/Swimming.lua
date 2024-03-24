@@ -41,16 +41,16 @@ Swm.setSwimming = function (playerObj)
     end
 
     -- Seems its not working.
-    -- playerObj:getHumanVisual():addBodyVisualFromItemType("ECA.SwimmingBodyMASK")
+    -- playerObj:getHumanVisual():addBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()
 
     -- Use to hack in water animation
     -- becase didn't find a way to mask the body directly.
     -- add a shadow clothingItem to hack the mask.
     -- the bodylocation must be after another locations. otherwhise might not masking.
-    local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
+    local item = playerObj:getInventory():AddItem("RCA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
-    local hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
+    local hackItem = playerObj:getInventory():AddItem("RCA.SwimmingRightHandHackingItem")
     playerObj:setPrimaryHandItem(hackItem)
     playerObj:setSecondaryHandItem(hackItem)
     playerObj:setIgnoreAimingInput(true)
@@ -59,16 +59,16 @@ end
 
 
 Swm.unsetSwimming = function (playerObj)
-    -- playerObj:getHumanVisual():removeBodyVisualFromItemType("ECA.SwimmingBodyMASK")
+    -- playerObj:getHumanVisual():removeBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()
 
-    local script_item = ScriptManager.instance:getItem("ECA.SwimmingBodyMASK")
+    local script_item = ScriptManager.instance:getItem("RCA.SwimmingBodyMASK")
     local item = playerObj:getWornItem(script_item:getBodyLocation())
     playerObj:removeWornItem(item)
-    playerObj:getInventory():RemoveAll("SwimmingBodyMASK")
+    playerObj:getInventory():RemoveAll("SwimmingBodyMASK") -- DO NOT add pacakge name
     playerObj:setPrimaryHandItem(nil)
     playerObj:setSecondaryHandItem(nil)
-    playerObj:getInventory():RemoveAll("ECA.SwimmingHackItem")
+    playerObj:getInventory():RemoveAll("SwimmingRightHandHackingItem") -- DO NOT add pacakge name
     playerObj:setIgnoreAimingInput(false)
     playerObj:setNoClip(false)
 end
@@ -110,10 +110,10 @@ Swm.onPlayerUpdate = function(playerObj)
         -- local primaryItem = playerObj:getPrimaryHandItem()
         -- local secondayItem = playerObj:getSecondaryHandItem()
         -- if (not primaryItem or primaryItem ~= secondayItem) or 
-        --    (primaryItem:getFullType() ~= "ECA.SwimmingHackItem") then
-        --     local hackItem = playerObj:getInventory():getFirstType("ECA.SwimmingHackItem")
+        --    (primaryItem:getFullType() ~= "RCA.SwimmingHackItem") then
+        --     local hackItem = playerObj:getInventory():getFirstType("RCA.SwimmingHackItem")
         --     if not hackItem then
-        --         hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
+        --         hackItem = playerObj:getInventory():AddItem("RCA.SwimmingHackItem")
         --     end
         --     playerObj:setPrimaryHandItem(hackItem)
         --     playerObj:setSecondaryHandItem(hackItem)
