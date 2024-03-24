@@ -50,10 +50,11 @@ Swm.setSwimming = function (playerObj)
     -- the bodylocation must be after another locations. otherwhise might not masking.
     local item = playerObj:getInventory():AddItem("ECA.SwimmingBodyMASK")
     playerObj:setWornItem(item:getBodyLocation(), item)
-    -- local hitem = playerObj:getInventory():AddItem("ECA.Swimming")
-    -- playerObj:setPrimaryHandItem(hitem)
-    playerObj:setNoClip(true)
+    local hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
+    playerObj:setPrimaryHandItem(hackItem)
+    playerObj:setSecondaryHandItem(hackItem)
     playerObj:setIgnoreAimingInput(true)
+    playerObj:setNoClip(true)
 end
 
 
@@ -63,15 +64,21 @@ Swm.unsetSwimming = function (playerObj)
 
     local script_item = ScriptManager.instance:getItem("ECA.SwimmingBodyMASK")
     local item = playerObj:getWornItem(script_item:getBodyLocation())
-    local hitem = playerObj:getPrimaryHandItem()
     playerObj:removeWornItem(item)
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK")
-    if hitem and hitem:getFullType() == "ECA.Swimming" then
-        playerObj:setPrimaryHandItem(nil)
-        playerObj:getInventory():RemoveAll("ECA.Swimming")
-    end
+    playerObj:setPrimaryHandItem(nil)
+    playerObj:setSecondaryHandItem(nil)
+    playerObj:getInventory():RemoveAll("ECA.SwimmingHackItem")
     playerObj:setIgnoreAimingInput(false)
     playerObj:setNoClip(false)
+end
+
+Swm.onPlayerMove = function(playerObj)
+    if playerObj:getVariableBoolean("isSwimming") then
+        playerObj:setSneaking(false)
+        playerObj:setRunning(true)
+        print(playerObj:isRunning())
+    end
 end
 
 
@@ -80,8 +87,8 @@ Swm.onPlayerUpdate = function(playerObj)
 
     if square and Swm.isRiverSquare(square) then
         -- make sure the is in river.
-        if not playerObj:getVariableBoolean("Swimming") then
-            playerObj:setVariable("Swimming", true)
+        if not playerObj:getVariableBoolean("isSwimming") then
+            playerObj:setVariable("isSwimming", true)
             Swm.setSwimming(playerObj)
         end
         
@@ -89,17 +96,25 @@ Swm.onPlayerUpdate = function(playerObj)
             playerObj:getEmitter():stopSoundByName('HumanFootstepsCombined')
         end
         if not playerObj:getEmitter():isPlaying('WashClothing') and playerObj:isMoving() then
-            playerObj:getEmitter():stopSoundByName('WashClothing')
+            playerObj:getEmitter():playSound('WashClothing')
         end
 
-        -- playerObj:setRunning(false)
-        -- playerObj:setSprinting(false)
-        playerObj:setSneaking(false)
-    else
-        if playerObj:getVariableBoolean("Swimming") then
-            playerObj:setVariable("Swimming", false)
-            Swm.unsetSwimming(playerObj)
+        local primaryItem = playerObj:getPrimaryHandItem()
+        local secondayItem = playerObj:getSecondaryHandItem()
+        if (not primaryItem or primaryItem ~= secondayItem) or 
+           (primaryItem:getFullType() ~= "ECA.SwimmingHackItem") then
+            local hackItem = playerObj:getInventory():getFirstType("ECA.SwimmingHackItem")
+            if not hackItem then
+                hackItem = playerObj:getInventory():AddItem("ECA.SwimmingHackItem")
+            end
+            playerObj:setPrimaryHandItem(hackItem)
+            playerObj:setSecondaryHandItem(hackItem)
         end
+    elseif playerObj:getVariableBoolean("isSwimming") then
+           playerObj:setVariable("isSwimming", false)
+        Swm.unsetSwimming(playerObj)
+        return
+    else
         return
     end
 end
@@ -142,6 +157,6 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     end
 end
 
-
+Events.OnPlayerMove.Add(Swm.onPlayerMove)
 Events.OnPlayerUpdate.Add(Swm.onPlayerUpdate)
 Events.OnFillWorldObjectContextMenu.Add(Swm.onFillWorldObjectContextMenu)

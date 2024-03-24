@@ -9,7 +9,7 @@ module ECA
         /* Use to mask the body part while swimming only. */
 
 
-        /* DisplayName = FakeForSwim, -- not show in invertory panel with no name item. */
+        /* DisplayName = HackForSwim, -- not show in invertory panel with no name item. */
 
         Type = Clothing,
         BodyLocation = SwimmingBodyMASK,
@@ -26,15 +26,23 @@ module ECA
         */
     }
 
+    model HiddenItem {
+        mesh = hiddenItem,
+        texture = transparent,
+        scale = 1,
+    }
 
-    item Swimming {
+    item SwimmingHackItem {
         Weight = 0,
+        RunSpeedModifier = 0.55,
 
-        RunSpeedModifier = 1.05, /* Its wont be speed up, only for cover other clothes slow down.*/
+        EquippedNoSprint = TRUE,
+		RequiresEquippedBothHands = TRUE,
+		RunSpeedModifier = 0.45,
 
-        StaticModel = Book,
+        StaticModel = HiddenItem,
         WorldRender = FALSE,
-        ReplaceInPrimaryHand = none holdingswimright,
+        ReplaceInPrimaryHand = none swimming,
     }
 
 }
