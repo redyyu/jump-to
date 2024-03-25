@@ -5,9 +5,9 @@ option RefinedCharacterActions.KeyPressToJumpEnabled {
 	page = RefinedCharacterActions, translation = RefinedCharacterActions_KeyPressToJumpEnabled,
 }
 
-option RefinedCharacterActions.RestOptionforChairEnabled {
+option RefinedCharacterActions.VanillaRestforChairEnabled {
 	type = boolean, default = false,
-	page = RefinedCharacterActions, translation = RefinedCharacterActions_RestOptionforChairEnabled,
+	page = RefinedCharacterActions, translation = RefinedCharacterActions_VanillaRestforChairEnabled,
 }
 
 

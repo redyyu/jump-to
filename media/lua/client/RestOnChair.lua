@@ -38,8 +38,10 @@ Rch.getSitChairSquare = function(chair)
 end
 
 Rch.onSitChair = function(chair, playerObj, sitSquare)
-    ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
-    ISTimedActionQueue.add(ISRestOnChairAction:new(playerObj, chair, sitSquare))
+    if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        ISTimedActionQueue.add(ISRestOnChairAction:new(playerObj, chair, sitSquare))
+    end
 end
 
 
@@ -73,7 +75,7 @@ Rch.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     end
 
     if chair then
-        if not SandboxVars.RefinedCharacterActions.RestOptionforChairEnabled and not isDebugEnabled() then
+        if not SandboxVars.RefinedCharacterActions.VanillaRestforChairEnabled and not isDebugEnabled() then
             context:removeOptionByName(getText("ContextMenu_Rest"))
         end
 
