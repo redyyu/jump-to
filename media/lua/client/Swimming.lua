@@ -2,12 +2,12 @@
 local Swm = {}
 
 
-Swm.getDistanceToSquare = function(playerObj, square)
-    local x1 = playerObj:getX()
-    local x2 = square:getX()
-    local y1 = playerObj:getY()
-    local y2 = square:getY()
-    if playerObj:getZ() == square:getZ() then
+Swm.getDistanceToSquare = function(fromSquare, toSquare)
+    local x1 = fromSquare:getX()
+    local x2 = toSquare:getX()
+    local y1 = fromSquare:getY()
+    local y2 = toSquare:getY()
+    if fromSquare:getZ() == square:getZ() then
         return math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2))
     else
         return 65535
@@ -29,7 +29,7 @@ Swm.isWaterSquare = function(square)
 end
 
 
-Swm.findClosestWaterSquare = function(playerObj, radius)
+Swm.findWaterSquares = function(playerObj, radius)
     local waterSquares = {}
     local doneSquares = {}
     local currSquare = playerObj:getCurrentSquare()
@@ -48,8 +48,27 @@ Swm.findClosestWaterSquare = function(playerObj, radius)
 			end
 		end
 	end
-    
-    return waterSquares[ZombRand(1, #waterSquares)]
+    return waterSquares
+end
+
+
+Swm.hasWaterSquareNearby = function(playerObj, radius)
+    local waterSquares = Swm.findWaterSquares(playerObj, radius)
+    return #waterSquares > 0
+end
+
+
+Swm.findClosestWaterSquare = function(playerObj, radius)
+    local waterSquares = Swm.findWaterSquares(playerObj, radius)
+    local lastSquare = nil
+    local lastDistance = 65535
+    for _, square in ipairs(waterSquares) do
+        local _distance = Swm.getDistanceToSquare(playerObj:getCurrentSquare(), square)
+        if _distance < lastDistance then
+            lastSquare = square
+        end
+    end
+    return lastSquare
 end
 
 Swm.startSwimming = function (playerObj)
@@ -345,7 +364,7 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
             Swm.doSwimDrinkWaterMenu(waterObj, playerObj, context)
         end
 
-    else
+    elseif Swm.hasWaterSquareNearby(playerObj, 5) then -- add option if water nearby
 
         local waterSquare = Swm.findClosestWaterSquare(playerObj, 2)
         local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, waterSquare)
@@ -353,11 +372,10 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         option.toolTip:setName(getText("Tooltip_Go_Swim"))
         option.toolTip.description = getText("Tooltip_How_To_Swim")
 
-        option.notAvailable = not square
+        option.notAvailable = not waterSquare
         if option.notAvailable then
             option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
         end
-
     end
 end
 

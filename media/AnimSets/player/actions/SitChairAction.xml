@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
     <m_Name>SitChairAction</m_Name>
-    <m_AnimName>SitOnChars</m_AnimName>
+    <m_AnimName>SitOnChar</m_AnimName>
     <m_SpeedScale>0.69</m_SpeedScale>
     <m_Looped>true</m_Looped>
     <m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
