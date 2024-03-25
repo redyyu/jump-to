@@ -65,4 +65,14 @@
 	<m_SubStateBoneWeights>
 		<boneName>Bip01_Prop2</boneName>
 	</m_SubStateBoneWeights>
+	<m_Events>
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>0.55</m_TimePc>
+		<m_ParameterValue>walk</m_ParameterValue>
+	</m_Events>
+	<m_Events>
+		<m_EventName>Footstep</m_EventName>
+		<m_TimePc>1.6</m_TimePc>
+		<m_ParameterValue>walk</m_ParameterValue>
+	</m_Events>
 </animNode>

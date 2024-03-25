@@ -44,7 +44,9 @@ Character could die middle of river.
 Since player can do anything else durning swimming, you won't get anything back.
 So don't swim to far....
 
-*have done in or out water animation yet, and no gamepad support yet. leave that for future update.*
+For Joypad, not tested. try press `RBumper` button when close water, not in running or sprinting.
+
+*have done in or out water animation yet. leave that for future update.*
 
 
 =============================================================

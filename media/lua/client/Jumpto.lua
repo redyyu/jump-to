@@ -112,10 +112,8 @@ Jmp.onPlayerUpdate = function(playerObj)
     -- support joypad, they might diffcult to using context menu.
     -- untested might not work.
     local joypad_id = playerObj:getJoypadBind()
-    if isJoypadPressed(joypad_id, Joypad.RBumper) then
-        if playerObj:isRunning() or playerObj:isSprinting() then
-            Jmp.onJumpStartByKey(playerObj)
-        end
+    if isJoypadPressed(joypad_id, Joypad.RBumper) and (playerObj:isRunning() or playerObj:isSprinting()) then
+        Jmp.onJumpStartByKey(playerObj)
     end
 end
 
