@@ -179,6 +179,16 @@ Swm.onSwimStart = function(playerObj, toSquare)
         ISTimedActionQueue.add(ISUnequipAction:new(playerObj, shoes, 50))
     end
 
+    -- unequip everything not in vanilla bodyloaction map
+    -- use to prevent unwanted body mask.
+    local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
+    for i=0, clothes:size() -1 do
+        local clothing = clothes:get(i)
+        if clothing:isEquipped() and not RCA.BODY_LOCATIONS_MAP[clothing:getBodyLocation()] then
+            ISTimedActionQueue.add(ISUnequipAction:new(playerObj, clothing, 25))
+        end
+    end
+
     local primary = playerObj:getPrimaryHandItem()
     local secondary = playerObj:getSecondaryHandItem()
     if primary then
@@ -187,6 +197,7 @@ Swm.onSwimStart = function(playerObj, toSquare)
     if secondary and secondary ~= primary then
         ISTimedActionQueue.add(ISUnequipAction:new(playerObj, secondary, 25))
     end
+
     ISTimedActionQueue.add(ISSwimToAction:new(playerObj, toSquare, true))
 end
 
