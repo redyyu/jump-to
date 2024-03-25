@@ -11,4 +11,7 @@ Tooltip_EN = {
     Tooltip_Druing_Swimming = "You can't do anything else during swimming."
 
     Tooltip_How_To_Swim = "<RGB:1,1,1>All the clothes you're wearing will getting <SPACE><RGB:1,0.5,0.5> Wet <RGB:1,1,1><SPACE> quickly. <SPACE><RGB:0,0.8,0> Happiness <RGB:1,1,1><SPACE> will growing, <SPACE><RGB:0,0.8,0> Boredom <RGB:1,1,1><SPACE> will goes away. But <SPACE><RGB:1,0.5,0.5> Endurance <RGB:1,1,1><SPACE> will consume quickly. You could <SPACE><RGB:1,0,0> Die <RGB:1,1,1><SPACE> middle of river. Since you can do anything else durning swimming, you won't get anything back. So don't swim to far..."
+
+    Tooltip_Rest_On_Chair = "Rest by sit on chair"
+    Tooltip_Rest_NotTiredEnough = "Not tired enough."
 }
