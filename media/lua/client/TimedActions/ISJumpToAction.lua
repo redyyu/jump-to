@@ -104,12 +104,12 @@ function ISJumpToAction:start()
         self.character:setSprinting(false)
         self.character:setSneaking(false)
 
-        -- NO NEED, already have swimming now.
-        -- use when player need to be free, etc. in a river.
-        -- self.forceToFree = self:isStuck()
-        -- if self.forceToFree then
-        --     self.character:setNoClip(true)
-        -- end
+        -- use when player need to be free from stuck square.
+        -- even have swimming, so no prolbem with rivier, just incase.
+        self.forceToFree = self:isStuck()
+        if self.forceToFree then
+            self.character:setNoClip(true)
+        end
     end
 end
 
@@ -195,10 +195,10 @@ function ISJumpToAction:restoreMovements()
     self.character:setSneaking(false)
     self.forceZ = nil
     
-    -- NO NEED, have swimming now.
-    -- if self.forceToFree then
-    --     self.character:setNoClip(false)
-    -- end
+    -- leave it here, incase stuck somewhere.
+    if self.forceToFree then
+        self.character:setNoClip(false)
+    end
 end
 
 

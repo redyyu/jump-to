@@ -87,6 +87,14 @@ Swm.startSwimming = function (playerObj)
         end
     end
 
+    local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
+    for i=0, clothes:size() -1 do
+        local clothing = clothes:get(i)
+        if clothing:isEquipped() and not RCA.BODY_LOCATIONS_MAP[clothing:getBodyLocation()] then
+            playerObj:removeWornItem(clothing)
+        end
+    end
+
     -- Seems its not working.
     -- playerObj:getHumanVisual():addBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()

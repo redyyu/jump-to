@@ -76,7 +76,8 @@ Jump will effect by inertia (native physics engine).
 
 you won't jump that often like Mario.
 you won't jump over zombies.
-you won't jump into river. (but you can jump out, if you already stuck in middle of river)
+you won't jump into river. 
+you can get free you ware stuck in some square, like the one 4 square bed just build.
 
 Use when you need
 jump over between safehouse brige.
