@@ -16,7 +16,7 @@ end
 
 
 Swm.isWaterSquare = function(square)
-    if square and not square:isFree(false) then  -- square is river will not Free.
+    if square and square:getFloor() and not square:isFree(false) then -- square is river will not Free.
         local sprite = square:getFloor():getSprite()
         if sprite and sprite:getProperties() then
             return sprite:getProperties():Is(IsoFlagType.water)
