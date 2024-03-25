@@ -61,7 +61,7 @@ Swm.startSwimming = function (playerObj)
             playerObj:setSecondaryHandItem(nil)
         end
         
-        local pdata = getPlayerData(playerObj:getPlayerNum());
+        local pdata = getPlayerData(playerObj:getPlayerNum())
         if pdata ~= nil then
             pdata.playerInventory:refreshBackpacks()
             pdata.lootInventory:refreshBackpacks()
@@ -191,8 +191,11 @@ Swm.onPlayerUpdate = function(playerObj)
         end
 
         if playerObj:hasTimedActions() then -- Disable all other actions, prevent swith to unwanted animation.
-            playerObj:Say(getText("IGUI_PlayerText_Cant_Do_Anything_Else_Swimming"))
-            ISTimedActionQueue.clear(playerObj)
+            local queue = ISTimedActionQueue.getTimedActionQueue(playerObj)
+            if queue.current.Type ~= 'ISSwimTakeWaterAction' then
+                playerObj:Say(getText("IGUI_PlayerText_Cant_Do_Anything_Else_Swimming"))
+                ISTimedActionQueue.clear(playerObj)
+            end
         end
 
 
@@ -223,7 +226,7 @@ Swm.onPlayerUpdate = function(playerObj)
         --     end
         --     playerObj:setPrimaryHandItem(hackItem)
         --     playerObj:setSecondaryHandItem(hackItem)
-        --     local pdata = getPlayerData(playerObj:getPlayerNum());
+        --     local pdata = getPlayerData(playerObj:getPlayerNum())
         --     if pdata ~= nil then
         --         pdata.playerInventory:refreshBackpacks()
         --         pdata.lootInventory:refreshBackpacks()
@@ -237,6 +240,50 @@ Swm.onPlayerUpdate = function(playerObj)
     else
         return
     end
+end
+
+
+Swm.onSwimDrink = function(waterObj, playerObj)
+    local waterAvailable = waterObj:getWaterAmount()
+	local thirst = playerObj:getStats():getThirst()
+	local waterNeeded = math.floor((thirst + 0.005) / 0.1)
+	local waterConsumed = math.min(waterNeeded, waterAvailable)
+    ISTimedActionQueue.clear(playerObj)  -- make sure drink is current queue.
+	ISTimedActionQueue.add(ISSwimTakeWaterAction:new(playerObj, waterConsumed, waterObj, (waterConsumed * 10) + 15))
+end
+
+
+local function formatWaterAmount(setX, amount, max)
+	-- Water tiles have waterAmount=9999
+	-- Piped water has waterAmount=10000
+	if max >= 9999 then
+		return string.format("%s: <SETX:%d> %s", getText("ContextMenu_WaterName"), setX, getText("Tooltip_WaterUnlimited"))
+	end
+	return string.format("%s: <SETX:%d> %d / %d", getText("ContextMenu_WaterName"), setX, amount, max)
+end
+
+
+Swm.doSwimDrinkWaterMenu = function(waterObj, playerObj, context)
+	if waterObj:getSquare():getBuilding() ~= playerObj:getBuilding() then return end
+	if instanceof(waterObj, "IsoClothingDryer") then return end
+	if instanceof(waterObj, "IsoClothingWasher") then return end
+	local option = context:addOption(getText("ContextMenu_Drink_Swiming"), waterObj, Swm.onSwimDrink, playerObj)
+	local thirst = playerObj:getStats():getThirst()
+	local units = math.min(math.ceil(thirst / 0.1), 10)
+	units = math.min(units, waterObj:getWaterAmount())
+	local tooltip = ISWorldObjectContextMenu.addToolTip()
+	local source = getText("ContextMenu_NaturalWaterSource")
+	tooltip.description = getText("ContextMenu_WaterSource")  .. ": " .. source .. " <LINE> "
+	local tx1 = getTextManager():MeasureStringX(tooltip.font, getText("Tooltip_food_Thirst") .. ":") + 20
+	local tx2 = getTextManager():MeasureStringX(tooltip.font, getText("ContextMenu_WaterName") .. ":") + 20
+	local tx = math.max(tx1, tx2)
+	tooltip.description = tooltip.description .. string.format("%s: <SETX:%d> -%d / %d <LINE> %s",
+		getText("Tooltip_food_Thirst"), tx, math.min(units * 10, thirst * 100), thirst * 100,
+		formatWaterAmount(tx, waterObj:getWaterAmount(), waterObj:getWaterMax()))
+	if waterObj:isTaintedWater() and getSandboxOptions():getOptionByName("EnableTaintedWaterText"):getValue() then
+		tooltip.description = tooltip.description .. " <BR> <RGB:1,0.5,0.5> " .. getText("Tooltip_item_TaintedWater")
+	end
+	option.toolTip = tooltip
 end
 
 
@@ -268,14 +315,30 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
 
     if Swm.isWaterSquare(playerObj:getCurrentSquare()) then
         -- remove all context menu since nothing useful, only show description during swimming.
-        context:clear() 
-        option = context:addOption(getText("ContextMenu_Is_Swimming"))
+        context:clear()
+        -- add Swimming info menu
+
+        local option = context:addOption(getText("ContextMenu_Is_Swimming"))
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Go_Swim"))
-        option.toolTip.description = getText("Tooltip_How_To_Swim")
+        option.toolTip.description = '<RGB:1,0,0> '..getText("Tooltip_Druing_Swimming") .. ' <RGB:1,1,1> <BR>' .. getText("Tooltip_How_To_Swim")
+  
+        -- add back drink
+        local waterObj = nil
+        for _, obj in ipairs(worldobjects) do
+            if obj:hasWater() then
+                waterObj = obj
+            end
+        end
+
+        if waterObj and getCore():getGameMode() ~= "LastStand"  then
+            Swm.doSwimDrinkWaterMenu(waterObj, playerObj, context)
+        end
+
     else
+
         local square = Swm.findClosestWaterSquare(playerObj, 2)
-        option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, square)
+        local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, square)
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Go_Swim"))
         option.toolTip.description = getText("Tooltip_How_To_Swim")
@@ -284,6 +347,7 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         if option.notAvailable then
             option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
         end
+
     end
 end
 
