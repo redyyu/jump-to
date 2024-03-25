@@ -230,8 +230,9 @@ Swm.onPlayerUpdate = function(playerObj)
         --     end
         -- end
     elseif playerObj:getVariableBoolean("isSwimming") then
-           playerObj:setVariable("isSwimming", false)
+        playerObj:setVariable("isSwimming", false)
         Swm.stopSwimming(playerObj)
+        ISTimedActionQueue.add(ISSwimToAction:new(playerObj, playerObj:getCurrentSquare(), false))
         return
     else
         return
@@ -240,7 +241,20 @@ end
 
 
 Swm.onSwimStart = function(playerObj, toSquare)
-    ISTimedActionQueue.add(ISGoSwimAction:new(playerObj, toSquare, 50))
+    local shoes = playerObj:getWornItem('Shoes')
+    if shoes then
+        ISTimedActionQueue.add(ISUnequipAction:new(playerObj, shoes, 50))
+    end
+
+    local primary = playerObj:getPrimaryHandItem()
+    local secondary = playerObj:getSecondaryHandItem()
+    if primary then
+        ISTimedActionQueue.add(ISUnequipAction:new(playerObj, primary, 25))
+    end
+    if secondary and secondary ~= primary then
+        ISTimedActionQueue.add(ISUnequipAction:new(playerObj, secondary, 25))
+    end
+    ISTimedActionQueue.add(ISSwimToAction:new(playerObj, toSquare, true))
 end
 
 
