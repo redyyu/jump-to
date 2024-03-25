@@ -2,10 +2,10 @@
 <animNode>
 	<m_Name>idle_swimming</m_Name>
 	<m_AnimName>SwimIdle</m_AnimName>
-	<m_BlendTime>0.50</m_BlendTime>
 	<m_Priority>10</m_Priority>
 	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
 	<m_SpeedScale>1.0</m_SpeedScale>
+	<m_BlendTime>0.50</m_BlendTime>
 	<m_Conditions>
 		<m_Name>RightHandMask</m_Name>
 		<m_Type>STRING</m_Type>
