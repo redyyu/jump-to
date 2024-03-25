@@ -31,11 +31,13 @@ Jump always cross one square, when starts standing. Jump while moving, how far y
 ### Swimming
 
 Click on water when nearby, there is Option for into the water.
-after into the water, the character can swimming around, until reach a land.
+after into the water, the character can swimming around, until reach the land.
+
+Shoes will be unequip before swimming start. (feet won't be hurts during swimming.)
 
 Player can't do anything else during swimming, otherwise too much animate work to do.
-Clothes will getting wet very quick.
 
+All the clothes you're wearing wet quickly.
 Happiness will growing, Boredom will goes away. But Endurance will consume quickly. 
 
 Character could die middle of river.
@@ -112,6 +114,7 @@ Swimming action actually use maskingright animset.
 The swimming animation is move the character `anim_X` to lower the ground.
 And half body in water is masked by a hidden Clothing `SwimmingBodyMASK`.
 *This clothingItem have masks to cover every thing must in water.*
+*And it is a shoes, will prevent feet be hurts. swimming is walking play a swimming animation actually*
 
 On the other hand use a `SwimmingRightHandHackingItem` with `ReplaceInPrimaryHand = none swimming,`
 to trigger `maskingright` state ON. 

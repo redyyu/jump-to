@@ -7,11 +7,15 @@ Swm.getDistanceToSquare = function(playerObj, square)
     local x2 = square:getX()
     local y1 = playerObj:getY()
     local y2 = square:getY()
-    return math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2)) 
+    if playerObj:getZ() == square:getZ() then
+        return math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2))
+    else
+        return 65535
+    end
 end
 
 
-Swm.isRiverSquare = function(square)
+Swm.isWaterSquare = function(square)
     if square and not square:isFree(false) then  -- square is river will not Free.
         local sprite = square:getFloor():getSprite()
         if sprite and sprite:getProperties() then
@@ -22,6 +26,30 @@ Swm.isRiverSquare = function(square)
     else
         return false
     end
+end
+
+
+Swm.findClosestWaterSquare = function(playerObj, radius)
+    local waterSquares = {}
+    local doneSquares = {}
+    local currSquare = playerObj:getCurrentSquare()
+    local minX = math.floor(currSquare:getX() - radius)
+	local maxX = math.ceil(currSquare:getX() + radius)
+	local minY = math.floor(currSquare:getY() - radius)
+	local maxY = math.ceil(currSquare:getY() + radius)
+	for y = minY, maxY do
+		for x = minX, maxX do
+			local square = getCell():getGridSquare(x, y, currSquare:getZ())
+			if square and not doneSquares[square] then
+                doneSquares[square] = true
+                if Swm.isWaterSquare(square) then
+				    table.insert(waterSquares, square)
+                end
+			end
+		end
+	end
+    
+    return waterSquares[ZombRand(1, #waterSquares)]
 end
 
 Swm.startSwimming = function (playerObj)
@@ -103,6 +131,11 @@ Swm.onClimateTick = function(climateManager) -- update character stats, OnPlayer
             body_damage:setUnhappynessLevel(body_damage:getUnhappynessLevel() - 5)
         end
 
+        local body_damage = playerObj:getBodyDamage()
+        if body_damage:getWetness() < 100 then
+            body_damage:setWetness(body_damage:getWetness() + 15)
+        end
+
         -- onClimateTick is too slow, the native temperature will restore every time.
         -- leave it using onClimateTick, incase want do something with weather.
         -- body_damage:setTemperature(climateManager:getTemperature() - 5)
@@ -111,22 +144,25 @@ Swm.onClimateTick = function(climateManager) -- update character stats, OnPlayer
         local clothingInventory = playerInv:getItemsFromCategory("Clothing")
         for i=0, clothingInventory:size() -1 do
             local clothing = clothingInventory:get(i)
-            if clothing:getWetness() < 100 then
-                clothing:setWetness(clothing:getWetness() + 10)
+            if clothing:isEquipped() and clothing:getWetness() < 100 then
+                clothing:setWetness(clothing:getWetness() + 15)
             end
-
-            -- NO NEED those, Wet everything on body
-            -- local parts = clothing:getCoveredParts()
-            -- if clothing:isEquipped() and parts and parts:size() > 0 then -- make sure is covered body.
-            --     -- can not get dirty and wet at same time. dirty it after getting up.
-            --     -- if clothing:getDirtyness() < 1 then
-            --     --     clothing:setDirtyness(clothing:getDirtyness() + 0.01)
-            --     -- end
-            --     if clothing:getWetness() < 100 then
-            --         clothing:setWetness(clothing:getWetness() + 10)
-            --     end
-            -- end
         end
+        
+        -- NO NEED those, Wet everything on body
+        -- for i=0, clothingInventory:size() -1 do
+        --     local clothing = clothingInventory:get(i)
+        --     local parts = clothing:getCoveredParts()
+        --     if clothing:isEquipped() and parts and parts:size() > 0 then -- make sure is covered body.
+        --         -- can not get dirty and wet at same time. dirty it after getting up.
+        --         -- if clothing:getDirtyness() < 1 then
+        --         --     clothing:setDirtyness(clothing:getDirtyness() + 0.01)
+        --         -- end
+        --         if clothing:getWetness() < 100 then
+        --             clothing:setWetness(clothing:getWetness() + 10)
+        --         end
+        --     end
+        -- end
 
 	    sendClothing(playerObj)
         triggerEvent("OnClothingUpdated", playerObj)
@@ -147,7 +183,7 @@ end
 Swm.onPlayerUpdate = function(playerObj)
     local square = playerObj:getCurrentSquare()
 
-    if square and Swm.isRiverSquare(square) then
+    if square and Swm.isWaterSquare(square) then
         -- make sure the is in river.
         if not playerObj:getVariableBoolean("isSwimming") then
             playerObj:setVariable("isSwimming", true)
@@ -204,58 +240,36 @@ end
 
 
 Swm.onSwimStart = function(playerObj, toSquare)
-    playerObj:setX(toSquare:getX())
-    playerObj:setY(toSquare:getY())
+    ISTimedActionQueue.add(ISGoSwimAction:new(playerObj, toSquare, 50))
 end
 
 
 Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     
-    if not playerObj or playerObj:getVehicle() or playerObj:getZ() > 0 then
+    if not playerObj or playerObj:getVehicle() then
         -- refused is not vaild scenes.
         return
     end
 
-    local square = nil
-    for i, v in ipairs(worldobjects) do
-        if v and v:getSquare() then
-            square = v:getSquare()
-        end
-    end
-    
-    if not Swm.isRiverSquare(square) then
-        -- make sure the square is river.
-        return
-    end
-
-    local is_inwater = Swm.isRiverSquare(playerObj:getCurrentSquare())
-    if is_inwater then
-        context:clear()  -- move all context menu since nothing useful.
-        if not playerObj:isPlayerMoving() then
-            square = playerObj:getCurrentSquare()
-        else
-            square = nil
-        end
-    end
-
-    local option
-    if square then
+    if Swm.isWaterSquare(playerObj:getCurrentSquare()) then
+        -- remove all context menu since nothing useful, only show description during swimming.
+        context:clear() 
+        option = context:addOption(getText("ContextMenu_Is_Swimming"))
+        option.toolTip = ISWorldObjectContextMenu.addToolTip()
+        option.toolTip:setName(getText("Tooltip_Go_Swim"))
+        option.toolTip.description = getText("Tooltip_How_To_Swim")
+    else
+        local square = Swm.findClosestWaterSquare(playerObj, 2)
         option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, square)
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Go_Swim"))
         option.toolTip.description = getText("Tooltip_How_To_Swim")
 
-        option.notAvailable = Swm.getDistanceToSquare(playerObj, square) > 3
+        option.notAvailable = not square
         if option.notAvailable then
             option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
         end
-    else
-        -- only show description during swimming.
-        option = context:addOption(getText("ContextMenu_Is_Swimming"))
-        option.toolTip = ISWorldObjectContextMenu.addToolTip()
-        option.toolTip:setName(getText("Tooltip_Go_Swim"))
-        option.toolTip.description = getText("Tooltip_How_To_Swim")
     end
 end
 

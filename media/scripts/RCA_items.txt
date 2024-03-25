@@ -11,7 +11,7 @@ module RCA
         /* DisplayName = MaskForSwim, -- hidden from invertory with no name item. */
 
         Type = Clothing,
-        BodyLocation = SwimmingBodyMASK,
+        BodyLocation = Shoes,  /* Also prevent hurting feet, swimming is walking actually. */
 		ClothingItem = SwimmingBodyMASK,
         Weight = 0,
         WorldRender = FALSE,

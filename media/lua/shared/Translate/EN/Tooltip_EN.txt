@@ -6,8 +6,8 @@ Tooltip_EN = {
     Tooltip_How_To_Jump = "<RGB:1,1,1> Jump from standing always cross one square. <BR> Jump while moving, how far you can jump is depends on physics and body condition. <BR> Jump farther during <SPACE><RGB:0,0.8,0> Run <RGB:1,1,1><SPACE> or <SPACE><RGB:0,0.8,0> Sprint <RGB:1,1,1> . <SPACE><RGB:0,0.8,0> Fitness <RGB:1,1,1><SPACE> and <SPACE><RGB:0,0.8,0> Sprinting <RGB:1,1,1><SPACE> can increase jump range. <SPACE><RGB:1,0.5,0.5> Obese <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Overweight <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Overrun <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Tired <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Sick <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Heavy Load <RGB:1,1,1> , <SPACE><RGB:1,0.5,0.5> Injured <RGB:1,1,1><SPACE> or <SPACE><RGB:1,0.5,0.5> Pain <RGB:1,1,1><SPACE> can all affect to jump in bad way."
 
 
-    Tooltip_Go_Swim = "Go swimming in river"
-    Tooltip_Unable_Swim = "Require move close to river."
+    Tooltip_Go_Swim = "Go swimming in water"
+    Tooltip_Unable_Swim = "Require move close to Water."
 
-    Tooltip_How_To_Swim = "<RGB:1,1,1> You can't do anything else during swimming. <BR> Clothes will getting <SPACE><RGB:1,0.5,0.5> Wet <RGB:1,1,1>. <SPACE><RGB:0,0.8,0> Happiness <RGB:1,1,1><SPACE> will growing, <SPACE><RGB:0,0.8,0> Boredom <RGB:1,1,1><SPACE> will goes away. But <SPACE><RGB:1,0.5,0.5> Endurance <RGB:1,1,1><SPACE> will consume quickly. You could <SPACE><RGB:1,0,0> Die <RGB:1,1,1><SPACE> middle of river. Since you can do anything else durning swimming, you won't get anything back. So don't swim to far..."
+    Tooltip_How_To_Swim = "<RGB:1,1,1> You can't do anything else during swimming. <BR>All the clothes you're wearing will getting <SPACE><RGB:1,0.5,0.5> Wet <RGB:1,1,1><SPACE> quickly. <SPACE><RGB:0,0.8,0> Happiness <RGB:1,1,1><SPACE> will growing, <SPACE><RGB:0,0.8,0> Boredom <RGB:1,1,1><SPACE> will goes away. But <SPACE><RGB:1,0.5,0.5> Endurance <RGB:1,1,1><SPACE> will consume quickly. You could <SPACE><RGB:1,0,0> Die <RGB:1,1,1><SPACE> middle of river. Since you can do anything else durning swimming, you won't get anything back. So don't swim to far..."
 }
