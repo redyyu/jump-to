@@ -2,21 +2,7 @@
 
 A Mod for Project Zomboid.
 
-there no native jump action in Vanilla.
-with this Mod, player can trigger jump action by context menu.
-right click on the ground, there is `Jump To` option on menu now.
-*just like `Walk To` option.*
-
-Can also trigger by Key `Crouch` (Sneak),
-when Mod Sandbox `KeyPressToJumpEnabled` set to true.
-Since  There is no plan to add new keybindings to to Vanilla yet,
-`Crouch` is best option. ( it's looks like prepare to jump)
-
-*Keep in mind, too many keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games).*
-
-For Joypad, they might diffcult to using context menu.
-try press `RBumper` button
-*untested might not work.*
+Make charactor can Jump, Swimming, Sit for rest.
 
 =============================================================
 
@@ -49,12 +35,42 @@ For Joypad, not tested. try press `RBumper` button when close water, not in runn
 *have done in or out water animation yet. leave that for future update.*
 
 
+### Sit for Rest
+
+The vanilla `Rest` will be replace by `Sit for Rest` option.
+
+You can sitting for rest on Chair, Couch, Funton, Bench, Church, Stool or Seat.
+Character's `Endurance` will recovery just like `Rest`.
+When the `Endurance` is fully restored, there is only play a sitting animation.
+
+Character won't be `Strafe` during sitting, so becareful when zombies around.
+
+Character will move the front of the Chair than sit.
+Sometime, the front of chair might not reachable. In that case, the action will brake.
+
+you can still use the vanilla `Rest` by turn it ON from Mod's sandbox.
 =============================================================
 
 ## Details
 
 
 ### Jump
+
+there no native jump action in Vanilla.
+with this Mod, player can trigger jump action by context menu.
+right click on the ground, there is `Jump To` option on menu now.
+*just like `Walk To` option.*
+
+Can also trigger by Key `Crouch` (Sneak),
+when Mod Sandbox `KeyPressToJumpEnabled` set to true.
+Since  There is no plan to add new keybindings to to Vanilla yet,
+`Crouch` is best option. ( it's looks like prepare to jump)
+
+*Keep in mind, too many keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games).*
+
+For Joypad, they might diffcult to using context menu.
+try press `RBumper` button
+*untested might not work.*
 
 Jump will effect by inertia (native physics engine).
 
@@ -125,3 +141,12 @@ to trigger `maskingright` state ON.
 both those two items for hacking is not `DisplayName`, that's how to make it hidden form inventory.
 
 Also clear all other timedActoins durning Swimming, to prevent unwanted animation play.
+
+
+### Sit for Rest
+
+No need setNoClip for Sit on Chair. the animSet have Offset version.
+if the chair is solid (blocked way) then Character will move to the front of square, 
+than player a `TimedAction` set the animSet `SitOnChairOffset`.
+if the chair is free square, just move on the chair, than play animSet `SitOnChair`.
+otherwise, the chair might not reachable, the action won't start.

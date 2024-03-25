@@ -1,7 +1,10 @@
 Sandbox_EN = {
-	Sandbox_JumpTo = "Jump To"
+	Sandbox_RefinedCharacterActions = "Refined Character Actions"
 
-	Sandbox_JumpTo_KeyPressToJumpEnabled = "Jump by Press `Sneak` Key"
+	Sandbox_RefinedCharacterActions_KeyPressToJumpEnabled = "Jump by Press `Sneak` Key"
 	
-	Sandbox_JumpTo_KeyPressToJumpEnabled_tooltip ="Press Key for `Sneak` while Running or Sprinting. Chose this Key binding because it's looks like prepare to jump, no additional key bindings. When you enabled this option, KEEP IN MIND, several keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games). There is no plan to add new keybindings to game yet, try to change the Key binding of `Sneak`. Use keyboard to jump is not the purpose made this MOD,live with that or get better keyboard."
+	Sandbox_RefinedCharacterActions_KeyPressToJumpEnabled_tooltip ="Press Key for `Sneak` while Running or Sprinting. Chose this Key binding because it's looks like prepare to jump, no additional key bindings. When you enabled this option, KEEP IN MIND, several keys pressed at sametime, might cause `Keyboard conflict`. It is uncertain which keys are conflicting, that depending on the keyboard you use (happen in any other games). There is no plan to add new keybindings to game yet, try to change the Key binding of `Sneak`. Use keyboard to jump is not the purpose made this MOD,live with that or get better keyboard."
+
+	RefinedCharacterActions_RestOptionforChairEnabled = "Vanilla Rest Option showing up for Chair"
+	RefinedCharacterActions_RestOptionforChairEnabled_tooltip = "Character won't be `Strafe` during MOD's sitting, some chair might be unreachable, Turn this ON for keep the Vanilla Rest option."
 }

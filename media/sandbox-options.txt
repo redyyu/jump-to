@@ -1,7 +1,13 @@
 VERSION = 1,
 
-option JumpTo.KeyPressToJumpEnabled {
+option RefinedCharacterActions.KeyPressToJumpEnabled {
 	type = boolean, default = false,
-	page = JumpTo, translation = JumpTo_KeyPressToJumpEnabled,
+	page = RefinedCharacterActions, translation = RefinedCharacterActions_KeyPressToJumpEnabled,
 }
+
+option RefinedCharacterActions.RestOptionforChairEnabled {
+	type = boolean, default = false,
+	page = RefinedCharacterActions, translation = RefinedCharacterActions_RestOptionforChairEnabled,
+}
+
 

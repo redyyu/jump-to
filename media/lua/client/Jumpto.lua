@@ -119,7 +119,7 @@ end
 
 
 Jmp.onKeyStartPressed = function(key)
-    if SandboxVars.JumpTo.KeyPressToJumpEnabled or isDebugEnabled() then
+    if SandboxVars.RefinedCharacterActions.KeyPressToJumpEnabled or isDebugEnabled() then
         if key == getCore():getKey(Jmp.key) then
             local playerObj = getPlayer()
             if playerObj:isRunning() or playerObj:isSprinting() then
