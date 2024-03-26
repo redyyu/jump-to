@@ -35,7 +35,7 @@ For Joypad, not tested. try press `RBumper` button when close water, not in runn
 *have done in or out water animation yet. leave that for future update.*
 
 
-### Sit for Rest
+### Sit and Rest
 
 The vanilla `Rest` will be replace by `Rest on <chair name>` option.
 *or `Sit on <chair name>` when `Endurance` is full.*
@@ -153,3 +153,47 @@ if the chair is solid (blocked way) then Character will move to the front of squ
 than player a `TimedAction` set the animSet `SitOnChairOffset`.
 if the chair is free square, just move on the chair, than play animSet `SitOnChair`.
 otherwise, the chair might not reachable, the action won't start.
+
+**A strange problem with AnimSets**
+in some case native `<m_Conditions>` with custom `<m_Conditions>` 
+will jam the timedAction animation play for no reason.
+maybe is the `sitonground` state with `action/reading` only need change upper body.
+but if add custom conditions, the animation still can play.
+but unable to use TimedAction now. unless remove one of the conditions,
+no matter which one. in my case, I remove the native one,
+because use custom one is good enough to trigger it.
+
+it's not logic, don't understand what's the problem yet.
+might be animate buggey? because the X?
+
+
+```
+<animNode>
+	<m_Name>sit_action</m_Name>
+	<m_AnimName>Bob_SitGround_ActionIdle</m_AnimName>
+	<m_deferredBoneAxis>Y</m_deferredBoneAxis>
+	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
+	<m_SpeedScale>0.30</m_SpeedScale>
+	<m_BlendTime>0.30</m_BlendTime>
+	<m_Conditions>  <--- THIS --->
+		<m_Name>SitGroundAnim</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>Idle</m_StringValue>
+	</m_Conditions>
+    <m_Conditions>  <--- WITH THIS CUSTOM --->
+        <m_Name>SitChair</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>normal</m_StringValue>
+    </m_Conditions>
+	<m_Conditions>
+		<m_Name>hasTimedActions</m_Name>
+		<m_Type>BOOL</m_Type>
+		<m_BoolValue>true</m_BoolValue>
+	</m_Conditions>
+	<m_Transitions>
+		<m_Target>sit_loop</m_Target>
+		<m_AnimName>Bob_SitGround_ActionToSitIdle</m_AnimName>
+		<m_speedScale>1</m_speedScale>
+	</m_Transitions>
+</animNode>
+```

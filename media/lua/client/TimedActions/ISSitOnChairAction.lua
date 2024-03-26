@@ -37,6 +37,8 @@ function ISSitOnChairAction:perform()
         self.character:setVariable("SitChair", "normal")
     elseif self.sitSquare == self.character:getCurrentSquare() then
         self.character:setVariable("SitChair", "offset")
+    else
+        self.character:setVariable("SitChair", "")
     end
     self.character:reportEvent("EventSitOnGround")
     ISBaseTimedAction.perform(self)

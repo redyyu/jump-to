@@ -6,6 +6,17 @@
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_SpeedScale>0.30</m_SpeedScale>
     <m_BlendTime>0.30</m_BlendTime>
+    <!-- 
+        It will jam the timedAction animation play for no reason.
+        `sitonground` state with `action/reading` only change upper body.
+        it's not logic, don't understand what's the problem yet.
+         might be animate buggey? because the X?
+    -->
+    <!-- <m_Conditions>  
+        <m_Name>SitGroundAnim</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>Idle</m_StringValue>
+    </m_Conditions> -->
     <m_Conditions>
         <m_Name>SitChair</m_Name>
         <m_Type>STRING</m_Type>

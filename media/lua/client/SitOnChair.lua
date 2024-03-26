@@ -65,63 +65,18 @@ end
 
 local SitOnChair = {}
 
-SitOnChair.onReadSitChair = function(chair, playerObj, sitSquare, books)
-    if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-
-        if playerObj:getVariable('SitChair') then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
-        end
-        for _, book in ipairs(books) do
-            ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare, book))
-        end
-        ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
-    end
-end
-
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        if not playerObj:getVariableBoolean('SitChair') then
+        if not playerObj:getVariableString('SitChair') then
+            print("FUFUFUFUF_______________>>>>")
             ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
         end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
-    end
-end
-
-
-SitOnChair.onFillInventoryObjectContextMenu = function(playerNum, context, items)
-    local playerObj = getSpecificPlayer(playerNum)
-    local items = ISInventoryPane.getActualItems(items)
-
-    if not playerObj or playerObj:getVehicle() then
-        -- refused is not vaild scenes.
-        return
-    end
-
-    local books = {}
-    for _, item in ipairs(items) do
-        if instanceof(item, 'Literature') then
-            table.insert(books, item)
+        if playerObj:getStats():getEndurance() < 1 then
+            ISTimedActionQueue.add(ISRestOnChairAction:new(playerObj, chair))
         end
-    end
-
-    local chair = RCA.findOneWorldObjectNearby(playerObj:getCurrentSquare(), 3, isChairReachable, playerObj)
-
-    if #books > 0 and chair then
-        local chair_name = RCA.getMoveableDisplayName(chair)
-        local sitSquare = getSitChairSquare(chair, playerObj)
-        local readOptName = getText("ContextMenu_Read")
-        local option = context:insertOptionBefore(readOptName, getText("ContextMenu_Read_On_Chair", chair_name), 
-                                                  chair, SitOnChair.onReadSitChair, playerObj, sitSquare, books)
-        option.toolTip = ISWorldObjectContextMenu.addToolTip()
-        option.toolTip:setName(getText("Tooltip_Read_Book_On_Chair", chair_name))
-        if not sitSquare then
-            option.notAvailable = true
-            option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Sit", chair_name) ..' <RGB:1,1,1>'
-        elseif playerObj:isAsleep() then
-            option.notAvailable = true
-            option.toolTip.description ='<RGB:1,0,0> ' .. getText("ContextMenu_NoOptionSleeping") ..' <RGB:1,1,1>'
-        end
+        playerObj:setIgnoreAimingInput(true)  -- restore by onPlayerMove handler
     end
 end
 
@@ -157,12 +112,12 @@ SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobje
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Rest_On_Chair", chair_name))
 
-        local bedType = chair:getProperties():Val("BedType") or "averageBed";
+        local bedType = chair:getProperties():Val("BedType") or "averageBed"
         local bedTypeXln = getTextOrNull("Tooltip_BedType_" .. bedType)
         if bedTypeXln then
             option.toolTip.description = getText("Tooltip_BedType", bedTypeXln)
         end
-        
+
         option.notAvailable = not sitSquare
         if option.notAvailable then
             option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Sit", chair_name) ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
@@ -173,13 +128,13 @@ end
 
 SitOnChair.onPlayerMove = function(playerObj)
     if playerObj:getAnimationStateName() == "movement" then
-        if playerObj:getVariable('SitChair') then
+        if playerObj:getVariableString('SitChair') then
             playerObj:clearVariable('SitChair')
+            playerObj:setIgnoreAimingInput(false)
         end
     end
 end
 
 
-Events.OnPlayerUpdate.Add(SitOnChair.onPlayerMove)
-Events.OnFillInventoryObjectContextMenu.Add(SitOnChair.onFillInventoryObjectContextMenu)
+Events.OnPlayerMove.Add(SitOnChair.onPlayerMove)
 Events.OnFillWorldObjectContextMenu.Add(SitOnChair.onFillWorldObjectContextMenu)
