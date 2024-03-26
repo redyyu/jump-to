@@ -21,9 +21,9 @@ function ISJumpToCursor:isValid(square)
 end
 
 function ISJumpToCursor:render(x, y, z, square)
-	if not ISJumpToCursor.floorSprite then
-		ISJumpToCursor.floorSprite = IsoSprite.new()
-		ISJumpToCursor.floorSprite:LoadFramesNoDirPageSimple('media/ui/FloorTileCursor.png')
+	if not self.floorSprite then
+		self.floorSprite = IsoSprite.new()
+		self.floorSprite:LoadFramesNoDirPageSimple('media/ui/FloorTileCursor.png')
 	end
 
 	local hc = getCore():getGoodHighlitedColor()

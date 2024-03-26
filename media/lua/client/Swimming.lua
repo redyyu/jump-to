@@ -1,20 +1,6 @@
 
 local Swm = {}
 
-
-Swm.getDistanceToSquare = function(fromSquare, toSquare)
-    local x1 = fromSquare:getX()
-    local x2 = toSquare:getX()
-    local y1 = fromSquare:getY()
-    local y2 = toSquare:getY()
-    if fromSquare:getZ() == square:getZ() then
-        return math.sqrt(math.pow((y2-y1), 2) + math.pow((x2-x1), 2))
-    else
-        return 65535
-    end
-end
-
-
 Swm.isWaterSquare = function(square)
     if square and square:getFloor() and not square:isFree(false) then -- square is river will not Free.
         local sprite = square:getFloor():getSprite()
@@ -29,47 +15,31 @@ Swm.isWaterSquare = function(square)
 end
 
 
+Swm.getWaterSqaureFromWorldObjects = function(worldobjects)
+    for _, obj in ipairs(worldobjects) do
+        local square = obj:getSquare()
+        if square and Swm.isWaterSquare(square) then
+            return square
+        end
+    end
+    return nil
+end
+
+
 Swm.findWaterSquares = function(playerObj, radius)
-    local waterSquares = {}
-    local doneSquares = {}
-    local currSquare = playerObj:getCurrentSquare()
-    local minX = math.floor(currSquare:getX() - radius)
-	local maxX = math.ceil(currSquare:getX() + radius)
-	local minY = math.floor(currSquare:getY() - radius)
-	local maxY = math.ceil(currSquare:getY() + radius)
-	for y = minY, maxY do
-		for x = minX, maxX do
-			local square = getCell():getGridSquare(x, y, currSquare:getZ())
-			if square and not doneSquares[square] then
-                doneSquares[square] = true
-                if Swm.isWaterSquare(square) then
-				    table.insert(waterSquares, square)
-                end
-			end
-		end
-	end
-    return waterSquares
+    return RCA.findSquaresRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
 end
 
 
 Swm.hasWaterSquareNearby = function(playerObj, radius)
-    local waterSquares = Swm.findWaterSquares(playerObj, radius)
-    return #waterSquares > 0
+    return Swm.findClosestWaterSquare(playerObj, radius) ~= nil
 end
 
 
 Swm.findClosestWaterSquare = function(playerObj, radius)
-    local waterSquares = Swm.findWaterSquares(playerObj, radius)
-    local lastSquare = nil
-    local lastDistance = 65535
-    for _, square in ipairs(waterSquares) do
-        local _distance = Swm.getDistanceToSquare(playerObj:getCurrentSquare(), square)
-        if _distance < lastDistance then
-            lastSquare = square
-        end
-    end
-    return lastSquare
+    return RCA.findClosestSquareRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
 end
+
 
 Swm.startSwimming = function (playerObj)
     if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
@@ -181,7 +151,11 @@ Swm.doSwimDrinkWaterMenu = function(waterObj, playerObj, context)
 end
 
 
-Swm.onSwimStart = function(playerObj, toSquare)
+Swm.onSwimStart = function(playerObj, toSquare, adjacentSquare)
+    if adjacentSquare then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, adjacentSquare))
+    end
+
     local shoes = playerObj:getWornItem('Shoes')
     if shoes then
         ISTimedActionQueue.add(ISUnequipAction:new(playerObj, shoes, 50))
@@ -206,7 +180,7 @@ Swm.onSwimStart = function(playerObj, toSquare)
         ISTimedActionQueue.add(ISUnequipAction:new(playerObj, secondary, 25))
     end
 
-    ISTimedActionQueue.add(ISSwimToAction:new(playerObj, toSquare, true))
+    ISTimedActionQueue.add(ISSwimInAction:new(playerObj, toSquare))
 end
 
 
@@ -290,7 +264,7 @@ Swm.onPlayerUpdate = function(playerObj)
         end
         return
     end
-
+    
     local square = playerObj:getCurrentSquare()
     
     if square and Swm.isWaterSquare(square) then
@@ -344,8 +318,7 @@ Swm.onPlayerUpdate = function(playerObj)
         -- end
     elseif playerObj:getVariableBoolean("isSwimming") then
         playerObj:setVariable("isSwimming", false)
-        Swm.stopSwimming(playerObj)
-        ISTimedActionQueue.add(ISSwimToAction:new(playerObj, playerObj:getCurrentSquare(), false))
+        ISTimedActionQueue.add(ISSwimOutAction:new(playerObj, Swm.stopSwimming))
         return
     else
         return
@@ -383,17 +356,20 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
             Swm.doSwimDrinkWaterMenu(waterObj, playerObj, context)
         end
 
-    elseif Swm.hasWaterSquareNearby(playerObj, 5) then -- add option if water nearby
+    else
+        -- add option if water nearby
+        local waterSquare = Swm.getWaterSqaureFromWorldObjects(worldobjects)
+        if waterSquare then
+            local adjacent = AdjacentFreeTileFinder.Find(square, playerObj)
+            local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, waterSquare, adjacent)
+            option.toolTip = ISWorldObjectContextMenu.addToolTip()
+            option.toolTip:setName(getText("Tooltip_Go_Swim"))
+            option.toolTip.description = getText("Tooltip_How_To_Swim")
 
-        local waterSquare = Swm.findClosestWaterSquare(playerObj, 2)
-        local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, waterSquare)
-        option.toolTip = ISWorldObjectContextMenu.addToolTip()
-        option.toolTip:setName(getText("Tooltip_Go_Swim"))
-        option.toolTip.description = getText("Tooltip_How_To_Swim")
-
-        option.notAvailable = not waterSquare
-        if option.notAvailable then
-            option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
+            option.notAvailable = not adjacent
+            if option.notAvailable then
+                option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Swim") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
+            end
         end
     end
 end

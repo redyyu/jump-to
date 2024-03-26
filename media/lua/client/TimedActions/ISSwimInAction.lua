@@ -1,40 +1,40 @@
 require "TimedActions/ISBaseTimedAction"
 
 
-ISSwimToAction = ISBaseTimedAction:derive("ISSwimToAction")
+ISSwimInAction = ISBaseTimedAction:derive("ISSwimInAction")
 
 
-function ISSwimToAction:isValid()
+function ISSwimInAction:isValid()
     if self.toSquare and self.character:getZ() == self.toSquare:getZ() then
-        if self.inWater then
-            local sprite = self.toSquare:getFloor():getSprite()
-            if sprite and sprite:getProperties() then
-                return sprite:getProperties():Is(IsoFlagType.water)
-            else
-                return false
-            end
+        local sprite = self.toSquare:getFloor():getSprite()
+        if sprite and sprite:getProperties() then
+            return sprite:getProperties():Is(IsoFlagType.water)
         else
-            return self.toSquare:isFree(false)
+            return false
         end
     else
         return false
     end
 end
 
-
-function ISSwimToAction:start()
-    if self.inWater then
-        self:setActionAnim("SwimInWater")
-    else
-        self:setActionAnim("SwimOutWater")
-    end
+function ISSwimInAction:waitToStart()
+    self.character:faceLocation(self.toSquare:getX(), self.toSquare:getY())
+	return self.character:shouldBeTurning()  -- keep waiting shouldBeTurning() to be false.
 end
 
-function ISSwimToAction:stop()
+
+function ISSwimInAction:start()
+    self:setActionAnim("SwimInWater")
+    self.character:setIgnoreMovement(true)
+end
+
+
+function ISSwimInAction:stop()
+    self:restoreMovements()
     ISBaseTimedAction.stop(self) 
 end
 
-function ISSwimToAction:animEvent(event, parameter)
+function ISSwimInAction:animEvent(event, parameter)
     -- if event == 'some_event_from_animSets' then
     --     if self.maxTime == -1 then
     --         self:forceComplete()
@@ -42,16 +42,18 @@ function ISSwimToAction:animEvent(event, parameter)
     -- end
 end
 
-function ISSwimToAction:perform()
+function ISSwimInAction:perform()
     self.character:setX(self.toSquare:getX())
     self.character:setY(self.toSquare:getY())
-
+    self.character:getEmitter():playSound("GetWaterFromLake")
+    -- getEmitter() play as Ambient sound (zombie can hear).
+    self:restoreMovements()
     -- needed to remove from queue / start next.
     ISBaseTimedAction.perform(self) 
 end
 
 
-function ISSwimToAction:new(character, toSquare, inWater)
+function ISSwimInAction:new(character, toSquare)
     if type(character) == 'number' then
         character = getSpecificPlayer(character)
         -- getSpecificPlayer param as int (player num).
@@ -65,9 +67,8 @@ function ISSwimToAction:new(character, toSquare, inWater)
     o.stopOnRun = false
     o.character = character
     o.toSquare = toSquare
-    o.inWater = inWater
     o.useProgressBar = false
-    o.maxTime = 35
+    o.maxTime = 50
 
     -- if o.character:isTimedActionInstant() then
     --     o.maxTime = 1 
@@ -80,4 +81,9 @@ function ISSwimToAction:new(character, toSquare, inWater)
     -- end
 
     return o
+end
+
+
+function ISSwimInAction:restoreMovements()
+    self.character:setIgnoreMovement(false)
 end
