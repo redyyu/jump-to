@@ -1,6 +1,4 @@
 
-local Rch = {}
-
 local CHAIR_NAMES = {
     ["Chair"] = true, 
     ["Couch"] = true, 

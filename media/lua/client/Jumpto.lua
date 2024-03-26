@@ -1,12 +1,10 @@
 
-local Jmp = {}
-
-Jmp.baseDuration = 15 -- It's calculated number DO NOT change it, unless know what doing.
-Jmp.key = 'Crouch'  -- use for KeyPressToJumpEnabled is true, 
+local BASE_DURATION = 15 -- It's calculated number DO NOT change it, unless know what doing.
+local JUMP_KEY = 'Crouch'  -- use for KeyPressToJumpEnabled is true, 
 -- don't want add KEY binds to Vanilla, `Crouch`(Sneak) is best option, it's looks like prepare to jump.
 
 
-Jmp.getJumpDuration = function(playerObj)
+local function getJumpDuration(playerObj)
     local moodles = playerObj:getMoodles()
     local endurance = moodles:getMoodleLevel(MoodleType.Endurance)
     local heavy_load = moodles:getMoodleLevel(MoodleType.HeavyLoad)
@@ -37,7 +35,7 @@ Jmp.getJumpDuration = function(playerObj)
 
     modifier = math.max(modifier - endurance - heavy_load * 2 - sick - tired - injured - pain, 0)
     
-    return Jmp.baseDuration + modifier
+    return BASE_DURATION + modifier
 end
 
 
@@ -48,7 +46,7 @@ local relatedBodyPart = {
     BodyPartType.Foot_L, BodyPartType.Foot_R
 }
 
-Jmp.isRelatedBodyPartDamaged = function(playerObj)
+local function isRelatedBodyPartDamaged(playerObj)
     local body_damage = playerObj:getBodyDamage()
     if body_damage then
         for _, bp_type in ipairs(relatedBodyPart) do
@@ -65,7 +63,10 @@ Jmp.isRelatedBodyPartDamaged = function(playerObj)
 end
 
 
-Jmp.onJumpStartByKey = function(playerObj)
+local JumpTo = {}
+
+
+JumpTo.onJumpStartByKey = function(playerObj)
     if not playerObj or playerObj:hasTimedActions() or playerObj:getVehicle() then
         -- refused is not vaild scenes.
         return
@@ -78,9 +79,8 @@ Jmp.onJumpStartByKey = function(playerObj)
         return
     end
 
-    if playerObj:isbFalling() or
-       not playerObj:isCurrentState(IdleState.instance()) or 
-       Jmp.isRelatedBodyPartDamaged(playerObj) then
+    if isRelatedBodyPartDamaged(playerObj) or
+       not playerObj:isCurrentState(IdleState.instance()) or playerObj:isbFalling() then
         -- refused when player already falling. or body part relate to jump is damaged.
         -- or player is doing something else.
         return
@@ -94,50 +94,42 @@ Jmp.onJumpStartByKey = function(playerObj)
     
     -- *5 is for make sure not too closed with character current position
     -- prevent turn round when move faster, because the dest point has been behind.
-    
-    -- NO NEED square anymore
-    -- local z = playerObj:getZ()
-    -- local dest_square = nil
-    -- while z >= Jmp.minZ and not dest_square do
-    --     dest_square = getCell():getGridSquare(destX, destY, z)
-    --     z = z - 1
-    -- end
 
     ISTimedActionQueue.clear(playerObj)
-    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, Jmp.getJumpDuration(playerObj), destX, destY))
+    ISTimedActionQueue.add(ISJumpToAction:new(playerObj, getJumpDuration(playerObj), destX, destY))
 end
 
 
-Jmp.onPlayerUpdate = function(playerObj)
+JumpTo.onPlayerUpdate = function(playerObj)
     -- support joypad, they might diffcult to using context menu.
     -- untested might not work.
     local joypad_id = playerObj:getJoypadBind()
     if isJoypadPressed(joypad_id, Joypad.RBumper) and (playerObj:isRunning() or playerObj:isSprinting()) then
-        Jmp.onJumpStartByKey(playerObj)
+        JumpTo.onJumpStartByKey(playerObj)
     end
 end
 
 
-Jmp.onKeyStartPressed = function(key)
+JumpTo.onKeyStartPressed = function(key)
     if SandboxVars.RefinedCharacterActions.KeyPressToJumpEnabled or isDebugEnabled() then
-        if key == getCore():getKey(Jmp.key) then
+        if key == getCore():getKey(JUMP_KEY) then
             local playerObj = getPlayer()
             if playerObj:isRunning() or playerObj:isSprinting() then
-                Jmp.onJumpStartByKey(playerObj)
+                JumpTo.onJumpStartByKey(playerObj)
             end
         end
     end
 end
 
 
-Jmp.onJumpCursor = function(playerNum)
+JumpTo.onJumpCursor = function(playerNum)
     local playerObj = getSpecificPlayer(playerNum)
-	local bo = ISJumpToCursor:new("", "", playerObj, Jmp.getJumpDuration)
+	local bo = ISJumpToCursor:new("", "", playerObj, getJumpDuration)
 	getCell():setDrag(bo, playerNum)
 end
 
 
-Jmp.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
+JumpTo.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     
     if not playerObj or playerObj:getVehicle() then
@@ -158,17 +150,17 @@ Jmp.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         return
     end
 
-    local option = context:insertOptionBefore(getText("ContextMenu_Walk_to"), getText("ContextMenu_JumpTo"), playerNum, Jmp.onJumpCursor)
+    local option = context:insertOptionBefore(getText("ContextMenu_Walk_to"), getText("ContextMenu_JumpTo"), playerNum, JumpTo.onJumpCursor)
     option.toolTip = ISWorldObjectContextMenu.addToolTip()
     option.toolTip:setName(getText("Tooltip_Select_To_Jump"))
     option.toolTip.description = getText("Tooltip_How_To_Jump")
-    option.notAvailable = Jmp.getJumpDuration(playerObj) <= 0 or Jmp.isRelatedBodyPartDamaged(playerObj)
+    option.notAvailable = getJumpDuration(playerObj) <= 0 or isRelatedBodyPartDamaged(playerObj)
     if option.notAvailable then
         option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_To_Jump") ..' <RGB:1,1,1> <BR>'.. option.toolTip.description
     end
 end
 
 
-Events.OnPlayerUpdate.Add(Jmp.onPlayerUpdate)
-Events.OnKeyStartPressed.Add(Jmp.onKeyStartPressed)
-Events.OnFillWorldObjectContextMenu.Add(Jmp.onFillWorldObjectContextMenu)
+Events.OnPlayerUpdate.Add(JumpTo.onPlayerUpdate)
+Events.OnKeyStartPressed.Add(JumpTo.onKeyStartPressed)
+Events.OnFillWorldObjectContextMenu.Add(JumpTo.onFillWorldObjectContextMenu)

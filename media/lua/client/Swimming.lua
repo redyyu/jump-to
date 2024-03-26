@@ -1,7 +1,7 @@
 
-local Swm = {}
 
-Swm.isWaterSquare = function(square)
+
+local function isWaterSquare(square)
     if square and square:getFloor() and not square:isFree(false) then -- square is river will not Free.
         local sprite = square:getFloor():getSprite()
         if sprite and sprite:getProperties() then
@@ -15,10 +15,10 @@ Swm.isWaterSquare = function(square)
 end
 
 
-Swm.getWaterSqaureFromWorldObjects = function(worldobjects)
+local function getWaterSqaureFromWorldObjects(worldobjects)
     for _, obj in ipairs(worldobjects) do
         local square = obj:getSquare()
-        if square and Swm.isWaterSquare(square) then
+        if square and isWaterSquare(square) then
             return square
         end
     end
@@ -26,22 +26,22 @@ Swm.getWaterSqaureFromWorldObjects = function(worldobjects)
 end
 
 
-Swm.findWaterSquares = function(playerObj, radius)
-    return RCA.findSquaresRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
+local function findWaterSquares(playerObj, radius)
+    return RCA.findSquaresRadius(playerObj:getCurrentSquare(), radius, isWaterSquare)
 end
 
 
-Swm.hasWaterSquareNearby = function(playerObj, radius)
-    return Swm.findOneClosestWaterSquare(playerObj, radius) ~= nil
+local function hasWaterSquareNearby(playerObj, radius)
+    return findOneClosestWaterSquare(playerObj, radius) ~= nil
 end
 
 
-Swm.findOneClosestWaterSquare = function(playerObj, radius)
-    return RCA.findOneClosestSquareRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
+local function findOneClosestWaterSquare(playerObj, radius)
+    return RCA.findOneClosestSquareRadius(playerObj:getCurrentSquare(), radius, isWaterSquare)
 end
 
 
-Swm.startSwimming = function (playerObj)
+local function startSwimming(playerObj)
     if playerObj and playerObj:getPrimaryHandItem() or playerObj:getSecondaryHandItem() then
         if playerObj:getPrimaryHandItem() then
             playerObj:setPrimaryHandItem(nil)
@@ -84,7 +84,7 @@ Swm.startSwimming = function (playerObj)
 end
 
 
-Swm.stopSwimming = function (playerObj)
+local function stopSwimming(playerObj)
     -- playerObj:getHumanVisual():removeBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()
 
@@ -107,15 +107,6 @@ Swm.stopSwimming = function (playerObj)
     end
 end
 
-Swm.onSwimDrink = function(waterObj, playerObj)
-    local waterAvailable = waterObj:getWaterAmount()
-	local thirst = playerObj:getStats():getThirst()
-	local waterNeeded = math.floor((thirst + 0.005) / 0.1)
-	local waterConsumed = math.min(waterNeeded, waterAvailable)
-    ISTimedActionQueue.clear(playerObj)  -- make sure drink is current queue.
-	ISTimedActionQueue.add(ISSwimTakeWaterAction:new(playerObj, waterConsumed, waterObj, (waterConsumed * 10) + 15))
-end
-
 
 local function formatWaterAmount(setX, amount, max)
 	-- Water tiles have waterAmount=9999
@@ -127,11 +118,23 @@ local function formatWaterAmount(setX, amount, max)
 end
 
 
-Swm.doSwimDrinkWaterMenu = function(waterObj, playerObj, context)
+local Swimming = {}
+
+Swimming.onSwimDrink = function(waterObj, playerObj)
+    local waterAvailable = waterObj:getWaterAmount()
+	local thirst = playerObj:getStats():getThirst()
+	local waterNeeded = math.floor((thirst + 0.005) / 0.1)
+	local waterConsumed = math.min(waterNeeded, waterAvailable)
+    ISTimedActionQueue.clear(playerObj)  -- make sure drink is current queue.
+	ISTimedActionQueue.add(ISSwimTakeWaterAction:new(playerObj, waterConsumed, waterObj, (waterConsumed * 10) + 15))
+end
+
+
+Swimming.doSwimDrinkWaterMenu = function(waterObj, playerObj, context)
 	if waterObj:getSquare():getBuilding() ~= playerObj:getBuilding() then return end
 	if instanceof(waterObj, "IsoClothingDryer") then return end
 	if instanceof(waterObj, "IsoClothingWasher") then return end
-	local option = context:addOption(getText("ContextMenu_Drink_Swiming"), waterObj, Swm.onSwimDrink, playerObj)
+	local option = context:addOption(getText("ContextMenu_Drink_Swiming"), waterObj, Swimming.onSwimDrink, playerObj)
 	local thirst = playerObj:getStats():getThirst()
 	local units = math.min(math.ceil(thirst / 0.1), 10)
 	units = math.min(units, waterObj:getWaterAmount())
@@ -151,7 +154,7 @@ Swm.doSwimDrinkWaterMenu = function(waterObj, playerObj, context)
 end
 
 
-Swm.onSwimStart = function(playerObj, toSquare, adjacentSquare)
+Swimming.onSwimStart = function(playerObj, toSquare, adjacentSquare)
     if adjacentSquare then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, adjacentSquare))
     end
@@ -185,7 +188,7 @@ end
 
 
 
-Swm.onClimateTick = function(climateManager) -- update character stats, OnPlayerUpdate not fire when game speed up.
+Swimming.onClimateTick = function(climateManager) -- update character stats, OnPlayerUpdate not fire when game speed up.
     
     local playerObj = getPlayer()
     if playerObj:getVariableBoolean("isSwimming") then
@@ -244,7 +247,7 @@ Swm.onClimateTick = function(climateManager) -- update character stats, OnPlayer
 end
 
 
-Swm.onPlayerMove = function(playerObj)
+Swimming.onPlayerMove = function(playerObj)
     if playerObj:getVariableBoolean("isSwimming") then
         -- keep player alway walking while swimming.
         playerObj:setSneaking(false)
@@ -254,24 +257,24 @@ Swm.onPlayerMove = function(playerObj)
 end
 
 
-Swm.onPlayerUpdate = function(playerObj)
+Swimming.onPlayerUpdate = function(playerObj)
     local joypad_id = playerObj:getJoypadBind()
     if isJoypadPressed(joypad_id, Joypad.RBumper) and 
        (not playerObj:isRunning() and not playerObj:isSprinting()) then
-        local waterSquare = Swm.findOneClosestWaterSquare(playerObj, 2)
+        local waterSquare = findOneClosestWaterSquare(playerObj, 2)
         if waterSquare then
-            Swm.onSwimStart(playerObj, waterSquare)
+            Swimming.onSwimStart(playerObj, waterSquare)
         end
         return
     end
     
     local square = playerObj:getCurrentSquare()
     
-    if square and Swm.isWaterSquare(square) then
+    if square and isWaterSquare(square) then
         -- make sure the is in river.
         if not playerObj:getVariableBoolean("isSwimming") then
             playerObj:setVariable("isSwimming", true)
-            Swm.startSwimming(playerObj)
+            startSwimming(playerObj)
         end
 
         if playerObj:hasTimedActions() then -- Disable all other actions, prevent swith to unwanted animation.
@@ -318,7 +321,7 @@ Swm.onPlayerUpdate = function(playerObj)
         -- end
     elseif playerObj:getVariableBoolean("isSwimming") then
         playerObj:setVariable("isSwimming", false)
-        ISTimedActionQueue.add(ISSwimOutAction:new(playerObj, Swm.stopSwimming))
+        ISTimedActionQueue.add(ISSwimOutAction:new(playerObj, stopSwimming))
         return
     else
         return
@@ -326,7 +329,7 @@ Swm.onPlayerUpdate = function(playerObj)
 end
 
 
-Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
+Swimming.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     
     if not playerObj or playerObj:getVehicle() then
@@ -334,7 +337,7 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         return
     end
 
-    if Swm.isWaterSquare(playerObj:getCurrentSquare()) then
+    if isWaterSquare(playerObj:getCurrentSquare()) then
         -- remove all context menu since nothing useful, only show description during swimming.
         context:clear()
         -- add Swimming info menu
@@ -353,12 +356,12 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         end
 
         if waterObj and getCore():getGameMode() ~= "LastStand"  then
-            Swm.doSwimDrinkWaterMenu(waterObj, playerObj, context)
+            Swimming.doSwimDrinkWaterMenu(waterObj, playerObj, context)
         end
 
     else
         -- add option if water nearby
-        local waterSquare = Swm.getWaterSqaureFromWorldObjects(worldobjects)
+        local waterSquare = getWaterSqaureFromWorldObjects(worldobjects)
         if waterSquare then
             local adjacent = AdjacentFreeTileFinder.Find(square, playerObj)
             local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, waterSquare, adjacent)
@@ -375,7 +378,7 @@ Swm.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
 end
 
 
-Events.OnClimateTick.Add(Swm.onClimateTick)
-Events.OnPlayerMove.Add(Swm.onPlayerMove)
-Events.OnPlayerUpdate.Add(Swm.onPlayerUpdate)
-Events.OnFillWorldObjectContextMenu.Add(Swm.onFillWorldObjectContextMenu)
+Events.OnClimateTick.Add(Swimming.onClimateTick)
+Events.OnPlayerMove.Add(Swimming.onPlayerMove)
+Events.OnPlayerUpdate.Add(Swimming.onPlayerUpdate)
+Events.OnFillWorldObjectContextMenu.Add(Swimming.onFillWorldObjectContextMenu)
