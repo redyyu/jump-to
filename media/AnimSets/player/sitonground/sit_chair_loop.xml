@@ -12,15 +12,15 @@
         <m_StringValue>Idle</m_StringValue>
     </m_Conditions>
     <m_Conditions>
-        <m_Name>SitOnChairMode</m_Name>
-        <m_Type>EQU</m_Type>
-        <m_FloatValue>1</m_FloatValue>
+        <m_Name>SitChair</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>normal</m_StringValue>
     </m_Conditions>
-    <!-- use the vanilla sit_action, because it's only upper body changed. -->
-    <!-- <m_Transitions>
-        <m_Target>sit_action</m_Target>
+    <m_Transitions>
+        <m_Target>sit_chair_action</m_Target>
         <m_AnimName>SitOnChair</m_AnimName>
-        <m_blendOutTime>0.5</m_blendOutTime>
-        <m_speedScale>1</m_speedScale>
-    </m_Transitions> -->
+        <m_blendOutTime>0.3</m_blendOutTime>
+        <m_speedScale>0.1</m_speedScale>
+    </m_Transitions>
+    <!-- `action/reading` will only change upper body. -->
 </animNode>

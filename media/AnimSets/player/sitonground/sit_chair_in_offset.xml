@@ -1,21 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
     <m_Name>sit_chair_in_offset</m_Name>
-    <m_AnimName>SitOnChairDown</m_AnimName>
+    <m_AnimName>SitOnChairDownOffset</m_AnimName>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_Looped>false</m_Looped>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_EarlyTransitionOut>true</m_EarlyTransitionOut>
-    <m_SpeedScale>1.50</m_SpeedScale>
+    <m_SpeedScale>3</m_SpeedScale>
     <m_BlendTime>0.20</m_BlendTime>
     <m_Conditions>
-        <m_Name>SitOnChairMode</m_Name>
-        <m_Type>EQU</m_Type>
-        <m_FloatValue>2</m_FloatValue>
+        <m_Name>SitChair</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>offset</m_StringValue>
     </m_Conditions>
     <m_Events>
         <m_EventName>SitGroundStarted</m_EventName>
         <m_Time>End</m_Time>
         <m_ParameterValue></m_ParameterValue>
     </m_Events>
+    <m_Transitions>
+        <m_Target>sit_chair_loop_offset</m_Target>
+        <m_AnimName>SitOnChairOffset</m_AnimName>
+        <m_speedScale>0.1</m_speedScale>
+    </m_Transitions>
 </animNode>

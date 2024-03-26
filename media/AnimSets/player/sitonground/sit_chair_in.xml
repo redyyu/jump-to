@@ -6,12 +6,12 @@
     <m_Looped>false</m_Looped>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_EarlyTransitionOut>true</m_EarlyTransitionOut>
-    <m_SpeedScale>1.50</m_SpeedScale>
+    <m_SpeedScale>2</m_SpeedScale>
     <m_BlendTime>0.20</m_BlendTime>
     <m_Conditions>
-        <m_Name>SitOnChairMode</m_Name>
-        <m_Type>EQU</m_Type>
-        <m_FloatValue>1</m_FloatValue>
+        <m_Name>SitChair</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>normal</m_StringValue>
     </m_Conditions>
     <m_Events>
         <m_EventName>SitGroundStarted</m_EventName>

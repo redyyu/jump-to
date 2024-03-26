@@ -67,8 +67,8 @@ local SitOnChair = {}
 
 SitOnChair.onReadSitChair = function(chair, playerObj, sitSquare, books)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        local pa = playerObj:getVariableString("PerformingAction")
-        if not RCA.startswith(pa, 'SitOnChair') then
+
+        if playerObj:getVariable('SitChair') then
             ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
         end
         for _, book in ipairs(books) do
@@ -81,19 +81,10 @@ end
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        -- local pa = playerObj:getVariableString("PerformingAction")
-        -- if not RCA.startswith(pa, 'SitOnChair') then
-        --     ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
-        -- end
-        -- ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
-        playerObj:reportEvent("EventSitOnGround")
-        if sitSquare == chair:getSquare() then
-            playerObj:setVariable("SitOnChairMode", 1)
-        elseif sitSquare == playerObj:getCurrentSquare() then
-            playerObj:setVariable("SitOnChairMode", 2)
-        else
-            return
+        if not playerObj:getVariableBoolean('SitChair') then
+            ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
         end
+        ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
     end
 end
 
@@ -181,13 +172,14 @@ end
 
 
 SitOnChair.onPlayerMove = function(playerObj)
-    if playerObj:getVariableFloat('SitOnChairMode' , 0) > 0 then
-        playerObj:setVariable('SitOnChairMode', 0)
-        print("==========================######################################FFFFF")
+    if playerObj:getAnimationStateName() == "movement" then
+        if playerObj:getVariable('SitChair') then
+            playerObj:clearVariable('SitChair')
+        end
     end
 end
 
 
-Events.OnPlayerMove.Add(SitOnChair.onPlayerMove)
+Events.OnPlayerUpdate.Add(SitOnChair.onPlayerMove)
 Events.OnFillInventoryObjectContextMenu.Add(SitOnChair.onFillInventoryObjectContextMenu)
 Events.OnFillWorldObjectContextMenu.Add(SitOnChair.onFillWorldObjectContextMenu)
