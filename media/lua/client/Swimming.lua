@@ -32,12 +32,12 @@ end
 
 
 Swm.hasWaterSquareNearby = function(playerObj, radius)
-    return Swm.findClosestWaterSquare(playerObj, radius) ~= nil
+    return Swm.findOneClosestWaterSquare(playerObj, radius) ~= nil
 end
 
 
-Swm.findClosestWaterSquare = function(playerObj, radius)
-    return RCA.findClosestSquareRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
+Swm.findOneClosestWaterSquare = function(playerObj, radius)
+    return RCA.findOneClosestSquareRadius(playerObj:getCurrentSquare(), radius, Swm.isWaterSquare)
 end
 
 
@@ -258,7 +258,7 @@ Swm.onPlayerUpdate = function(playerObj)
     local joypad_id = playerObj:getJoypadBind()
     if isJoypadPressed(joypad_id, Joypad.RBumper) and 
        (not playerObj:isRunning() and not playerObj:isSprinting()) then
-        local waterSquare = Swm.findClosestWaterSquare(playerObj, 2)
+        local waterSquare = Swm.findOneClosestWaterSquare(playerObj, 2)
         if waterSquare then
             Swm.onSwimStart(playerObj, waterSquare)
         end
