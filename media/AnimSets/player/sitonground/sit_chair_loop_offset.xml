@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
-    <m_Name>sit_chair_loop</m_Name>
-    <m_AnimName>SitOnChair</m_AnimName>
+    <m_Name>sit_chair_loop_offset</m_Name>
+    <m_AnimName>SitOnChairOffset</m_AnimName>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_SpeedScale>0.10</m_SpeedScale>
@@ -14,13 +14,7 @@
     <m_Conditions>
         <m_Name>SitOnChairMode</m_Name>
         <m_Type>EQU</m_Type>
-        <m_FloatValue>1</m_FloatValue>
+        <m_FloatValue>2</m_FloatValue>
     </m_Conditions>
     <!-- use the vanilla sit_action, because it's only upper body changed. -->
-    <!-- <m_Transitions>
-        <m_Target>sit_action</m_Target>
-        <m_AnimName>SitOnChair</m_AnimName>
-        <m_blendOutTime>0.5</m_blendOutTime>
-        <m_speedScale>1</m_speedScale>
-    </m_Transitions> -->
 </animNode>

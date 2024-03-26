@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
-    <m_Name>sit_chair_in</m_Name>
+    <m_Name>sit_chair_in_offset</m_Name>
     <m_AnimName>SitOnChairDown</m_AnimName>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_Looped>false</m_Looped>
@@ -11,7 +11,7 @@
     <m_Conditions>
         <m_Name>SitOnChairMode</m_Name>
         <m_Type>EQU</m_Type>
-        <m_FloatValue>1</m_FloatValue>
+        <m_FloatValue>2</m_FloatValue>
     </m_Conditions>
     <m_Events>
         <m_EventName>SitGroundStarted</m_EventName>

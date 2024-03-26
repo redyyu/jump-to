@@ -157,9 +157,9 @@ function ISSitOnChairAction:perform()
     -- end
     self.character:reportEvent("EventSitOnGround")
     if self.sitSquare == self.chair:getSquare() then
-        self.character:setVariable("isSitOnChair", true)
+        self.character:setVariable("SitOnChairMode", 1)
     elseif self.sitSquare == self.character:getCurrentSquare() then
-        self.character:setVariable("isSitOnChair", true)
+        self.character:setVariable("SitOnChairMode", 2)
     end
 
     self.character:setIgnoreMovement(true)

@@ -32,7 +32,5 @@ perfect safe for swimming now!
 best idea for now.
 
 
-
-**DO NOT** make sit on chair by override sit on ground.
-player can turn around while sit on ground, looks strange on chair.
-and also diffcult to make read and eating things. (no action fired.)
+Multiple `AnimSet` might have working togehter to make a animation.
+etc. `reading` and `sit_on_ground` or `idle`, only upper body changed. 

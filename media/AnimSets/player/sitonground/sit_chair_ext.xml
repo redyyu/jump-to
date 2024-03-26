@@ -12,18 +12,18 @@
         <m_StringValue>Idle</m_StringValue>
     </m_Conditions>
     <m_Conditions>
-        <m_Name>isSitOnChair</m_Name>
-        <m_Type>BOOL</m_Type>
-        <m_BoolValue>true</m_BoolValue>
-    </m_Conditions>
-    <m_Conditions>
         <m_Name>ExtPlaying</m_Name>
         <m_Type>BOOL</m_Type>
         <m_BoolValue>true</m_BoolValue>
     </m_Conditions>
-    <!-- <m_Transitions>
-        <m_Target>sit_chair_loop</m_Target>
+    <m_Conditions>
+        <m_Name>SitOnChairMode</m_Name>
+        <m_Type>EQU</m_Type>
+        <m_FloatValue>1</m_FloatValue>
+    </m_Conditions>
+    <m_Transitions>
+        <m_Target>sit_loop</m_Target>
         <m_AnimName>SitOnChair</m_AnimName>
         <m_speedScale>1</m_speedScale>
-    </m_Transitions> -->
+    </m_Transitions>
 </animNode>

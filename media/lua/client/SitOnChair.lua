@@ -81,11 +81,19 @@ end
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        local pa = playerObj:getVariableString("PerformingAction")
-        if not RCA.startswith(pa, 'SitOnChair') then
-            ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        -- local pa = playerObj:getVariableString("PerformingAction")
+        -- if not RCA.startswith(pa, 'SitOnChair') then
+        --     ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        -- end
+        -- ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
+        playerObj:reportEvent("EventSitOnGround")
+        if sitSquare == chair:getSquare() then
+            playerObj:setVariable("SitOnChairMode", 1)
+        elseif sitSquare == playerObj:getCurrentSquare() then
+            playerObj:setVariable("SitOnChairMode", 2)
+        else
+            return
         end
-        ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
     end
 end
 
@@ -173,8 +181,8 @@ end
 
 
 SitOnChair.onPlayerMove = function(playerObj)
-    if playerObj:getVariableBoolean('isSitOnChair') then
-        playerObj:setVariable('isSitOnChair', false)
+    if playerObj:getVariableFloat('SitOnChairMode' , 0) > 0 then
+        playerObj:setVariable('SitOnChairMode', 0)
     end
 end
 
