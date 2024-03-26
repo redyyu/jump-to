@@ -32,15 +32,14 @@ function ISSitOnChairAction:stop()
     ISBaseTimedAction.stop(self)
 end
 
+-- put in start will play `sit` on chair earlier.
+function ISSitOnChairAction:start()
+    self:setChairVariable()
+end
+
+
 function ISSitOnChairAction:perform()
-    if self.sitSquare == self.chair:getSquare() then
-        self.character:setVariable("SitChair", "normal")
-    elseif self.sitSquare == self.character:getCurrentSquare() then
-        self.character:setVariable("SitChair", "offset")
-    else
-        self.character:setVariable("SitChair", "")
-    end
-    self.character:reportEvent("EventSitOnGround")
+    -- self:setChairVariable()
     ISBaseTimedAction.perform(self)
 end
 
@@ -60,4 +59,16 @@ function ISSitOnChairAction:new(character, chair, sitSquare)
     o.ignoreHandsWounds = true
     
     return o
+end
+
+
+function ISSitOnChairAction:setChairVariable()
+    if self.sitSquare == self.chair:getSquare() then
+        self.character:setVariable("SitChair", "normal")
+    elseif self.sitSquare == self.character:getCurrentSquare() then
+        self.character:setVariable("SitChair", "offset")
+    else
+        self.character:setVariable("SitChair", "")
+    end
+    self.character:reportEvent("EventSitOnGround")
 end

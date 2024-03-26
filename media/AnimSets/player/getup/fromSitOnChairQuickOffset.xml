@@ -2,7 +2,7 @@
 <animNode x_extends="fromSitOnChair.xml">
     <m_Name>fromSitOnChairQuickOffset</m_Name>
     <m_AnimName>SitOnChairUpOffset</m_AnimName>
-    <m_SpeedScale>4</m_SpeedScale>
+    <m_SpeedScale>9</m_SpeedScale>
     <m_Conditions />
     <m_Conditions>
         <m_Name>getUpQuick</m_Name>

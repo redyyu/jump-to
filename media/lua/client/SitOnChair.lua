@@ -69,7 +69,6 @@ local SitOnChair = {}
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
         if not playerObj:getVariableString('SitChair') then
-            print("FUFUFUFUF_______________>>>>")
             ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
         end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
