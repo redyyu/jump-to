@@ -364,7 +364,7 @@ Swimming.onFillWorldObjectContextMenu = function(playerNum, context, worldobject
         local waterSquare = getWaterSqaureFromWorldObjects(worldobjects)
         if waterSquare then
             local adjacent = AdjacentFreeTileFinder.Find(square, playerObj)
-            local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swm.onSwimStart, waterSquare, adjacent)
+            local option = context:addOptionOnTop(getText("ContextMenu_Go_Swim"), playerObj, Swimming.onSwimStart, waterSquare, adjacent)
             option.toolTip = ISWorldObjectContextMenu.addToolTip()
             option.toolTip:setName(getText("Tooltip_Go_Swim"))
             option.toolTip.description = getText("Tooltip_How_To_Swim")

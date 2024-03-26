@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>ReadNewspaperSitChairAction</m_Name>
+    <m_AnimName>SitOnChair</m_AnimName>
+    <m_SpeedScale>0.69</m_SpeedScale>
+    <m_Looped>true</m_Looped>
+    <m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
+    <m_EarlyBlendOut>true</m_EarlyBlendOut>
+    <m_deferredBoneAxis>Y</m_deferredBoneAxis>
+    <m_BlendTime>0.3</m_BlendTime>
+    <m_BlendOutTime>0.3</m_BlendOutTime>
+    <m_Conditions>
+        <m_Name>PerformingAction</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>SitOnChair</m_StringValue>
+    </m_Conditions>
+    <m_Conditions>
+		<m_Name>ReadType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>newspaper</m_StringValue>
+	</m_Conditions>
+</animNode>

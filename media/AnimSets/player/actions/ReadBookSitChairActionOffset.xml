@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>ReadBookSitChairActionOffset</m_Name>
+    <m_AnimName>SitOnChairOffset</m_AnimName>
+    <m_SpeedScale>0.69</m_SpeedScale>
+    <m_Looped>true</m_Looped>
+    <m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
+    <m_EarlyBlendOut>true</m_EarlyBlendOut>
+    <m_deferredBoneAxis>Y</m_deferredBoneAxis>
+    <m_BlendTime>0.3</m_BlendTime>
+    <m_BlendOutTime>0.3</m_BlendOutTime>
+    <m_Conditions>
+        <m_Name>PerformingAction</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>SitOnChairOffset</m_StringValue>
+    </m_Conditions>
+    <m_Conditions>
+		<m_Name>ReadType</m_Name>
+		<m_Type>STRING</m_Type>
+		<m_StringValue>book</m_StringValue>
+	</m_Conditions>
+	<m_Events>
+		<m_EventName>PageFlip</m_EventName>
+		<m_TimePc>0.6</m_TimePc>
+		<m_ParameterValue></m_ParameterValue>
+	</m_Events>
+</animNode>

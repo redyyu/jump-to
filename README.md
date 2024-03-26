@@ -37,11 +37,13 @@ For Joypad, not tested. try press `RBumper` button when close water, not in runn
 
 ### Sit for Rest
 
-The vanilla `Rest` will be replace by `Sit for Rest` option.
+The vanilla `Rest` will be replace by `Rest on <chair name>` option.
+*or `Sit on <chair name>` when `Endurance` is full.*
 
-You can sitting for rest on Chair, Couch, Funton, Bench, Church, Stool or Seat.
+You can sit on Chair, Couch, Funton, Bench, Church, Stool or Seat.
 Character's `Endurance` will recovery just like `Rest`.
-When the `Endurance` is fully restored, there is only play a sitting animation.
+
+When the `Endurance` is fully restored, character will keep sit on the chair, until canceled.
 
 Character won't be `Strafe` during sitting, so becareful when zombies around.
 

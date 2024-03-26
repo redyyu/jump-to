@@ -65,15 +65,21 @@ end
 
 local SitOnChair = {}
 
-SitOnChair.onReadSitChair = function(chair, playerObj, books)
-
+SitOnChair.onReadSitChair = function(chair, playerObj, sitSquare, books)
+    if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
+        ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        for _, book in ipairs(books) then
+            ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare, book))
+        end
+        ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
+    end
 end
 
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
-        ISTimedActionQueue.add(ISRestOnChairAction:new(playerObj, chair, sitSquare))
+        ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
     end
 end
 
@@ -82,6 +88,11 @@ end
 SitOnChair.onInventoryContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     local items = ISInventoryPane.getActualItems(items)
+
+    if not playerObj or playerObj:getVehicle() then
+        -- refused is not vaild scenes.
+        return
+    end
 
     local books = {}
     for _, item in ipairs(items) do
@@ -97,14 +108,15 @@ SitOnChair.onInventoryContextMenu = function(playerNum, context, worldobjects)
         local sitSquare = getSitChairSquare(chair, playerObj)
         local readOpt = context:getOptionFromName(getText("ContextMenu_Read"))
         local option = context:insertOptionBefore(readOpt, getText("ContextMenu_Read_On_Chair"), 
-                                                  chair, SitOnChair.onReadSitChair, playerObj, books)
+                                                  chair, SitOnChair.onReadSitChair, playerObj, sitSquare, books)
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
-        option.toolTip:setName(getText("Tooltip_Rest_On_Chair", chair_name))
-
-        option.notAvailable = not sitSquare
-        if option.notAvailable then
-            local err_text = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Sit", chair_name) ..' <RGB:1,1,1> <BR>'
-            option.toolTip.description = err_text .. option.toolTip.description
+        option.toolTip:setName(getText("Tooltip_Read_Book_On_Chair", chair_name))
+        if not sitSquare then
+            option.notAvailable = true
+            option.toolTip.description = '<RGB:1,0,0> ' .. getText("Tooltip_Unable_Sit", chair_name) ..' <RGB:1,1,1>'
+        elseif playerObj:isAsleep() then
+            option.notAvailable = true
+            option.toolTip.description ='<RGB:1,0,0> ' .. getText("ContextMenu_NoOptionSleeping") ..' <RGB:1,1,1>'
         end
     end
 end
@@ -113,6 +125,11 @@ end
 SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     local chair = nil
+    
+    if not playerObj or playerObj:getVehicle() then
+        -- refused is not vaild scenes.
+        return
+    end
 
     for _, obj in ipairs(worldobjects) do
         if isChair(obj) then

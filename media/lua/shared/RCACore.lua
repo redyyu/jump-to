@@ -5,7 +5,7 @@ RCA = RCA or {}
 RCA.BODY_LOCATIONS_MAP = RCAConst.VANILLA_BODY_LOCATIONS_MAP
 
 
-RCA.getMoveableDisplayName = functoin(obj)
+RCA.getMoveableDisplayName = function(obj)
 	if not obj then return nil end
 	if not obj:getSprite() then return nil end
 	local props = obj:getSprite():getProperties()
@@ -62,7 +62,7 @@ end
 RCA.findOneClosestSquareRadius = function(currSquare, radius, predicateCall, param1, param2, param3, param4, param5, param6)
     local squares = {}
     local doneCoordinates = {}
-    local curr_radius = 1
+    local curr_radius = 0
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
@@ -98,7 +98,7 @@ end
 RCA.findWorldObjectsNearby = function(currSquare, radius, predicateCall, param1, param2, param3, param4, param5, param6)
     local worldobjects = {}
     local doneCoordinates = {}
-    local curr_radius = 1
+    local curr_radius = 0
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
@@ -137,7 +137,7 @@ end
 RCA.findOneWorldObjectNearby = function(currSquare, radius, predicateCall, param1, param2, param3, param4, param5, param6)
     local worldobjects = {}
     local doneCoordinates = {}
-    local curr_radius = 1
+    local curr_radius = 0
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
