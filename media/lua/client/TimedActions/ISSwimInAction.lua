@@ -68,7 +68,7 @@ function ISSwimInAction:new(character, toSquare)
     o.character = character
     o.toSquare = toSquare
     o.useProgressBar = false
-    o.maxTime = 50
+    o.maxTime = 25
 
     -- if o.character:isTimedActionInstant() then
     --     o.maxTime = 1 

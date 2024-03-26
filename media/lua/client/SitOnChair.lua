@@ -183,6 +183,7 @@ end
 SitOnChair.onPlayerMove = function(playerObj)
     if playerObj:getVariableFloat('SitOnChairMode' , 0) > 0 then
         playerObj:setVariable('SitOnChairMode', 0)
+        print("==========================######################################FFFFF")
     end
 end
 
