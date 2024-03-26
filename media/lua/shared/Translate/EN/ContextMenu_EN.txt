@@ -5,4 +5,5 @@ ContextMenu_EN = {
   ContextMenu_Drink_Swiming = "Drink Natural Water"
   ContextMenu_Rest_Chair = "Rest on %1"
   ContextMenu_Sit_Chair = "Sit on %1"
+  ContextMenu_Read_On_Chair = "Read on %1"
 }

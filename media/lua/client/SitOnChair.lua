@@ -68,7 +68,9 @@ local SitOnChair = {}
 SitOnChair.onReadSitChair = function(chair, playerObj, sitSquare, books)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
-        for _, book in ipairs(books) then
+        for _, book in ipairs(books) do
+            print(book)
+            print("book============================================")
             ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare, book))
         end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
@@ -85,7 +87,7 @@ end
 
 
 
-SitOnChair.onInventoryContextMenu = function(playerNum, context, worldobjects)
+SitOnChair.onFillInventoryObjectContextMenu = function(playerNum, context, items)
     local playerObj = getSpecificPlayer(playerNum)
     local items = ISInventoryPane.getActualItems(items)
 
@@ -101,13 +103,13 @@ SitOnChair.onInventoryContextMenu = function(playerNum, context, worldobjects)
         end
     end
 
-    local chair = RCA.findWorldObjectsNearby(playerObj:getCurrentSquare(), 3, isChairReachable, playerObj)
+    local chair = RCA.findOneWorldObjectNearby(playerObj:getCurrentSquare(), 3, isChairReachable, playerObj)
 
     if #books > 0 and chair then
         local chair_name = RCA.getMoveableDisplayName(chair)
         local sitSquare = getSitChairSquare(chair, playerObj)
         local readOpt = context:getOptionFromName(getText("ContextMenu_Read"))
-        local option = context:insertOptionBefore(readOpt, getText("ContextMenu_Read_On_Chair"), 
+        local option = context:insertOptionBefore(readOpt.name, getText("ContextMenu_Read_On_Chair", chair_name), 
                                                   chair, SitOnChair.onReadSitChair, playerObj, sitSquare, books)
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Read_Book_On_Chair", chair_name))
@@ -167,5 +169,5 @@ SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobje
 end
 
 
-Events.OnFillInventoryObjectContextMenu.Add(SitOnChair.onInventoryContextMenu)
+Events.OnFillInventoryObjectContextMenu.Add(SitOnChair.onFillInventoryObjectContextMenu)
 Events.OnFillWorldObjectContextMenu.Add(SitOnChair.onFillWorldObjectContextMenu)

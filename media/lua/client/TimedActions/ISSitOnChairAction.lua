@@ -4,20 +4,21 @@ require "TimedActions/ISBaseTimedAction"
 ISSitOnChairAction = ISBaseTimedAction:derive("ISSitOnChairAction")
 
 local function getMultiplier(book)
-    if SkillBook[book:getSkillTrained()] then
+    local skill = SkillBook[book:getSkillTrained()]
+    if skill then
         if book:getLvlSkillTrained() == 1 then
-            return SkillBook[book:getSkillTrained()].maxMultiplier1
+            return skill.maxMultiplier1
         elseif book:getLvlSkillTrained() == 3 then
-            return SkillBook[book:getSkillTrained()].maxMultiplier2
+            return skill.maxMultiplier2
         elseif book:getLvlSkillTrained() == 5 then
-            return SkillBook[book:getSkillTrained()].maxMultiplier3
+            return skill.maxMultiplier3
         elseif book:getLvlSkillTrained() == 7 then
-            return SkillBook[book:getSkillTrained()].maxMultiplier4
+            return skill.maxMultiplier4
         elseif book:getLvlSkillTrained() == 9 then
-            return SkillBook[book:getSkillTrained()].maxMultiplier5
+            return skill.maxMultiplier5
         else
-            return 1
             print('ERROR: book has unhandled skill level ' .. book:getLvlSkillTrained())
+            return 1
         end
     end
 end
@@ -151,7 +152,7 @@ function ISSitOnChairAction:perform()
     ISBaseTimedAction.perform(self)
 end
 
-function ISSitOnChairAction:new(character, chair, sitSquare)
+function ISSitOnChairAction:new(character, chair, sitSquare, book)
     local o = {}
     setmetatable(o, self)
     self.__index = self
@@ -160,15 +161,16 @@ function ISSitOnChairAction:new(character, chair, sitSquare)
     o.stopOnRun = true
     o.character = character
     o.chair = chair
+    o.book = book
     o.sitSquare = sitSquare
 
     if o.book then
         local numPages
-        if item:getNumberOfPages() > 0 then
-            checkLevel(character, item)
-            item:setAlreadyReadPages(character:getAlreadyReadPages(item:getFullType()))
-            o.startPage = item:getAlreadyReadPages()
-            numPages = item:getNumberOfPages()
+        if book:getNumberOfPages() > 0 then
+            checkLevel(character, book)
+            book:setAlreadyReadPages(character:getAlreadyReadPages(book:getFullType()))
+            o.startPage = book:getAlreadyReadPages()
+            numPages = book:getNumberOfPages()
         else
             numPages = 5
         end
