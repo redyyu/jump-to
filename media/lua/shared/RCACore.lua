@@ -4,6 +4,14 @@ RCA = RCA or {}
 
 RCA.BODY_LOCATIONS_MAP = RCAConst.VANILLA_BODY_LOCATIONS_MAP
 
+RCA.startswith = function(str, prefix)
+    if type(str) == 'string' then
+        return str:find(prefix, 1, true) == 1
+    else
+        return false
+    end
+end
+
 
 RCA.getMoveableDisplayName = function(obj)
 	if not obj then return nil end

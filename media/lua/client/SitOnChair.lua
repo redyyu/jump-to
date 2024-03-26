@@ -60,17 +60,18 @@ local function isChairReachable(obj, square, playerObj)
     else
         return false
     end
-end    
+end
 
 
 local SitOnChair = {}
 
 SitOnChair.onReadSitChair = function(chair, playerObj, sitSquare, books)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        local pa = playerObj:getVariableString("PerformingAction")
+        if not RCA.startswith(pa, 'SitOnChair') then
+            ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        end
         for _, book in ipairs(books) do
-            print(book)
-            print("book============================================")
             ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare, book))
         end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
@@ -80,11 +81,13 @@ end
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        local pa = playerObj:getVariableString("PerformingAction")
+        if not RCA.startswith(pa, 'SitOnChair') then
+            ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
+        end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
     end
 end
-
 
 
 SitOnChair.onFillInventoryObjectContextMenu = function(playerNum, context, items)
@@ -108,8 +111,8 @@ SitOnChair.onFillInventoryObjectContextMenu = function(playerNum, context, items
     if #books > 0 and chair then
         local chair_name = RCA.getMoveableDisplayName(chair)
         local sitSquare = getSitChairSquare(chair, playerObj)
-        local readOpt = context:getOptionFromName(getText("ContextMenu_Read"))
-        local option = context:insertOptionBefore(readOpt.name, getText("ContextMenu_Read_On_Chair", chair_name), 
+        local readOptName = getText("ContextMenu_Read")
+        local option = context:insertOptionBefore(readOptName, getText("ContextMenu_Read_On_Chair", chair_name), 
                                                   chair, SitOnChair.onReadSitChair, playerObj, sitSquare, books)
         option.toolTip = ISWorldObjectContextMenu.addToolTip()
         option.toolTip:setName(getText("Tooltip_Read_Book_On_Chair", chair_name))
@@ -169,5 +172,13 @@ SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobje
 end
 
 
+SitOnChair.onPlayerMove = function(playerObj)
+    if playerObj:getVariableBoolean('isSitOnChair') then
+        playerObj:setVariable('isSitOnChair', false)
+    end
+end
+
+
+Events.OnPlayerMove.Add(SitOnChair.onPlayerMove)
 Events.OnFillInventoryObjectContextMenu.Add(SitOnChair.onFillInventoryObjectContextMenu)
 Events.OnFillWorldObjectContextMenu.Add(SitOnChair.onFillWorldObjectContextMenu)

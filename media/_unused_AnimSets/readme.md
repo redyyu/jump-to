@@ -30,3 +30,9 @@ Also `Sneaking` and `Sprinting` will disabled.
 perfect safe for swimming now!
 
 best idea for now.
+
+
+
+**DO NOT** make sit on chair by override sit on ground.
+player can turn around while sit on ground, looks strange on chair.
+and also diffcult to make read and eating things. (no action fired.)

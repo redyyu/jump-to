@@ -127,12 +127,12 @@ function ISSitOnChairAction:start()
     self.character:setIgnoreAimingInput(true)
 
     if self.book then
+        if self.sitSquare == self.chair:getSquare() then
+            self:setActionAnim("ReadSitOnChair")
+        elseif self.sitSquare == self.character:getCurrentSquare() then
+            self:setActionAnim("ReadSitOnChairOffset")
+        end
         self:readingStart()
-    end
-    if self.sitSquare == self.chair:getSquare() then
-        self:setActionAnim("SitOnChair")
-    elseif self.sitSquare == self.character:getCurrentSquare() then
-        self:setActionAnim("SitOnChairOffset")
     end
 end
 
@@ -149,6 +149,20 @@ function ISSitOnChairAction:perform()
         self:readingPerform()
     end
     self:restoreMovements()
+
+    -- local queue = ISTimedActionQueue.getTimedActionQueue(self.character)
+    -- if not queue.current and #queue.queue > 0 and self.loopedAction then
+    --     self.action:stopTimedActionAnim()
+    --     self.action:setLoopedAction(false)
+    -- end
+    self.character:reportEvent("EventSitOnGround")
+    if self.sitSquare == self.chair:getSquare() then
+        self.character:setVariable("isSitOnChair", true)
+    elseif self.sitSquare == self.character:getCurrentSquare() then
+        self.character:setVariable("isSitOnChair", true)
+    end
+
+    self.character:setIgnoreMovement(true)
     ISBaseTimedAction.perform(self)
 end
 
@@ -161,16 +175,16 @@ function ISSitOnChairAction:new(character, chair, sitSquare, book)
     o.stopOnRun = true
     o.character = character
     o.chair = chair
-    o.book = book
     o.sitSquare = sitSquare
+    o.book = book
 
     if o.book then
         local numPages
-        if book:getNumberOfPages() > 0 then
-            checkLevel(character, book)
-            book:setAlreadyReadPages(character:getAlreadyReadPages(book:getFullType()))
-            o.startPage = book:getAlreadyReadPages()
-            numPages = book:getNumberOfPages()
+        if o.book:getNumberOfPages() > 0 then
+            checkLevel(character, o.book)
+            o.book:setAlreadyReadPages(character:getAlreadyReadPages(o.book:getFullType()))
+            o.startPage = o.book:getAlreadyReadPages()
+            numPages = o.book:getNumberOfPages()
         else
             numPages = 5
         end
@@ -198,11 +212,11 @@ function ISSitOnChairAction:new(character, chair, sitSquare, book)
         o.maxTime = (1 - character:getStats():getEndurance()) * 16000
     else
         o.useProgressBar = false
-        o.maxTime = -1
+        o.maxTime = 0
     end
 
     o.caloriesModifier = 0.5
-    o.loopedAction = not o.book
+    o.loopedAction = false
     o.ignoreHandsWounds = true
     
     return o
@@ -230,7 +244,7 @@ function ISSitOnChairAction:readingStart()
     else
         self:setAnimVariable("ReadType", "book")
     end
-    self:setActionAnim(CharacterActionAnims.Read)
+
     self:setOverrideHandModels(nil, self.book)
     self.character:setReading(true)
     

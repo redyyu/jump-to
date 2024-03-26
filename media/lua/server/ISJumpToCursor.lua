@@ -30,7 +30,7 @@ function ISJumpToCursor:render(x, y, z, square)
 	if not self:isValid(square) then
 		hc = getCore():getBadHighlitedColor()
 	end
-	ISJumpToCursor.floorSprite:RenderGhostTileColor(x, y, z, hc:getR(), hc:getG(), hc:getB(), 0.8)
+	self.floorSprite:RenderGhostTileColor(x, y, z, hc:getR(), hc:getG(), hc:getB(), 0.8)
 end
 
 function ISJumpToCursor:new(sprite, northSprite, character, durationCall)

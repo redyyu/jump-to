@@ -15,23 +15,23 @@
         <m_StringValue>SwimInWater</m_StringValue>
     </m_Conditions>
     <m_Transitions>
-		<m_Target>holding_swimming</m_Target>
-		<m_blendInTime>0.1</m_blendInTime>
-		<m_blendOutTime>0.2</m_blendOutTime>
-		<!-- <m_SpeedScale>0.3</m_SpeedScale> -->
-	</m_Transitions>
+        <m_Target>holding_swimming</m_Target>
+        <m_blendInTime>0.1</m_blendInTime>
+        <m_blendOutTime>0.2</m_blendOutTime>
+        <!-- <m_SpeedScale>0.3</m_SpeedScale> -->
+    </m_Transitions>
     <m_Transitions>
-		<m_Target>idle_swimming</m_Target>
-		<m_blendInTime>0.1</m_blendInTime>
-		<m_blendOutTime>0.2</m_blendOutTime>
-		<!-- <m_SpeedScale>0.3</m_SpeedScale> -->
-	</m_Transitions>
-	<m_Transitions>
-		<m_Target>walk_swimming</m_Target>
-		<m_blendInTime>0.1</m_blendInTime>
-		<m_blendOutTime>0.2</m_blendOutTime>
-		<!-- <m_SpeedScale>0.3</m_SpeedScale> -->
-	</m_Transitions>
+        <m_Target>idle_swimming</m_Target>
+        <m_blendInTime>0.1</m_blendInTime>
+        <m_blendOutTime>0.2</m_blendOutTime>
+        <!-- <m_SpeedScale>0.3</m_SpeedScale> -->
+    </m_Transitions>
+    <m_Transitions>
+        <m_Target>walk_swimming</m_Target>
+        <m_blendInTime>0.1</m_blendInTime>
+        <m_blendOutTime>0.2</m_blendOutTime>
+        <!-- <m_SpeedScale>0.3</m_SpeedScale> -->
+    </m_Transitions>
     <m_SubStateBoneWeights>
         <boneName>Dummy01</boneName>
     </m_SubStateBoneWeights>
