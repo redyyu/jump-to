@@ -1,6 +1,6 @@
 
-local function isExtraBodyLocation(bodyLoaction)
-    return RCA.BODY_LOCATIONS_MAP[bodyLocation] == nil
+local function isExtraBodyLocation(body_location)
+    return RCA.BODY_LOCATIONS_MAP[body_location] ~= true
 end
 
 local function isWaterSquare(square)
@@ -62,7 +62,7 @@ local function startSwimming(playerObj)
     local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
     for i=0, clothes:size() -1 do
         local clothing = clothes:get(i)
-        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation()) then
+        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation())then
             playerObj:removeWornItem(clothing)
         end
     end

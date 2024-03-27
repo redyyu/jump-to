@@ -69,14 +69,10 @@ RCAConst.VANILLA_BODY_LOCATIONS_MAP = {
     ["FannyPackBack"] = true,
     ["AmmoStrap"] = true,
 
-
     ["TorsoExtra"] = true,
-
-
     ["TorsoExtraVest"] = true,
 
     ["Tail"] = true,
-
     ["Back"] = true,
 
     ["LeftEye"] = true,

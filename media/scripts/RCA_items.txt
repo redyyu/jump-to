@@ -44,7 +44,8 @@ module RCA
 
         StaticModel = HiddenItem, /* Must have, otherwise will not trigger `maskingright`. */
         WorldRender = FALSE,
-        ReplaceInPrimaryHand = none swimming,
+        /* ReplaceInPrimaryHand = none swimming,  No need this, just use `primaryAnimMask`. */
+        primaryAnimMask = swimming,
     }
 
 }
