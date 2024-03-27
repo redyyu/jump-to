@@ -7,4 +7,7 @@ Sandbox_EN = {
 
 	Sandbox_RefinedCharacterActions_VanillaRestforChairEnabled = "Vanilla Rest Option showing up for Chair"
 	Sandbox_RefinedCharacterActions_VanillaRestforChairEnabled_tooltip = "Character won't be `Strafe` during MOD's sitting, some chair might be unreachable, Turn this ON for keep the Vanilla Rest option."
+
+	RefinedCharacterActions_Reading_On_Sit = "Reading on sit effective"
+	RefinedCharacterActions_Reading_On_Sit_tooltip = "Reading time will be shorten while sitting."
 }

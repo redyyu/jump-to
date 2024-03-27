@@ -8,7 +8,7 @@
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_EarlyTransitionOut>true</m_EarlyTransitionOut>
     <m_SpeedScale>1</m_SpeedScale>
-    <m_BlendTime>0.20</m_BlendTime>
+    <m_BlendTime>0.4</m_BlendTime>
     <m_Conditions>
         <m_Name>SitChair</m_Name>
         <m_Type>STRING</m_Type>

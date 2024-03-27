@@ -8,8 +8,6 @@ ContextMenu_EN = {
   ContextMenu_Read_On_Chair = "Read on %1"
 
   ContextMenu_GUN_SUICIDE = "Suicide by Gun"
-  ContextMenu_TAKE_INJECTION = "Take Injection"
-  ContextMenu_CLIMB_LADDER = "Climb Ladder"
 
   ContextMenu_USE_EXER_TREADMILL = "Use Treadmill fitness (%1)"
   ContextMenu_USE_EXER_BENCH = "Use Bench Press (%1)"

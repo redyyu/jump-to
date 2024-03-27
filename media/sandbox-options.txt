@@ -10,4 +10,9 @@ option RefinedCharacterActions.VanillaRestforChairEnabled {
 	page = RefinedCharacterActions, translation = RefinedCharacterActions_VanillaRestforChairEnabled,
 }
 
+option RefinedCharacterActions.ReadingOnSitEffective {
+	type = integer, min = 1, max = 100, default = 75,
+	page = RefinedCharacterActions, translation = RefinedCharacterActions_Reading_On_Sit,
+}
+
 

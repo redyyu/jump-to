@@ -52,6 +52,8 @@ Sometime, the front of chair might not reachable. In that case, the action will 
 
 you can still use the vanilla `Rest` by turn it ON from Mod's sandbox.
 
+Reading will more effective while Sit on Chair or Ground.
+*you can modify the effective from sandbox*
 
 # Use Fitness machine
 
