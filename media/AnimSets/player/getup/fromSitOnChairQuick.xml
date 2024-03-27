@@ -3,7 +3,7 @@
     <m_Name>fromSitOnChairQuick</m_Name>
     <m_AnimName>SitOnChairUp</m_AnimName> <!-- NO need offset for getting up, looks same. -->
     <m_Priority>10</m_Priority>
-    <m_SpeedScale>4</m_SpeedScale>
+    <m_SpeedScale>6</m_SpeedScale>
     <m_Conditions />
     <m_Conditions>
         <m_Name>getUpQuick</m_Name>
