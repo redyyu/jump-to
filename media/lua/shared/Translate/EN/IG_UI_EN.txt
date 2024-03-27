@@ -2,4 +2,19 @@ IGUI_EN = {
 
     IGUI_PlayerText_Cant_Do_Anything_Else_Swimming = "I can't do anything else during swimming."
 
+    IGUI_PlayerText_Treadmill_Need_Electricity = "The treadmill needs electricity to run."
+    IGUI_PlayerText_Too_Exhausted = "Too exhausted to use."
+    IGUI_PlayerText_Too_Pain = "Too much pain to use."
+    IGUI_PlayerText_Too_Heavy = "Too heavy to use."
+    IGUI_PlayerText_Need_Barbell = "I need a barbell to do this exercise."
+
+    IGUI_BenchPress = "BenchPress"
+	IGUI_BenchPress_Tooltip = "Train on BenchPress, must near Fitness Contraption."
+	IGUI_Treadmill = "Treadmill"
+	IGUI_Treadmill_Tooltip = "Run on Treadmill, must near Human Hamster Wheel."
+
+    IGUI_FitnessNeedNerbyDevice = " need near the device."
+    IGUI_FitnessNeedElectricity = " need electricity."
+
+    IGUI_FitnessUseDevice = "Use fitness Device"
 }

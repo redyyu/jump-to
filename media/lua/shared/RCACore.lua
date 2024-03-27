@@ -54,7 +54,7 @@ RCA.findSquaresRadius = function(currSquare, radius, predicateCall, param1, para
 			if square and not doneSquares[square] then
                 doneSquares[square] = true
                 if type(predicateCall) == 'function' then
-                    if predicateCall(square, param1, param2, param3, param4, param5, param6) then
+                    if predicateCall(square, currSquare, param1, param2, param3, param4, param5, param6) then
                         table.insert(squares, square)
                     end
                 else
@@ -85,7 +85,7 @@ RCA.findOneClosestSquareRadius = function(currSquare, radius, predicateCall, par
                     local square = getCell():getGridSquare(x, y, currSquare:getZ())
                     if square then
                         if type(predicateCall) == 'function' then
-                            if predicateCall(square, param1, param2, param3, param4, param5, param6) then
+                            if predicateCall(square, currSquare, param1, param2, param3, param4, param5, param6) then
                                 return square
                             end
                         else
@@ -124,7 +124,7 @@ RCA.findWorldObjectsNearby = function(currSquare, radius, predicateCall, param1,
                         for j=0, _objects:size()-1 do
                             local obj = _objects:get(j)
                             if type(predicateCall) == 'function' then
-                                if predicateCall(obj, square, param1, param2, param3, param4, param5, param6) then
+                                if predicateCall(obj, square, currSquare, param1, param2, param3, param4, param5, param6) then
                                     table.insert(worldobjects, obj)
                                 end
                             else
@@ -163,7 +163,7 @@ RCA.findOneWorldObjectNearby = function(currSquare, radius, predicateCall, param
                         for j=0, _objects:size()-1 do
                             local obj = _objects:get(j)
                             if type(predicateCall) == 'function' then
-                                if predicateCall(obj, square, param1, param2, param3, param4, param5, param6) then
+                                if predicateCall(obj, square, currSquare, param1, param2, param3, param4, param5, param6) then
                                     return obj
                                 end
                             else
