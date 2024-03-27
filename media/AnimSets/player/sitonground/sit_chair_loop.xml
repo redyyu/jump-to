@@ -12,16 +12,22 @@
         <m_Type>STRING</m_Type>
         <m_StringValue>Idle</m_StringValue>
     </m_Conditions>
+    <!-- DO NOT add this, more conditions might jam the TimedAction after action. 
+        <m_Conditions>
+        <m_Name>isSitOnChair</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_BoolValue>true</m_BoolValue>
+    </m_Conditions> -->
     <m_Conditions>
         <m_Name>SitChair</m_Name>
         <m_Type>STRING</m_Type>
         <m_StringValue>normal</m_StringValue>
     </m_Conditions>
-    <!-- <m_Transitions>
-        <m_Target>sit_chair_action</m_Target>
+    <m_Transitions>
+        <!-- use native sit_ction, `action/reading` will only change upper body. -->
+        <m_Target>sit_action</m_Target>
         <m_AnimName>SitOnChair</m_AnimName>
         <m_blendOutTime>0.3</m_blendOutTime>
         <m_speedScale>0.1</m_speedScale>
-    </m_Transitions> -->
-    <!-- `action/reading` will only change upper body. -->
+    </m_Transitions>
 </animNode>

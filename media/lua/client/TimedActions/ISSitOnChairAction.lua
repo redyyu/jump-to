@@ -68,7 +68,8 @@ function ISSitOnChairAction:setChairVariable()
     elseif self.sitSquare == self.character:getCurrentSquare() then
         self.character:setVariable("SitChair", "offset")
     else
-        self.character:setVariable("SitChair", "")
+        self.character:setVariable("SitChair", "normal")
     end
+    self.character:setVariable('isSitOnChair', true)
     self.character:reportEvent("EventSitOnGround")
 end

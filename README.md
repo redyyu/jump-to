@@ -155,16 +155,15 @@ if the chair is free square, just move on the chair, than play animSet `SitOnCha
 otherwise, the chair might not reachable, the action won't start.
 
 **A strange problem with AnimSets**
-in some case native `<m_Conditions>` with custom `<m_Conditions>` 
-will jam the timedAction animation play for no reason.
+in some case add more `<m_Conditions>` will jam the timedAction for no reason.
 maybe is the `sitonground` state with `action/reading` only need change upper body.
-but if add custom conditions, the animation still can play.
-but unable to use TimedAction now. unless remove one of the conditions,
-no matter which one. in my case, I remove the native one,
-because use custom one is good enough to trigger it.
+the animation still can play, but unable to use TimedAction.
 
-it's not logic, don't understand what's the problem yet.
-might be animate buggey? because the X?
+unless remove one of the conditions,
+no matter which conditions, on matter the count of conditions.
+
+in my case, I remove the native one,
+because use custom one is good enough to trigger it.
 
 
 ```
@@ -175,7 +174,7 @@ might be animate buggey? because the X?
 	<m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
 	<m_SpeedScale>0.30</m_SpeedScale>
 	<m_BlendTime>0.30</m_BlendTime>
-	<m_Conditions>  <--- THIS --->
+	<m_Conditions>  <--- REMOVE THIS --->
 		<m_Name>SitGroundAnim</m_Name>
 		<m_Type>STRING</m_Type>
 		<m_StringValue>Idle</m_StringValue>
@@ -198,6 +197,17 @@ might be animate buggey? because the X?
 </animNode>
 ```
 
-Sometime, the animation won't trggier, it might just skip to next.
-try add `<m_Priority>10</m_Priority>` or remove some xml node, and add back.
-problem might solved. looks the animSet system have problems.
+
+it's not logic, don't understand what's the problem yet.
+might be animate buggey? because the X?
+
+
+**Everything I know about how to deal with strange animSets problem happen**
+
+1. do not add more `<m_Conditions>`, no matter the conditions, count is matter.
+2. don't have to ovrride every related animSet for body animtion, like `sitonground` and `reading`, only have to override lower body relates.
+3. no need custom animset before half body animtoin. like `sit_action.xml` trigger the half body animate later.
+4. do not `<m_Transitions>` unless know what doing.
+5. reboot game when too many things changed, and reboot for double check. looks fine might really fine when xml reloaded in game.
+6. try add `<m_Priority>10</m_Priority>` if animset won't trigger.
+

@@ -5,6 +5,8 @@
     lot options is not like it did in different file.
 
     both `SitGroundAnim` and `SitChair` matched will jam the timedAction.
+    remove one of it. will be fine.
+    seems no matter which conditions, it's matter with conditions counts.
     it's not logic, that happen with no reason. should be work.
     `sitonground` state with `action/reading` only change upper body.
     don't understand what's the problem yet. might be animate buggey? because the X?

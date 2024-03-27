@@ -68,7 +68,7 @@ local SitOnChair = {}
 
 SitOnChair.onSitChair = function(chair, playerObj, sitSquare)
     if chair:getSquare() and sitSquare and playerObj:getCurrentSquare() then
-        if not playerObj:getVariableString('SitChair') then
+        if not playerObj:getVariableBoolean('isSitOnChair') then
             ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, sitSquare))
         end
         ISTimedActionQueue.add(ISSitOnChairAction:new(playerObj, chair, sitSquare))
@@ -127,7 +127,8 @@ end
 
 SitOnChair.onPlayerMove = function(playerObj)
     if playerObj:getAnimationStateName() == "movement" then
-        if playerObj:getVariableString('SitChair') then
+        if playerObj:getVariableBoolean('isSitOnChair') then
+            playerObj:setVariable('isSitOnChair', false)
             playerObj:clearVariable('SitChair')
             playerObj:setIgnoreAimingInput(false)
         end
