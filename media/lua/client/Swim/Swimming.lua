@@ -1,5 +1,7 @@
 
-
+local function isExtraBodyLocation(bodyLoaction)
+    return RCA.BODY_LOCATIONS_MAP[bodyLocation] == nil
+end
 
 local function isWaterSquare(square)
     if square and square:getFloor() and not square:isFree(false) then -- square is river will not Free.
@@ -60,7 +62,7 @@ local function startSwimming(playerObj)
     local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
     for i=0, clothes:size() -1 do
         local clothing = clothes:get(i)
-        if clothing:isEquipped() and not RCA.BODY_LOCATIONS_MAP[clothing:getBodyLocation()] then
+        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation()) then
             playerObj:removeWornItem(clothing)
         end
     end
@@ -169,7 +171,7 @@ Swimming.onSwimStart = function(playerObj, toSquare, adjacentSquare)
     local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
     for i=0, clothes:size() -1 do
         local clothing = clothes:get(i)
-        if clothing:isEquipped() and not RCA.BODY_LOCATIONS_MAP[clothing:getBodyLocation()] then
+        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation()) then
             ISTimedActionQueue.add(ISUnequipAction:new(playerObj, clothing, 25))
         end
     end

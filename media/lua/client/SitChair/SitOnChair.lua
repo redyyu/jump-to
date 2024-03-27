@@ -11,6 +11,10 @@ local CHAIR_NAMES = {
     ["Seat"] = true,
 }
 
+local function getMoveableDisplayName(movable)
+    return RCA.getMoveableDisplayName(movable)
+end
+
 local function getSitChairSquare(chair, playerObj)
     if not chair then
         return nil
@@ -84,7 +88,7 @@ SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobje
     local playerObj = getSpecificPlayer(playerNum)
     local chair = nil
     
-    if not playerObj or playerObj:getVehicle() then
+    if not playerObj or playerObj:getVehicle() or playerObj:getVariableBoolean('isSitOnChair') then
         -- refused is not vaild scenes.
         return
     end
@@ -100,7 +104,7 @@ SitOnChair.onFillWorldObjectContextMenu = function(playerNum, context, worldobje
             context:removeOptionByName(getText("ContextMenu_Rest"))
         end
 
-        local chair_name = RCA.getMoveableDisplayName(chair)
+        local chair_name = getMoveableDisplayName(chair)
         local optionName = getText("ContextMenu_Rest_Chair", chair_name)
         if playerObj:getStats():getEndurance() >= 1 then
             optionName = getText("ContextMenu_Sit_Chair", chair_name)

@@ -41,6 +41,16 @@ RCA.getDistanceToSquare = function(fromSquare, toSquare)
 end
 
 
+RCA.isBeforeElecShut = function()
+    return (SandboxVars.ElecShutModifier < 0 or GameTime:getInstance():getNightsSurvived() < SandboxVars.ElecShutModifier)
+end
+
+
+RCA.isSquarePowered = function(square)
+    return RCA.isBeforeElecShut() or square:haveElectricity()
+end
+
+
 RCA.findSquaresRadius = function(currSquare, radius, predicateCall, param1, param2, param3, param4, param5, param6)
     local squares = {}
     local doneSquares = {}

@@ -37,9 +37,6 @@ end
 TreadmillMenu.onUseTreadmill = function(worldobjects, playerObj, treadmillMachine, treadmillExercise, length)
     
     forceDropHeavyItems(playerObj)
-
-    playerObj:setPrimaryHandItem(nil)
-    playerObj:setSecondaryHandItem(nil)
     
     if playerObj:getMoodles():getMoodleLevel(MoodleType.Endurance) > 2 then
         playerObj:Say(getText("IGUI_PlayerText_Too_Exhausted"))
@@ -62,7 +59,6 @@ TreadmillMenu.onUseTreadmill = function(worldobjects, playerObj, treadmillMachin
         playerObj:Say(getText("IGUI_PlayerText_Too_Heavy"))
         return
     end
-    
 
     local facingX = treadmillMachine:getX()
     local facingY = treadmillMachine:getY()
@@ -89,6 +85,14 @@ TreadmillMenu.onUseTreadmill = function(worldobjects, playerObj, treadmillMachin
 
     if AdjacentFreeTileFinder.privTrySquare(playerObj:getCurrentSquare(), treadmillMachine:getSquare()) then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, treadmillMachine:getSquare()))
+        local primary = playerObj:getPrimaryHandItem()
+        local secondary = playerObj:getSecondaryHandItem()
+        if primary then
+            ISTimedActionQueue.add(ISUnequipAction:new(playerObj, primary, 25))
+        end
+        if secondary and secondary ~= primary then
+            ISTimedActionQueue.add(ISUnequipAction:new(playerObj, secondary, 25))
+        end
         treadmillExercise.facingX = facingX
         treadmillExercise.facingY = facingY
         ISTimedActionQueue.add(ISFitnessAction:new(playerObj, treadmillExercise.type, length , ISFitnessUI:new(0,0, 600, 350, playerObj) , treadmillExercise))

@@ -60,8 +60,6 @@ BenchPressMenu.onUseBench = function (worldobjects, playerObj, benchMachine, ben
         playerObj:Say(getText("IGUI_PlayerText_Too_Heavy"))
         return
     end
-        
-    ISWorldObjectContextMenu.equip(playerObj, playerObj:getPrimaryHandItem(), "Base.BarBell", true, true)
 
     local facingX = benchMachine:getX()
     local facingY = benchMachine:getY()
@@ -87,6 +85,7 @@ BenchPressMenu.onUseBench = function (worldobjects, playerObj, benchMachine, ben
     end
     if AdjacentFreeTileFinder.privTrySquare(playerObj:getCurrentSquare(), benchMachine:getSquare()) then
         ISTimedActionQueue.add(ISWalkToTimedAction:new(playerObj, benchMachine:getSquare()))
+        ISWorldObjectContextMenu.equip(playerObj, playerObj:getPrimaryHandItem(), "Base.BarBell", true, true)
         benchExercise.facingX = facingX
         benchExercise.facingY = facingY
         ISTimedActionQueue.add(ISFitnessAction:new(playerObj, benchExercise.type, length , ISFitnessUI:new(0,0, 600, 350, playerObj) , benchExercise))

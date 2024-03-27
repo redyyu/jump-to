@@ -22,6 +22,15 @@ local function isExerciseDeviceNearby(obj, square, currentSquare, nearbySprites)
 end
 
 
+local function isSquarePowered(square)
+    return RCA.isSquarePowered(square)
+end
+
+local function findDeviceNearby(playerObj, data)
+    return RCA.findOneWorldObjectNearby(playerObj:getCurrentSquare(), 3, isExerciseDeviceNearby, data.nearby.sprites)
+end
+
+
 local function getDeviceFacing(device)
     if device:getSprite() then
         local properties = device:getSprite():getProperties()
@@ -34,15 +43,14 @@ end
 
 
 local oldAddExerciseToList = ISFitnessUI.addExerciseToList
-
 function ISFitnessUI:addExerciseToList(exerType, data)
     local text = data.name;
     local enabled = true;
 
-    if data.nearby and not RCA.findOneWorldObjectNearby(self.player:getCurrentSquare(), 3, isExerciseDeviceNearby, data.nearby.sprites) then
+    if data.nearby and not findDeviceNearby(self.player, self.exeData) then
         enabled = false
         text = text .. getText("IGUI_FitnessNeedNerbyDevice")
-    elseif data.electricity and not RC.isSquarePowered(square) then
+    elseif data.electricity and not isSquarePowered(square) then
         enabled = false
         text = text .. getText("IGUI_FitnessNeedElectricity")
     end
@@ -58,12 +66,12 @@ end
 local oldUpdateButtons = ISFitnessUI.updateButtons
 function ISFitnessUI:updateButtons(currentAction)
     oldUpdateButtons(self, currentAction)
-    if self.exeData.nearby and not findDeviceNearby(self.player, self.exeData.nearby.sprites) then
+    if self.exeData.nearby and not findDeviceNearby(self.player, self.exeData) then
         self.ok.enable = false
         self.ok.tooltip = self.exeData.name..getText("IGUI_FitnessNeedNerbyDevice")
     end
     
-    if self.exeData.electricity and not RC.isSquarePowered(self.player:getCurrentSquare()) then
+    if self.exeData.electricity and not isSquarePowered(self.player:getCurrentSquare()) then
         self.ok.enable = false
         self.ok.tooltip = self.exeData.name..getText("IGUI_FitnessNeedElectricity")
     end
@@ -74,7 +82,7 @@ local oldOnClick = ISFitnessUI.onClick
 function ISFitnessUI:onClick(button)
     if button.internal == "OK" then
         if self.exeData.nearby then
-            local device = findDeviceNearby(self.player, self.exeData.nearby.sprites)
+            local device = findDeviceNearby(self.player, self.exeData)
             if device then
                 local facing = getDeviceFacing(device)
                 local facingX = device:getSquare():getX()
@@ -105,7 +113,7 @@ function ISFitnessUI:onClick(button)
             end
         end
         
-        if self.exeData.electricity and not RC.isSquarePowered(self.player:getCurrentSquare()) then
+        if self.exeData.electricity and not isSquarePowered(self.player:getCurrentSquare()) then
             self.player:Say(self.exeData.name..getText("IGUI_FitnessNeedElectricity"))
             return
         end

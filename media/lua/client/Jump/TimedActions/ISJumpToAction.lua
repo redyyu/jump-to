@@ -224,7 +224,6 @@ function ISJumpToAction:isStuck()
             curr_square:getAdjacentSquare(IsoDirections.N),
         }
         for _, sq in ipairs(adjacent_squares) do
-            print(sq:isFree(false))
             if sq and sq:isFree(false) then
                 return false
             end

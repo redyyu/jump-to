@@ -12,12 +12,16 @@ end
 
 local oldWaitToStart = ISFitnessAction.waitToStart
 function ISFitnessAction:waitToStart()
-    local faceX = self.exeData.faceX
-    local faceY = self.exeData.faceY
-    if faceX ~= nil and faceY ~= nil then
-        self.character:faceLocation(self.faceX, self.faceY)
+    local facingX = self.exeData.facingX
+    local facingY = self.exeData.facingY
+    print(facingX)
+    print(facingY)
+    print("========================")
+    if facingX ~= nil and facingY ~= nil then
+        self.character:faceLocation(facingX, facingY)
     end
-end self.character:shouldBeTurning() or oldWaitToStart(self)
+    return self.character:shouldBeTurning() or oldWaitToStart(self)
+end
 
 
 local oldExeLooped = ISFitnessAction.exeLooped

@@ -4,7 +4,7 @@ require "TimedActions/ISBaseTimedAction"
 ISSitOnChairAction = ISBaseTimedAction:derive("ISSitOnChairAction")
 
 function ISSitOnChairAction:isValid()
-    return not self.character:getVehicle()
+    return not self.character:getVehicle() and not self.character:getVariableBoolean('isSitOnChair')
 end
 
 function ISSitOnChairAction:waitToStart()

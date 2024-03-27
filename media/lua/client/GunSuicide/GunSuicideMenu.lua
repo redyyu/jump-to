@@ -3,6 +3,7 @@ local MODAL_HEIGHT = 140
 
 local GunSuicide = {}
 
+
 GunSuicide.suicideGun = function(dummy, button, playerObj, gun)
     if button.internal == "NO" then return end
     
@@ -28,7 +29,7 @@ GunSuicide.onGunSuicide = function(playerObj, gun)
 end
 
 
-GunSuicide.onFillInventoryObjectContextMenu(player, context, items)
+GunSuicide.onFillInventoryObjectContextMenu = function(player, context, items)
     local playerObj = getSpecificPlayer(player)
 
     local items = ISInventoryPane.getActualItems(items)
@@ -56,5 +57,6 @@ GunSuicide.onFillInventoryObjectContextMenu(player, context, items)
         end
     end
 end
+
 
 Events.OnFillInventoryObjectContextMenu.Add(GunSuicide.onFillInventoryObjectContextMenu)
