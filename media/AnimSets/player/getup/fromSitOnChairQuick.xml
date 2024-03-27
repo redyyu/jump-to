@@ -1,8 +1,9 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode x_extends="fromSitOnChair.xml">
     <m_Name>fromSitOnChairQuick</m_Name>
-    <m_AnimName>SitOnChairUp</m_AnimName>
-    <m_SpeedScale>6</m_SpeedScale>
+    <m_AnimName>SitOnChairUp</m_AnimName> <!-- NO need offset for getting up, looks same. -->
+    <m_Priority>10</m_Priority>
+    <m_SpeedScale>4</m_SpeedScale>
     <m_Conditions />
     <m_Conditions>
         <m_Name>getUpQuick</m_Name>
@@ -10,9 +11,9 @@
         <m_BoolValue>true</m_BoolValue>
     </m_Conditions>
     <m_Conditions>
-        <m_Name>SitChair</m_Name>
-        <m_Type>STRING</m_Type>
-        <m_StringValue>normal</m_StringValue>
+        <m_Name>isSitOnChair</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_BoolValue>true</m_BoolValue>
     </m_Conditions>
     <m_Events>
         <m_EventName></m_EventName>

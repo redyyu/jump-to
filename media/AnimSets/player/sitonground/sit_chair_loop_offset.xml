@@ -2,6 +2,7 @@
 <animNode>
     <m_Name>sit_chair_loop_offset</m_Name>
     <m_AnimName>SitOnChairOffset</m_AnimName>
+    <m_Priority>10</m_Priority>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_SpeedScale>0.10</m_SpeedScale>

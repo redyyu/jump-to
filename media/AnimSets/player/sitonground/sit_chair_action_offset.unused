@@ -1,24 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+﻿<!-- <?xml version="1.0" encoding="utf-8"?>
 <animNode>
     <m_Name>sit_chair_action_offset</m_Name>
     <m_AnimName>SitOnChairOffset</m_AnimName>
+    <m_Priority>10</m_Priority>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_SpeedScale>0.30</m_SpeedScale>
     <m_BlendTime>0.30</m_BlendTime>
+    <m_Conditions>  
+        <m_Name>SitGroundAnim</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>Idle</m_StringValue>
+    </m_Conditions>
     <m_Conditions>
         <m_Name>SitChair</m_Name>
         <m_Type>STRING</m_Type>
-        <m_StringValue>offset</m_StringValue>
+        <m_StringValue>offsetd</m_StringValue>
     </m_Conditions>
     <m_Conditions>
         <m_Name>hasTimedActions</m_Name>
         <m_Type>BOOL</m_Type>
         <m_BoolValue>true</m_BoolValue>
     </m_Conditions>
-    <m_Transitions>
-        <m_Target>sit_chair_loop_offset</m_Target>
-        <m_AnimName>SitOnChairOffset</m_AnimName>
-        <m_speedScale>0.1</m_speedScale>
-    </m_Transitions>
-</animNode>
+</animNode> -->

@@ -2,10 +2,12 @@
 <animNode>
     <m_Name>sit_chair_in_offset</m_Name>
     <m_AnimName>SitOnChairDownOffset</m_AnimName>
+    <m_Priority>10</m_Priority>
     <m_deferredBoneAxis>Y</m_deferredBoneAxis>
     <m_Looped>false</m_Looped>
     <m_SyncTrackingEnabled>false</m_SyncTrackingEnabled>
     <m_EarlyTransitionOut>true</m_EarlyTransitionOut>
+    <m_SpeedScale>3</m_SpeedScale>
     <m_BlendTime>0.20</m_BlendTime>
     <m_Conditions>
         <m_Name>SitChair</m_Name>

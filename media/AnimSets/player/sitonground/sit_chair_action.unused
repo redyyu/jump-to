@@ -1,0 +1,38 @@
+﻿<!-- 
+    seems no need this, sitonground with some actions might only change upper body.
+    but I did remeber once, the animate is back to sitonground native.
+    I don't really understand how AnimSets work.
+    lot options is not like it did in different file.
+
+    both `SitGroundAnim` and `SitChair` matched will jam the timedAction.
+    it's not logic, that happen with no reason. should be work.
+    `sitonground` state with `action/reading` only change upper body.
+    don't understand what's the problem yet. might be animate buggey? because the X?
+-->
+<!-- <?xml version="1.0" encoding="utf-8"?>
+<animNode>
+    <m_Name>sit_chair_action</m_Name>
+    <m_AnimName>SitOnChair</m_AnimName>
+    <m_Priority>10</m_Priority>
+    <m_Looped>false</m_Looped>
+    <m_Conditions>  
+        <m_Name>SitGroundAnim</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>Idle</m_StringValue>
+    </m_Conditions>
+    <m_Conditions>
+        <m_Name>SitChair</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>normal</m_StringValue>
+    </m_Conditions>
+    <m_Conditions>
+        <m_Name>SitGroundAnim</m_Name>
+        <m_Type>STRING</m_Type>
+        <m_StringValue>Idle</m_StringValue>
+    </m_Conditions>
+    <m_Conditions>
+        <m_Name>hasTimedActions</m_Name>
+        <m_Type>BOOL</m_Type>
+        <m_BoolValue>true</m_BoolValue>
+    </m_Conditions>
+</animNode> -->

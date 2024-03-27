@@ -197,3 +197,7 @@ might be animate buggey? because the X?
 	</m_Transitions>
 </animNode>
 ```
+
+Sometime, the animation won't trggier, it might just skip to next.
+try add `<m_Priority>10</m_Priority>` or remove some xml node, and add back.
+problem might solved. looks the animSet system have problems.
