@@ -17,7 +17,7 @@ GunSuicide.onGunSuicide = function(playerObj, gun)
     local pos_x = getCore():getScreenWidth()/2 - MODAL_WIDTH/2
     local pos_y = getCore():getScreenHeight()/2 - MODAL_HEIGHT/2
     
-	local modal = ISModalDialog:new(pos_x, pos_y, MODAL_WIDTH, MODAL_HEIGHT, getText("Tooltip_SUICIDE_CONFIRM"),
+	local modal = ISModalDialog:new(pos_x, pos_y, MODAL_WIDTH, MODAL_HEIGHT, getText("Tooltip_Suicide_Confirm"),
 		                            true, nil, GunSuicide.suicideGun, playerNum, playerObj, gun)
 	modal:initialise()
 	modal.prevFocus = getPlayerMechanicsUI(playerNum)
@@ -53,7 +53,7 @@ GunSuicide.onFillInventoryObjectContextMenu = function(player, context, items)
             option.notAvailable = true
 
             toolTip:setName(getText("ContextMenu_GUN_SUICIDE"))
-            toolTip.description = getText("Tooltip_NO_AMMO")
+            toolTip.description = getText("Tooltip_No_Ammo")
         end
     end
 end

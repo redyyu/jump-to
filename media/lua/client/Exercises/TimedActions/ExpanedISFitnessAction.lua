@@ -14,9 +14,6 @@ local oldWaitToStart = ISFitnessAction.waitToStart
 function ISFitnessAction:waitToStart()
     local facingX = self.exeData.facingX
     local facingY = self.exeData.facingY
-    print(facingX)
-    print(facingY)
-    print("========================")
     if facingX ~= nil and facingY ~= nil then
         self.character:faceLocation(facingX, facingY)
     end

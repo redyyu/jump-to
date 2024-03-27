@@ -4,7 +4,7 @@ ISGunSuicide = ISBaseTimedAction:derive("ISGunSuicide")
 
 local OneHandGun = {
 	shotTime = 0.3,
-	maxTime = 100,
+	maxTime = 75,
 	anim = {
 		"Suicide_OneHand_1",
 		"Suicide_OneHand_2",
@@ -50,9 +50,17 @@ end
 
 function ISGunSuicide:perform()
 	self.gun:setCurrentAmmoCount(math.max(self.gun:getCurrentAmmoCount() - self.gun:getAmmoPerShoot(), 0))
-	self.character:getBodyDamage():RestoreToFullHealth()
-	self.character:getBodyDamage():setInfectionLevel(0)
-	self.character:Kill(self.character)
+	local rand_seed = 3
+	if self.gun:isRequiresEquippedBothHands() then
+		rand_seed = 69
+	end
+	if ZombRand(rand_seed) > 0 then
+		self.character:getBodyDamage():setInfectionLevel(0)
+		self.character:Kill(self.character)
+	else
+		self.character:getBodyDamage():AddDamage(BodyPartType.Head, ZombRand(69, 96))
+		self.character:getBodyDamage():SetWounded(BodyPartType.Head, true)
+	end
 	
 	ISBaseTimedAction.perform(self)
 end
@@ -62,6 +70,7 @@ function ISGunSuicide:new(character, gun)
 	setmetatable(o, self)
 	self.__index = self
 	
+	o.useProgressBar = false
 	o.character = character
 	o.gun = gun
 

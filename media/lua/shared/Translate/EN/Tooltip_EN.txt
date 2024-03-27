@@ -16,4 +16,7 @@ Tooltip_EN = {
     Tooltip_Unable_Sit = "%1 is not Reachable."
 
     Tooltip_Read_Book_On_Chair = "Read Book on %1"
+
+    Tooltip_Suicide_Confirm = "Really want kill yourself?"
+    Tooltip_No_Ammo = "Need a loaded gun."
 }

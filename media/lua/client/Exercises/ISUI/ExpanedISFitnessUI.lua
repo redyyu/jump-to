@@ -44,10 +44,10 @@ end
 
 local oldAddExerciseToList = ISFitnessUI.addExerciseToList
 function ISFitnessUI:addExerciseToList(exerType, data)
-    local text = data.name;
-    local enabled = true;
+    local text = data.name
+    local enabled = true
 
-    if data.nearby and not findDeviceNearby(self.player, self.exeData) then
+    if data.nearby and not findDeviceNearby(self.player, data) then
         enabled = false
         text = text .. getText("IGUI_FitnessNeedNerbyDevice")
     elseif data.electricity and not isSquarePowered(square) then
@@ -119,8 +119,8 @@ function ISFitnessUI:onClick(button)
         end
 
     elseif button.internal == "CLOSE" then
-        self.player:setVariable("ExerciseStarted", false);
-        self.player:setVariable("ExerciseEnded", true);
+        self.player:setVariable("ExerciseStarted", false)
+        self.player:setVariable("ExerciseEnded", true)
     end
         
     oldOnClick(self, button)

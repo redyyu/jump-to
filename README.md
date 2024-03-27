@@ -2,7 +2,7 @@
 
 A Mod for Project Zomboid.
 
-Make charactor can Jump, Swimming, Sit for rest.
+Make charactor can Jump, Swimming, Sit on Chair, Use Fitness machine, Suicide by Gun.
 
 =============================================================
 
@@ -51,6 +51,22 @@ Character will move the front of the Chair than sit.
 Sometime, the front of chair might not reachable. In that case, the action will brake.
 
 you can still use the vanilla `Rest` by turn it ON from Mod's sandbox.
+
+
+# Use Fitness machine
+
+Extra exercises `Bench Press` and `Tread Mill`. require use Fitness device.
+
+
+# Suicide by Gun
+
+You can prevent turn to zombie by kill yourself by gun, quick and easy.
+*there is chance not killed, only deep Injured.*
+
+
+
+
+
 =============================================================
 
 ## Details
