@@ -3,6 +3,7 @@ require "RCAConst"
 RCA = RCA or {}
 
 RCA.BODY_LOCATIONS_MAP = RCAConst.VANILLA_BODY_LOCATIONS_MAP
+RCA.CHAIR_NAMES = RCAConst.CHAIR_NAMES
 
 RCA.startswith = function(str, prefix)
     if type(str) == 'string' then

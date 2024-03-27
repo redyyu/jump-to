@@ -1,16 +1,4 @@
 
-local CHAIR_NAMES = {
-    ["Chair"] = true, 
-    ["Couch"] = true, 
-    ["Funton"] = true, 
-    ["Bench"] = true, 
-    ["Church"] = true, 
-    ["Blue Bar Stool"] = true, 
-    ["Bar Stool"] = true, 
-    ["Stool"] = true, 
-    ["Seat"] = true,
-}
-
 local function getMoveableDisplayName(movable)
     return RCA.getMoveableDisplayName(movable)
 end
@@ -52,7 +40,7 @@ end
 local function isChair(obj)
     local sprite = obj:getSprite()
     if sprite and sprite:getProperties() and sprite:getProperties():Is("CustomName") then
-        return CHAIR_NAMES[sprite:getProperties():Val("CustomName")]
+        return RCA.CHAIR_NAMES[sprite:getProperties():Val("CustomName")]
     end
     return false
 end

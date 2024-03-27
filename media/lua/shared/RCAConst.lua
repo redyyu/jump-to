@@ -87,3 +87,16 @@ RCAConst.VANILLA_BODY_LOCATIONS_MAP = {
 
     -- ["ZedDmg"] = true,  -- NO NEED THIS
 }
+
+
+RCAConst.CHAIR_NAMES = {
+    ["Chair"] = true, 
+    ["Couch"] = true, 
+    ["Funton"] = true, 
+    ["Bench"] = true, 
+    ["Church"] = true, 
+    ["Blue Bar Stool"] = true, 
+    ["Bar Stool"] = true, 
+    ["Stool"] = true, 
+    ["Seat"] = true,
+}
