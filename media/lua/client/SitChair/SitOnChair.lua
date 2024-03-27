@@ -122,6 +122,7 @@ SitOnChair.onPlayerMove = function(playerObj)
         if playerObj:getVariableBoolean('isSitOnChair') then
             playerObj:setVariable('isSitOnChair', false)
             playerObj:clearVariable('SitChair')
+            playerObj:getModData()['SitChairType'] = ''
             playerObj:setIgnoreAimingInput(false)
         end
     end

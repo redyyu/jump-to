@@ -57,6 +57,8 @@ function ISSitOnChairAction:new(character, chair, sitSquare)
     o.maxTime = 0
     o.loopedAction = false
     o.ignoreHandsWounds = true
+
+    character:getModData()['SitChairType'] = chair:getProperties():Val("BedType") or "averageBed"
     
     return o
 end
