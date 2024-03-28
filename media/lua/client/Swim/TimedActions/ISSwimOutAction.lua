@@ -5,8 +5,7 @@ ISSwimOutAction = ISBaseTimedAction:derive("ISSwimOutAction")
 
 
 function ISSwimOutAction:isValid()
-    local square = self.character:getCurrentSquare()
-    return square and square:isFree(false)
+    return true
 end
 
 
