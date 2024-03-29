@@ -11,7 +11,15 @@ module RCA
         /* DisplayName = MaskForSwim, -- hidden from invertory with no name item. */
 
         Type = Clothing,
-        BodyLocation = Shoes,  /* Also prevent hurting feet, swimming is walking actually. */
+        BodyLocation = Shoes,  
+        /* 
+           `Shoes` will also prevent hurting feet, swimming is walking actually.
+           But Some MOD will change the order of BodyLocation, 
+           they put Shoes before many other locations to use <Masks>11 to hacking for heels show instep.
+           It must Taking care it in lua. 
+           NOT use ZedDmg, that's setMultiItem to be ture, 
+           will cause texture mask not rolling back after remove the clothingItem.
+        */
 		ClothingItem = SwimmingBodyMASK,
         Weight = 0,
         WorldRender = FALSE,

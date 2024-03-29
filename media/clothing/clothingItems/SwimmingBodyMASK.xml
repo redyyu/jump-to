@@ -16,7 +16,6 @@
 	<m_Masks>14</m_Masks>
 	<m_Masks>15</m_Masks>
 	<m_AttachBone></m_AttachBone>
-	<m_MasksFolder>media/textures/SwimMasks</m_MasksFolder>
 	<textureChoices>transparent</textureChoices>
 	<!-- <m_BaseTextures>transparent</m_BaseTextures> -->
 </clothingItem>	

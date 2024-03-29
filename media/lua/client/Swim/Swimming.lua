@@ -1,6 +1,35 @@
+local SAFE_BODY_LOCATIONS = {
+    -- those location is after `Shoes` from Vanilla.
+    ["FannyPackFront"] = true,
+    ["FannyPackBack"] = true,
+    ["AmmoStrap"] = true,
+    ["TorsoExtra"] = true,
+    ["TorsoExtraVest"] = true,
+    ["Tail"] = true,
+    ["LeftEye"] = true,
+    ["RightEye"] = true,
+    ["Eyes"] = true,
+    ["Scarf"] = true,
+    ["ZedDmg"] = true
+}
 
-local function isExtraBodyLocation(body_location)
-    return RCA.BODY_LOCATIONS_MAP[body_location] ~= true
+local function isUnsafeBodyLocation(body_location)
+    -- this is for Some MOD will change the order of BodyLocation, 
+    -- they put Shoes before many other locations to use <Masks>11 to hacking for heels show instep.
+    -- so ... remove those item form body when into water to prevent unwanted masking.
+    if RCA.BODY_LOCATIONS_MAP[body_location] then
+        if SAFE_BODY_LOCATIONS[body_location] then
+            -- mark as not unsafe location
+            return false
+        else
+            -- mark as unsafe location for everything below the Shoes in locations.
+            local group = BodyLocations.getGroup("Human")
+            return group:indexOf(body_location) > group:indexOf("Shoes")
+        end
+    else
+        -- mark as unsafe location if not in vanilla locations.
+        return true
+    end
 end
 
 local function isWaterSquare(square)
@@ -62,7 +91,7 @@ local function startSwimming(playerObj)
     local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
     for i=0, clothes:size() -1 do
         local clothing = clothes:get(i)
-        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation())then
+        if clothing:isEquipped() and isUnsafeBodyLocation(clothing:getBodyLocation())then
             playerObj:removeWornItem(clothing)
         end
     end
@@ -75,9 +104,11 @@ local function startSwimming(playerObj)
     -- becase didn't find a way to mask the body directly.
     -- add a shadow clothingItem to hack the mask.
     -- the bodylocation must be after another locations. otherwhise might not masking.
-    local item = playerObj:getInventory():AddItem("RCA.SwimmingBodyMASK")
+    local mask_item = playerObj:getInventory():AddItem("RCA.SwimmingBodyMASK")
     -- activate body mask by wearing the item
-    playerObj:setWornItem(item:getBodyLocation(), item)
+    playerObj:setWornItem(mask_item:getBodyLocation(), mask_item)
+
+    -- activate animSet hacking
     local hackItem = playerObj:getInventory():AddItem("RCA.SwimmingRightHandHackingItem")
     playerObj:setPrimaryHandItem(hackItem)
     playerObj:setSecondaryHandItem(hackItem)
@@ -90,12 +121,13 @@ local function stopSwimming(playerObj)
     -- playerObj:getHumanVisual():removeBodyVisualFromItemType("RCA.SwimmingBodyMASK")
     -- playerObj:resetModelNextFrame()
 
-    local script_item = ScriptManager.instance:getItem("RCA.SwimmingBodyMASK")
-    local item = playerObj:getWornItem(script_item:getBodyLocation())
-    if item then
+    local mask_script = ScriptManager.instance:getItem("RCA.SwimmingBodyMASK")
+    local mask_item = playerObj:getWornItem(mask_script:getBodyLocation())
+    if mask_item then
         -- deactivate body mask by unwearing the item
-        playerObj:removeWornItem(item)
+        playerObj:removeWornItem(mask_item)
     end
+
     playerObj:getInventory():RemoveAll("SwimmingBodyMASK") -- DO NOT add pacakge name
     playerObj:setPrimaryHandItem(nil)
     playerObj:setSecondaryHandItem(nil)
@@ -171,7 +203,7 @@ Swimming.onSwimStart = function(playerObj, toSquare, adjacentSquare)
     local clothes = playerObj:getInventory():getItemsFromCategory("Clothing")
     for i=0, clothes:size() -1 do
         local clothing = clothes:get(i)
-        if clothing:isEquipped() and isExtraBodyLocation(clothing:getBodyLocation()) then
+        if clothing:isEquipped() and isUnsafeBodyLocation(clothing:getBodyLocation()) then
             ISTimedActionQueue.add(ISUnequipAction:new(playerObj, clothing, 25))
         end
     end
