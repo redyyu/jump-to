@@ -15,17 +15,17 @@ end
 
 
 RCA.getMoveableDisplayName = function(obj)
-	if not obj then return nil end
-	if not obj:getSprite() then return nil end
-	local props = obj:getSprite():getProperties()
-	if props:Is("CustomName") then
-		local name = props:Val("CustomName")
-		if props:Is("GroupName") then
-			name = props:Val("GroupName") .. " " .. name
-		end
-		return Translator.getMoveableDisplayName(name)
-	end
-	return nil
+    if not obj then return nil end
+    if not obj:getSprite() then return nil end
+    local props = obj:getSprite():getProperties()
+    if props:Is("CustomName") then
+        local name = props:Val("CustomName")
+        if props:Is("GroupName") then
+            name = props:Val("GroupName") .. " " .. name
+        end
+        return Translator.getMoveableDisplayName(name)
+    end
+    return nil
 end
 
 
@@ -56,13 +56,13 @@ RCA.findSquaresRadius = function(currSquare, radius, predicateCall, param1, para
     local squares = {}
     local doneSquares = {}
     local minX = math.floor(currSquare:getX() - radius)
-	local maxX = math.ceil(currSquare:getX() + radius)
-	local minY = math.floor(currSquare:getY() - radius)
-	local maxY = math.ceil(currSquare:getY() + radius)
-	for y = minY, maxY do
-		for x = minX, maxX do
-			local square = getCell():getGridSquare(x, y, currSquare:getZ())
-			if square and not doneSquares[square] then
+    local maxX = math.ceil(currSquare:getX() + radius)
+    local minY = math.floor(currSquare:getY() - radius)
+    local maxY = math.ceil(currSquare:getY() + radius)
+    for y = minY, maxY do
+        for x = minX, maxX do
+            local square = getCell():getGridSquare(x, y, currSquare:getZ())
+            if square and not doneSquares[square] then
                 doneSquares[square] = true
                 if type(predicateCall) == 'function' then
                     if predicateCall(square, currSquare, param1, param2, param3, param4, param5, param6) then
@@ -71,9 +71,9 @@ RCA.findSquaresRadius = function(currSquare, radius, predicateCall, param1, para
                 else
                     table.insert(squares, square)
                 end
-			end
-		end
-	end
+            end
+        end
+    end
     return squares
 end
 
@@ -85,9 +85,9 @@ RCA.findOneClosestSquareRadius = function(currSquare, radius, predicateCall, par
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
-	    local maxX = math.ceil(currSquare:getX() + curr_radius)
-	    local minY = math.floor(currSquare:getY() - curr_radius)
-	    local maxY = math.ceil(currSquare:getY() + curr_radius)
+        local maxX = math.ceil(currSquare:getX() + curr_radius)
+        local minY = math.floor(currSquare:getY() - curr_radius)
+        local maxY = math.ceil(currSquare:getY() + curr_radius)
         for y = minY, maxY do
             for x = minX, maxX do
                 coordinate = x .. '-' .. y
@@ -121,9 +121,9 @@ RCA.findWorldObjectsNearby = function(currSquare, radius, predicateCall, param1,
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
-	    local maxX = math.ceil(currSquare:getX() + curr_radius)
-	    local minY = math.floor(currSquare:getY() - curr_radius)
-	    local maxY = math.ceil(currSquare:getY() + curr_radius)
+        local maxX = math.ceil(currSquare:getX() + curr_radius)
+        local minY = math.floor(currSquare:getY() - curr_radius)
+        local maxY = math.ceil(currSquare:getY() + curr_radius)
         for y = minY, maxY do
             for x = minX, maxX do
                 local _coordinate = x .. '-' .. y
@@ -160,9 +160,9 @@ RCA.findOneWorldObjectNearby = function(currSquare, radius, predicateCall, param
 
     while curr_radius <= radius do
         local minX = math.floor(currSquare:getX() - curr_radius)
-	    local maxX = math.ceil(currSquare:getX() + curr_radius)
-	    local minY = math.floor(currSquare:getY() - curr_radius)
-	    local maxY = math.ceil(currSquare:getY() + curr_radius)
+        local maxX = math.ceil(currSquare:getX() + curr_radius)
+        local minY = math.floor(currSquare:getY() - curr_radius)
+        local maxY = math.ceil(currSquare:getY() + curr_radius)
         for y = minY, maxY do
             for x = minX, maxX do
                 local _coordinate = x .. '-' .. y
