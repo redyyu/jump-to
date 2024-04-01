@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <clothingItem>
-	<m_MaleModel>skinned\clothes\bob_hazmat</m_MaleModel> <!-- no matter which model, only need a model -->
+	<m_MaleModel>skinned\clothes\bob_hazmat</m_MaleModel> <!-- no matter which model, only need a big model -->
 	<m_FemaleModel>skinned\clothes\kate_hazmat</m_FemaleModel>
 	<m_GUID>6257379d-4329-4e2f-9dc5-69289ac0c060</m_GUID>
 	<m_Static>true</m_Static>
@@ -16,6 +16,13 @@
 	<m_Masks>14</m_Masks>
 	<m_Masks>15</m_Masks>
 	<m_AttachBone></m_AttachBone>
-	<textureChoices>transparent</textureChoices>
-	<!-- <m_BaseTextures>transparent</m_BaseTextures> -->
+	<!-- DO NOT Add Masks, it's not cover clothes which use those masks anyway.
+	such as `Army Coat`, `Jacket Chef`.... they already masked 13 and 14, 
+	and use other body mask ID to show the part of clothing.
+	it will cause upper body masked anyway, 
+	leave it or just use lua to take of those closhes before swimming.
+	<m_MasksFolder></m_MasksFolder>
+	<m_UnderlayMasksFolder></m_UnderlayMasksFolder> 
+	-->
+	<textureChoices></textureChoices>
 </clothingItem>	
