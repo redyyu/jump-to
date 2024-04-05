@@ -36,7 +36,8 @@ local function isWaterSquare(square)
     if square and square:getFloor() and not square:isFree(false) then -- square is river will not Free.
         local sprite = square:getFloor():getSprite()
         if sprite and sprite:getProperties() then
-            return sprite:getProperties():Is(IsoFlagType.water)
+            local is_water_sprite = luautils.stringStarts(sprite:getName(), 'blends_natural_02')
+            return sprite:getProperties():Is(IsoFlagType.water) and is_water_sprite
         else
             return false
         end

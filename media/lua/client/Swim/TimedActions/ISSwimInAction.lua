@@ -5,10 +5,11 @@ ISSwimInAction = ISBaseTimedAction:derive("ISSwimInAction")
 
 
 function ISSwimInAction:isValid()
-    if self.toSquare and self.character:getZ() == self.toSquare:getZ() then
+    if self.toSquare and not self.toSquare:isFree(false) and self.character:getZ() == self.toSquare:getZ() then
         local sprite = self.toSquare:getFloor():getSprite()
         if sprite and sprite:getProperties() then
-            return sprite:getProperties():Is(IsoFlagType.water)
+            local is_water_sprite = luautils.stringStarts(sprite:getName(), 'blends_natural_02')
+            return sprite:getProperties():Is(IsoFlagType.water) and is_water_sprite
         else
             return false
         end
