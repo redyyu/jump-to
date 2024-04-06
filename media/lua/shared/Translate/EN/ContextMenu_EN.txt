@@ -11,4 +11,10 @@ ContextMenu_EN = {
 
   ContextMenu_USE_EXER_TREADMILL = "Use Treadmill fitness (%1)"
   ContextMenu_USE_EXER_BENCH = "Use Bench Press (%1)"
+
+  ContextMenu_Push_Vehicle = "Push vehicle",
+  ContextMenu_Push_Vehicle_FROMLEFT = "From Left Side",
+  ContextMenu_Push_Vehicle_FROMRIGHT = "From Right Side",
+  ContextMenu_Push_Vehicle_FROMFRONT = "From The Front",    
+  ContextMenu_Push_Vehicle_FROMREAR = "From The Rear",
 }

@@ -7,6 +7,7 @@ IGUI_EN = {
     IGUI_PlayerText_Too_Pain = "Too much pain to use."
     IGUI_PlayerText_Too_Heavy = "Too heavy to use."
     IGUI_PlayerText_Need_Barbell = "I need a barbell to do this exercise."
+    IGUI_PlayerText_PushCar_CantReachCar = "Can't reach the car",
 
     IGUI_BenchPress = "BenchPress"
 	IGUI_BenchPress_Tooltip = "Train on BenchPress, must near Fitness Contraption."

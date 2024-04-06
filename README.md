@@ -2,7 +2,7 @@
 
 A Mod for Project Zomboid.
 
-Make charactor can Jump, Swimming, Sit on Chair, Use Fitness machine, Suicide by Gun.
+Make charactor can Jump, Swimming, Sit on Chair, Use Fitness machine, Suicide by Gun, Push Cars.
 
 =============================================================
 
@@ -66,6 +66,9 @@ You can prevent turn to zombie by kill yourself by gun, quick and easy.
 *there is chance not killed, only deep Injured.*
 
 
+# Push Cars
+
+You can push cars around step by step. push action will be slow, not like a pingpong.
 
 
 
