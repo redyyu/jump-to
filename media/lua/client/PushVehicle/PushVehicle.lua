@@ -12,19 +12,19 @@ local function getPushPos(vehicle, pushDirection, posVector)
 
     local pushAction = {
         ['Front'] = function() 
-            z, x = halfLen, 0 end,
+            z, x = halfLen * 1.2, 0 end,
         ['Rear'] = function()
-            z, x = -halfLen, 0 end,
+            z, x = -halfLen * 1.2, 0 end,
 
         ['LeftFront'] = function()
-            z, x = halfLen*0.7, halfWidth end,
+            z, x = halfLen * 0.7, halfWidth end,
         ['LeftRear'] = function()
-            z, x = -halfLen*0.7, halfWidth end,
+            z, x = -halfLen * 0.7, halfWidth end,
 
         ['RightFront'] = function()
-            z, x = halfLen*0.7, -halfWidth end,
+            z, x = halfLen * 0.7, -halfWidth end,
         ['RightRear'] = function()
-            z, x = -halfLen*0.7, -halfWidth end,
+            z, x = -halfLen * 0.7, -halfWidth end,
     }
     
     pushAction[pushDirection]()
@@ -69,11 +69,11 @@ PshCar.doPushVehicleMenu = function(playerObj, context, vehicle)
     local pushOption = context:addOption(getText("ContextMenu_Push_Vehicle"), nil, nil)
     local tooltip = ISWorldObjectContextMenu.addToolTip()
 
-    local str_level = player:getPerkLevel(Perks.Strength)
-    local vehicle_weight = vehicle:getMass()
-    local str_require = PshCar.minStrengthLevel + math.floor(vehicleWeight / 800)
+    local str_level = playerObj:getPerkLevel(Perks.Strength)
+    local str_require = PshCar.minStrengthLevel + math.floor(vehicle:getMass() / 800)
+
     if str_level >= str_require then
-        toolTip.description = " <RGB:0,1,0>" .. getText("IGUI_perks_Strength") .. ":" .. str_level .. "/" .. str_require .. " <LINE>"
+        tooltip.description = " <RGB:0,1,0>" .. getText("IGUI_perks_Strength") .. str_level .. "/" .. str_require .. " <LINE>"
 
         local subMenuMain = ISContextMenu:getNew(context)
         context:addSubMenu(pushOption, subMenuMain)
@@ -95,7 +95,7 @@ PshCar.doPushVehicleMenu = function(playerObj, context, vehicle)
         subMenuMain:addOption(getText("ContextMenu_Push_Vehicle_FROMFRONT"), playerObj, PshCar.onPushVehicle, vehicle, 'Front')
         subMenuMain:addOption(getText("ContextMenu_Push_Vehicle_FROMREAR"), playerObj, PshCar.onPushVehicle, vehicle, 'Rear')
     else
-        toolTip.description = " <RGB:1,0,0>" .. getText("IGUI_perks_Strength") .. ":" .. str_level .. "/" .. str_require .. " <LINE>"
+        tooltip.description = " <RGB:1,0,0>" .. getText("IGUI_perks_Strength") .. str_level .. "/" .. str_require .. " <LINE>"
         pushOption.notAvailable = true
     end
 end
