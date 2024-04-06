@@ -54,7 +54,7 @@ function ISPushVehicleAction:start()
     
     -- When push axis aligned, less effort
     if self.pushDir == 'Front' or 'Rear' then
-        enduranceFactor = enduranceFactor * 2
+        enduranceFactor = enduranceFactor * 4
     end
 
     -- Reduce Endurance/Increase Fatigue
@@ -84,8 +84,8 @@ function ISPushVehicleAction:new(character, vehicle, pushDirection)
 
     o.strength_level = o.character:getPerkLevel(Perks.Strength)
     o.force = 0.25 * o.strength_level  -- DO NOT change this number, unless know what doing.
-    -- When push axis aligned, less effort
-    print(o.direction)
+    
+    -- When push axis aligned, more effective.
     if o.direction == 'Front' or o.direction == 'Rear' then
         o.force = o.force * 1.2 + o.force * (10 - o.strength_level) /10
         -- DO NOT change those number, unless know what doing.
