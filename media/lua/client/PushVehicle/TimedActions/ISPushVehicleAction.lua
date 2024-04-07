@@ -50,7 +50,7 @@ function ISPushVehicleAction:start()
 
     -- Fatigue player
     local enduranceFactor = self.character:getPerkLevel(Perks.Fitness)
-    enduranceFactor = math.min(1, enduranceFactor) * 2
+    enduranceFactor = math.min(1, enduranceFactor) * 4
     
     -- When push axis aligned, less effort
     if self.pushDir == 'Front' or 'Rear' then

@@ -79,14 +79,14 @@ PshCar.doPushVehicleMenu = function(playerObj, context, vehicle)
         context:addSubMenu(pushOption, subMenuMain)
 
         local leftOption = subMenuMain:addOption(getText("ContextMenu_Push_Vehicle_FROMLEFT"))
-        local subMenuLeft = ISContextMenu:getNew(context)
+        local subMenuLeft = ISContextMenu:getNew(subMenuMain)
 
         context:addSubMenu(leftOption, subMenuLeft)
         subMenuLeft:addOption(getText("ContextMenu_Push_Vehicle_FROMFRONT"), playerObj, PshCar.onPushVehicle, vehicle, 'LeftFront')
         subMenuLeft:addOption(getText("ContextMenu_Push_Vehicle_FROMREAR"), playerObj, PshCar.onPushVehicle, vehicle, 'LeftRear')
 
         local rightOption = subMenuMain:addOption(getText("ContextMenu_Push_Vehicle_FROMRIGHT"))
-        local subMenuRight = ISContextMenu:getNew(context)
+        local subMenuRight = ISContextMenu:getNew(subMenuMain)
 
         context:addSubMenu(rightOption, subMenuRight)
         subMenuRight:addOption(getText("ContextMenu_Push_Vehicle_FROMFRONT"), playerObj, PshCar.onPushVehicle, vehicle, 'RightFront')
