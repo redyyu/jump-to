@@ -39,11 +39,13 @@ function ISJumpToAction:update()
         --     self.lastKnownSquare = currentSquare
         -- end
         
+        self.character:setMetabolicTarget(Metabolics.Fitness)
+
         -- prevent falling while jumping.
         self.character:setFallTime(0)
         self.character:setbFalling(false)
         self.character:setZ(self.forceZ)
-
+        
         if self.character:getEmitter():isPlaying('HumanFootstepsCombined') then
             self.character:getEmitter():stopSoundByName('HumanFootstepsCombined')
         end

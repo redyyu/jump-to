@@ -132,10 +132,8 @@ end
 JumpTo.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
     local playerObj = getSpecificPlayer(playerNum)
     
-    if not playerObj or playerObj:getVehicle() then
-        -- refused is not vaild scenes.
-        return
-    end
+    if not playerObj or playerObj:getVehicle() then return end
+    if not context:getOptionFromName(getText("ContextMenu_Walk_to")) then return end
 
     if playerObj:getSquare() and playerObj:getSquare():HasStairs() then
         -- refused when player on stairs, that will cause strange anim.
@@ -150,6 +148,7 @@ JumpTo.onFillWorldObjectContextMenu = function(playerNum, context, worldobjects)
         return
     end
 
+    
     local option = context:insertOptionBefore(getText("ContextMenu_Walk_to"), getText("ContextMenu_JumpTo"), playerNum, JumpTo.onJumpCursor)
     option.toolTip = ISWorldObjectContextMenu.addToolTip()
     option.toolTip:setName(getText("Tooltip_Select_To_Jump"))

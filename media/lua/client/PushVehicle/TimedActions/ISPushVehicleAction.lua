@@ -62,7 +62,6 @@ function ISPushVehicleAction:start()
     self.character:getStats():setEndurance(enduranceHit)
     -- This part actually burns calories (AFAICT??)
     self.character:setMetabolicTarget(Metabolics.MediumWork)
-
 end
 
 

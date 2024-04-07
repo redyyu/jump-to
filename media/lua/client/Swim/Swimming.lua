@@ -288,6 +288,7 @@ Swimming.onPlayerMove = function(playerObj)
         playerObj:setSneaking(false)
         playerObj:setSprinting(false)
         playerObj:setRunning(false)
+        playerObj:setMetabolicTarget(Metabolics.Fitness)
     end
 end
 
