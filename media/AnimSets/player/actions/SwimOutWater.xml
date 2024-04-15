@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <animNode>
     <m_Name>SwimOutWater</m_Name>
-    <m_AnimName>Bob_SitGround_Out</m_AnimName>
+    <m_AnimName>Bob_GetUp_Front</m_AnimName>
     <m_SpeedScale>1.69</m_SpeedScale>
     <m_Looped>false</m_Looped>
     <m_SyncTrackingEnabled>true</m_SyncTrackingEnabled>
