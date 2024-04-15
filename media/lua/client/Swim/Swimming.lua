@@ -240,7 +240,8 @@ Swimming.onClimateTick = function(climateManager) -- update character stats, OnP
         -- make happy when swimming.
         local body_damage = playerObj:getBodyDamage()
         if body_damage:getUnhappynessLevel() > 0 then
-            body_damage:setUnhappynessLevel(body_damage:getUnhappynessLevel() - 5)
+            local unhappy_level = math.max(body_damage:getUnhappynessLevel() - 5, 0)
+            body_damage:setUnhappynessLevel(unhappy_level)
         end
 
         local body_damage = playerObj:getBodyDamage()
